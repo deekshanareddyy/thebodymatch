@@ -11,63 +11,46 @@
       box-sizing: border-box;
       font-family: 'Arial', sans-serif;
     }
-    
-    body {
-      color: white;
-      overflow-x: hidden;
-    }
-    
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
+
+    .video-container {
       width: 100%;
-      height: 100%;
-      z-index: -1;
+      height: 50vh;
+      overflow: hidden;
     }
-    
-    .video-background video {
+
+    .video-container video {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
+
     .content {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       text-align: center;
-      padding: 20px;
-      z-index: 1;
+      padding: 40px 20px;
+      background: white;
     }
-    
+
     h2 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       margin-bottom: 15px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      color: #000;
     }
-    
+
     p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-bottom: 30px;
-      max-width: 600px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      color: #666;
     }
-    
+
     .login-button {
-      background-color: black;
+      background-color: #000;
       color: white;
       border: none;
       padding: 15px 40px;
       border-radius: 5px;
-      font-size: 1.1rem;
       cursor: pointer;
     }
 
-    /* Login Modal Styles */
     .modal {
       display: none;
       position: fixed;
@@ -80,166 +63,157 @@
       justify-content: center;
       align-items: center;
     }
-    
+
     .modal-content {
       background: white;
       padding: 30px;
       border-radius: 10px;
       width: 90%;
       max-width: 400px;
-      color: #333;
     }
-    
-    .input-group {
-      display: flex;
-      margin: 20px 0;
-    }
-    
-    .country-code {
-      width: 120px;
+
+    .modal-content input {
+      width: 100%;
       padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px 0 0 5px;
-    }
-    
-    .phone-input {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 0 5px 5px 0;
-    }
-    
-    .otp-section {
-      display: none;
-      margin: 20px 0;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <!-- Fullscreen Video Background -->
-  <div class="video-background">
+
+  <!-- VIDEO -->
+  <div class="video-container">
     <video autoplay muted loop>
       <source src="video.mp4" type="video/mp4">
-      Your browser does not support HTML5 video.
     </video>
   </div>
-  
-  <!-- Content Overlay -->
+
+  <!-- CONTENT -->
   <div class="content">
     <h2>Let's Body Match</h2>
     <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
     <button id="loginBtn" class="login-button">Login</button>
   </div>
 
-  <!-- Login Modal with Twilio OTP -->
+  <!-- MODAL -->
   <div id="loginModal" class="modal">
     <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h3>Login with Phone Number</h3>
-      
-      <div class="input-group">
-        <select id="countryCode" class="country-code">
-          <option value="+91" selected>🇮🇳 +91 (India)</option>
-          <option value="+1">🇺🇸 +1 (US)</option>
-        </select>
-        <input type="tel" id="phoneNumber" placeholder="Phone Number" class="phone-input">
-      </div>
-      
-      <div id="otpSection" class="otp-section">
-        <input type="text" id="otpInput" placeholder="Enter OTP">
+      <h3>Enter Phone Number</h3>
+      <input type="tel" id="phoneInput" placeholder="+91 9876543210">
+      <button id="sendOtpBtn" class="login-button">Send OTP</button>
+
+      <div id="otpSection" style="display: none;">
+        <h4>Enter OTP</h4>
+        <input type="text" id="otpInput" placeholder="6-digit OTP">
         <button id="verifyOtpBtn" class="login-button">Verify OTP</button>
       </div>
-      
-      <button id="sendOtpBtn" class="login-button">Send OTP</button>
+
+      <p id="errorMsg" style="color:red; display:none;"></p>
     </div>
   </div>
 
   <script>
-    // DOM Elements
     const loginBtn = document.getElementById('loginBtn');
     const loginModal = document.getElementById('loginModal');
-    const closeBtn = document.querySelector('.close-btn');
+    const phoneInput = document.getElementById('phoneInput');
     const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
     const otpSection = document.getElementById('otpSection');
-    const phoneInput = document.getElementById('phoneNumber');
     const otpInput = document.getElementById('otpInput');
-    const countryCode = document.getElementById('countryCode');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const errorMsg = document.getElementById('errorMsg');
 
-    // Twilio Function Endpoint
-    const TWILIO_ENDPOINT = 'https://bodymatchauth-4008.twil.io';
+    let currentPhone = '';
 
-    // Open Modal
     loginBtn.addEventListener('click', () => {
       loginModal.style.display = 'flex';
     });
 
-    // Close Modal
-    closeBtn.addEventListener('click', () => {
-      loginModal.style.display = 'none';
-    });
-
-    // Send OTP via Twilio
     sendOtpBtn.addEventListener('click', async () => {
-      const phoneNumber = countryCode.value + phoneInput.value.trim();
-      
-      if (!phoneInput.value.trim()) {
-        alert('Please enter a valid phone number');
+      const phone = phoneInput.value.trim();
+      const phoneRegex = /^\+?[0-9]{10,15}$/;
+
+      if (!phoneRegex.test(phone)) {
+        showError("Please enter a valid phone number");
         return;
       }
-      
+
       try {
-        const response = await fetch(`${TWILIO_ENDPOINT}/send-otp`, {
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.textContent = "Sending...";
+
+        const response = await fetch('https://bodymatchauth-4008.twil.io/send-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: phoneNumber })
+          body: JSON.stringify({ phone })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
-          sendOtpBtn.style.display = 'none';
+          alert("OTP sent successfully!");
+          currentPhone = phone;
           otpSection.style.display = 'block';
         } else {
-          alert(data.message || 'Failed to send OTP');
+          showError(data.message || "Failed to send OTP");
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error sending OTP. Please try again.');
+      } catch (err) {
+        showError("Connection error. Please try again.");
+        console.error(err);
+      } finally {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = "Send OTP";
       }
     });
 
-    // Verify OTP
     verifyOtpBtn.addEventListener('click', async () => {
       const otp = otpInput.value.trim();
-      const phoneNumber = countryCode.value + phoneInput.value.trim();
-      
-      if (!otp) {
-        alert('Please enter the OTP you received');
+      if (!otp || otp.length !== 6) {
+        showError("Enter a valid 6-digit OTP");
         return;
       }
-      
+
       try {
-        const response = await fetch(`${TWILIO_ENDPOINT}/verify-otp`, {
+        verifyOtpBtn.disabled = true;
+        verifyOtpBtn.textContent = "Verifying...";
+
+        const response = await fetch('https://bodymatchauth-4008.twil.io/verify-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: phoneNumber, code: otp })
+          body: JSON.stringify({ phone: currentPhone, otp })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
-          alert('Login successful!');
+          alert("OTP Verified! Welcome!");
           loginModal.style.display = 'none';
-          // Redirect or update UI
-          window.location.href = '/dashboard';
         } else {
-          alert(data.message || 'Invalid OTP');
+          showError(data.message || "Incorrect OTP");
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error verifying OTP. Please try again.');
+      } catch (err) {
+        showError("Verification error. Try again.");
+        console.error(err);
+      } finally {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.textContent = "Verify OTP";
       }
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      setTimeout(() => errorMsg.style.display = 'none', 4000);
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') loginModal.style.display = 'none';
     });
   </script>
 </body>
