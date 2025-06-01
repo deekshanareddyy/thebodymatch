@@ -3,47 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ModDimitris - Body Match</title>
+  <title>Body Match</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <video autoplay muted loop class="hero-video">
-  <source src="your-video.mp4" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video>
-  <div class="container">
-    <h1>ModDimitris</h1>
-    <h2>Let's Body Match</h2>
-    <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
+  <!-- Video Background -->
+  <div class="video-background">
+    <video autoplay muted loop id="bg-video">
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <div class="content-container">
+    <div class="headings">
+      <h1>Your body</h1>
+      <h1>Your products</h1>
+    </div>
     
+    <h2>Let's Body Match</h2>
+    <p>With the right products, you don't just look good, you feel confident and unstoppable</p>    
     <!-- Login Button -->
     <button id="loginBtn" class="login-button">Login</button>
     
-    <!-- Login Modal (Hidden by Default) -->
+    <!-- Login Modal -->
     <div id="loginModal" class="modal">
       <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h3>Login with Phone Number</h3>
         
-        <!-- Phone Input with Country Code -->
         <div class="input-group">
           <select id="countryCode" class="country-code">
+            <option value="+91" selected>🇮🇳 +91 (India)</option>
             <option value="+1">🇺🇸 +1 (US)</option>
             <option value="+44">🇬🇧 +44 (UK)</option>
-            <option value="+91">🇮🇳 +91 (IN)</option>
-            <option value="+33">🇫🇷 +33 (FR)</option>
-            <!-- Add more countries as needed -->
           </select>
           <input type="tel" id="phoneNumber" placeholder="Phone Number" class="phone-input">
         </div>
         
-        <!-- OTP Input (Hidden Initially) -->
         <div id="otpSection" class="otp-section">
-          <input type="text" id="otpInput" placeholder="Enter OTP" class="otp-input">
+          <input type="text" id="otpInput" placeholder="Enter OTP">
           <button id="verifyOtpBtn" class="verify-button">Verify OTP</button>
         </div>
         
-        <!-- Send OTP Button -->
         <button id="sendOtpBtn" class="send-button">Send OTP</button>
       </div>
     </div>

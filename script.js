@@ -1,98 +1,76 @@
-// DOM Elements
-const loginBtn = document.getElementById("loginBtn");
-const loginModal = document.getElementById("loginModal");
-const closeBtn = document.querySelector(".close-btn");
-const sendOtpBtn = document.getElementById("sendOtpBtn");
-const verifyOtpBtn = document.getElementById("verifyOtpBtn");
-const otpSection = document.getElementById("otpSection");
-const phoneNumberInput = document.getElementById("phoneNumber");
-const otpInput = document.getElementById("otpInput");
-const countryCodeSelect = document.getElementById("countryCode");
+document.addEventListener('DOMContentLoaded', function() {
+  // DOM Elements
+  const loginBtn = document.getElementById('loginBtn');
+  const loginModal = document.getElementById('loginModal');
+  const closeBtn = document.querySelector('.close-btn');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const otpSection = document.getElementById('otpSection');
+  const phoneInput = document.getElementById('phoneNumber');
+  const otpInput = document.getElementById('otpInput');
+  const countryCode = document.getElementById('countryCode');
 
-// Open Modal
-loginBtn.addEventListener("click", () => {
-  loginModal.style.display = "flex";
-});
+  // Open Modal
+  loginBtn.addEventListener('click', function() {
+    loginModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
 
-// Close Modal
-closeBtn.addEventListener("click", () => {
-  loginModal.style.display = "none";
-  resetForm();
-});
-
-// Send OTP (Using Twilio Verify API)
-sendOtpBtn.addEventListener("click", async () => {
-  const countryCode = countryCodeSelect.value;
-  const phoneNumber = phoneNumberInput.value;
-  
-  if (!phoneNumber) {
-    alert("Please enter a phone number.");
-    return;
+  // Close Modal
+  function closeModal() {
+    loginModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    resetForm();
   }
-  
-  const fullNumber = countryCode + phoneNumber;
-  
-  try {
-    // Replace with your Twilio Verify API call or backend endpoint
-    const response = await fetch("https://bodymatchauth-4008.twil.io/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phoneNumber: fullNumber })
-    });
+
+  closeBtn.addEventListener('click', closeModal);
+  loginModal.addEventListener('click', function(e) {
+    if (e.target === loginModal) closeModal();
+  });
+
+  // Send OTP
+  sendOtpBtn.addEventListener('click', function() {
+    const phoneNumber = countryCode.value + phoneInput.value.trim();
     
-    const data = await response.json();
-    
-    if (data.success) {
-      sendOtpBtn.style.display = "none";
-      otpSection.style.display = "block";
-    } else {
-      alert("Failed to send OTP. Please try again.");
+    if (!phoneInput.value.trim()) {
+      alert('Please enter a valid phone number');
+      return;
     }
-  } catch (error) {
-    alert("Error sending OTP. Check console for details.");
-    console.error(error);
-  }
-});
+    
+    console.log('Sending OTP to:', phoneNumber);
+    // Replace with actual Twilio API call
+    
+    // Simulate OTP sent
+    setTimeout(() => {
+      sendOtpBtn.style.display = 'none';
+      otpSection.style.display = 'block';
+    }, 1000);
+  });
 
-// Verify OTP (Using Twilio Verify API)
-verifyOtpBtn.addEventListener("click", async () => {
-  const countryCode = countryCodeSelect.value;
-  const phoneNumber = phoneNumberInput.value;
-  const fullNumber = countryCode + phoneNumber;
-  const otp = otpInput.value;
-  
-  if (!otp) {
-    alert("Please enter the OTP.");
-    return;
-  }
-  
-  try {
-    // Replace with your Twilio Verify API call or backend endpoint
-    const response = await fetch("https://bodymatchauth-4008.twil.io/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phoneNumber: fullNumber, otp })
-    });
+  // Verify OTP
+  verifyOtpBtn.addEventListener('click', function() {
+    const otp = otpInput.value.trim();
     
-    const data = await response.json();
-    
-    if (data.success) {
-      alert("Login successful! Redirecting...");
-      loginModal.style.display = "none";
-      resetForm();
-    } else {
-      alert("Invalid OTP. Please try again.");
+    if (!otp) {
+      alert('Please enter the OTP you received');
+      return;
     }
-  } catch (error) {
-    alert("Error verifying OTP. Check console for details.");
-    console.error(error);
+    
+    console.log('Verifying OTP:', otp);
+    // Replace with actual OTP verification
+    
+    // Simulate successful verification
+    setTimeout(() => {
+      alert('Login successful! Redirecting...');
+      closeModal();
+    }, 1000);
+  });
+
+  // Reset form
+  function resetForm() {
+    phoneInput.value = '';
+    otpInput.value = '';
+    otpSection.style.display = 'none';
+    sendOtpBtn.style.display = 'block';
   }
 });
-
-// Reset Form
-function resetForm() {
-  phoneNumberInput.value = "";
-  otpInput.value = "";
-  otpSection.style.display = "none";
-  sendOtpBtn.style.display = "block";
-}
