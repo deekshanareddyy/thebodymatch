@@ -17,6 +17,7 @@
     }
     .overlay {
       margin-top: 20px;
+      padding: 0 20px;
     }
     h1 {
       font-size: 2em;
@@ -25,10 +26,6 @@
       font-size: 1.2em;
       margin: 10px 0;
       color: #555;
-    }
-    .instruction {
-      font-size: 1em;
-      margin-bottom: 15px;
     }
     .login-button {
       background-color: black;
@@ -39,6 +36,16 @@
       border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
+    }
+    /* New OTP input styles */
+    .otp-box {
+      display: none; /* Hidden by default */
+      margin-top: 20px;
+    }
+    input {
+      padding: 10px;
+      margin: 5px;
+      width: 200px;
     }
   </style>
 </head>
@@ -51,8 +58,48 @@
   <div class="overlay">
     <h1>Let's Body Match</h1>
     <p class="tagline">With the right products, you don't just look good, you feel confident and unstoppable</p>
-    <p class="instruction">Click Login to get started</p>
-    <button class="login-button">Login</button>
+    
+    <!-- Phone number input (shown first) -->
+    <div id="phone-box">
+      <input type="tel" id="phone" placeholder="Enter WhatsApp number (e.g., +919876543210)" />
+      <button class="login-button" onclick="sendOTP()">Send OTP</button>
+    </div>
+
+    <!-- OTP input (hidden until OTP is sent) -->
+    <div id="otp-box" class="otp-box">
+      <input type="text" id="otp" placeholder="Enter 6-digit OTP" />
+      <button class="login-button" onclick="verifyOTP()">Verify</button>
+    </div>
   </div>
+
+  <!-- Simple JavaScript for OTP flow -->
+  <script>
+    let userPhone = '';
+
+    async function sendOTP() {
+      userPhone = document.getElementById('phone').value;
+      if (!userPhone.startsWith('+')) {
+        alert('Please include country code (e.g., +91 for India)');
+        return;
+      }
+
+      // Call your backend (we'll set this up next)
+      alert('OTP sent to ' + userPhone); // Temporary - replace with real code later
+      
+      // Show OTP box
+      document.getElementById('phone-box').style.display = 'none';
+      document.getElementById('otp-box').style.display = 'block';
+    }
+
+    function verifyOTP() {
+      const otp = document.getElementById('otp').value;
+      if (otp.length === 6) {
+        alert('Login successful!'); // Temporary - replace later
+        window.location.href = "dashboard.html"; // Redirect after login
+      } else {
+        alert('OTP must be 6 digits');
+      }
+    }
+  </script>
 </body>
 </html>
