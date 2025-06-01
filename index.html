@@ -1,225 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Body Match</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .overlay {
-      margin-top: 20px;
-      padding: 0 20px;
-    }
-    h1 {
-      font-size: 2em;
-    }
-    .tagline {
-      font-size: 1.2em;
-      margin: 10px 0;
-      color: #555;
-    }
-    .login-button {
-      background-color: black;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.3s;
-    }
-    .login-button:hover {
-      background-color: #333;
-    }
-    .login-button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    .otp-box {
-      display: none;
-      margin-top: 20px;
-    }
-    input {
-      padding: 10px;
-      margin: 5px 0;
-      width: 250px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1em;
-    }
-    .loader {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #000;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 1s linear infinite;
-      display: none;
-      margin: 10px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .status-message {
-      min-height: 20px;
-      color: #d9534f;
-      margin: 10px 0;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ModDimitris - Body Match</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <video autoplay loop muted playsinline>
-    <source src="video.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-
-  <div class="overlay">
-    <h1>Let's Body Match</h1>
-    <p class="tagline">With the right products, you don't just look good, you feel confident and unstoppable</p>
+  <div class="container">
+    <h1>ModDimitris</h1>
+    <h2>Let's Body Match</h2>
+    <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
     
-    <!-- Phone number input -->
-    <div id="phone-box">
-      <input type="tel" id="phone" placeholder="Enter phone number (e.g., +917339252175)" />
-      <button class="login-button" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
-      <div class="loader" id="send-loader"></div>
-      <p class="status-message" id="send-status"></p>
-    </div>
-
-    <!-- OTP input -->
-    <div id="otp-box" class="otp-box">
-      <p>Enter the 6-digit OTP sent to <strong id="phone-display"></strong></p>
-      <input type="text" id="otp" placeholder="123456" maxlength="6" />
-      <button class="login-button" id="verify-otp-btn" onclick="verifyOTP()">Verify</button>
-      <div class="loader" id="verify-loader"></div>
-      <p class="status-message" id="verify-status"></p>
+    <!-- Login Button -->
+    <button id="loginBtn" class="login-button">Login</button>
+    
+    <!-- Login Modal (Hidden by Default) -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Login with Phone Number</h3>
+        
+        <!-- Phone Input with Country Code -->
+        <div class="input-group">
+          <select id="countryCode" class="country-code">
+            <option value="+1">🇺🇸 +1 (US)</option>
+            <option value="+44">🇬🇧 +44 (UK)</option>
+            <option value="+91">🇮🇳 +91 (IN)</option>
+            <option value="+33">🇫🇷 +33 (FR)</option>
+            <!-- Add more countries as needed -->
+          </select>
+          <input type="tel" id="phoneNumber" placeholder="Phone Number" class="phone-input">
+        </div>
+        
+        <!-- OTP Input (Hidden Initially) -->
+        <div id="otpSection" class="otp-section">
+          <input type="text" id="otpInput" placeholder="Enter OTP" class="otp-input">
+          <button id="verifyOtpBtn" class="verify-button">Verify OTP</button>
+        </div>
+        
+        <!-- Send OTP Button -->
+        <button id="sendOtpBtn" class="send-button">Send OTP</button>
+      </div>
     </div>
   </div>
-
-  <script>
-    // Twilio Function URL - Replace with yours if different
-    const TWILIO_FUNCTION_URL = 'https://bodymatchauth-4008.twil.io';
-    let userPhone = '';
-
-    async function sendOTP() {
-      userPhone = document.getElementById('phone').value.trim();
-      const sendBtn = document.getElementById('send-otp-btn');
-      const loader = document.getElementById('send-loader');
-      const status = document.getElementById('send-status');
-      
-      // Validate phone
-      if (!userPhone.startsWith('+')) {
-        status.textContent = 'Please include country code (e.g., +91 for India)';
-        return;
-      }
-
-      // Clear previous errors
-      status.textContent = '';
-      
-      // Show loading state
-      sendBtn.disabled = true;
-      loader.style.display = 'block';
-
-      try {
-        // Call Twilio to send OTP
-        const response = await fetch(`${TWILIO_FUNCTION_URL}/send-sms-otp`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: userPhone })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          // Show OTP input
-          document.getElementById('phone-display').textContent = userPhone;
-          document.getElementById('phone-box').style.display = 'none';
-          document.getElementById('otp-box').style.display = 'block';
-        } else {
-          status.textContent = 'Error: ' + (result.error || 'Failed to send OTP');
-        }
-      } catch (error) {
-        status.textContent = 'Network error. Please try again.';
-      } finally {
-        sendBtn.disabled = false;
-        loader.style.display = 'none';
-      }
-    }
-
-    async function verifyOTP() {
-      const otp = document.getElementById('otp').value.trim();
-      const verifyBtn = document.getElementById('verify-otp-btn');
-      const loader = document.getElementById('verify-loader');
-      const status = document.getElementById('verify-status');
-      
-      // Validate OTP
-      if (otp.length !== 6) {
-        status.textContent = 'OTP must be 6 digits';
-        return;
-      }
-
-      // Clear previous errors
-      status.textContent = '';
-      
-      // Show loading state
-      verifyBtn.disabled = true;
-      loader.style.display = 'block';
-
-      try {
-        // 1. Verify OTP with Twilio
-        const verifyResponse = await fetch(`${TWILIO_FUNCTION_URL}/verify-otp`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: userPhone, otp })
-        });
-        
-        const verifyResult = await verifyResponse.json();
-        
-        if (verifyResult.success) {
-          // 2. Save number to database
-          const saveResponse = await fetch(`${TWILIO_FUNCTION_URL}/save-number`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone })
-          });
-          
-          const saveResult = await saveResponse.json();
-          
-          if (saveResult.success) {
-            // Redirect after successful login
-            window.location.href = "dashboard.html";
-          } else {
-            status.textContent = 'Error saving your number. Please contact support.';
-          }
-        } else {
-          status.textContent = 'Invalid OTP. Please try again.';
-        }
-      } catch (error) {
-        status.textContent = 'Verification failed. Please try again.';
-      } finally {
-        verifyBtn.disabled = false;
-        loader.style.display = 'none';
-      }
-    }
-
-    // Allow pressing Enter key to submit
-    document.getElementById('phone').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendOTP();
-    });
-    
-    document.getElementById('otp').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') verifyOTP();
-    });
-  </script>
+  
+  <script src="script.js"></script>
 </body>
 </html>

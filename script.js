@@ -20,8 +20,8 @@ closeBtn.addEventListener("click", () => {
   resetForm();
 });
 
-// Send OTP (Mock Twilio API)
-sendOtpBtn.addEventListener("click", () => {
+// Send OTP (Using Twilio Verify API)
+sendOtpBtn.addEventListener("click", async () => {
   const countryCode = countryCodeSelect.value;
   const phoneNumber = phoneNumberInput.value;
   
@@ -31,15 +31,34 @@ sendOtpBtn.addEventListener("click", () => {
   }
   
   const fullNumber = countryCode + phoneNumber;
-  console.log("OTP sent to:", fullNumber); // Replace with Twilio API call
   
-  // Hide Send OTP, Show OTP Section
-  sendOtpBtn.style.display = "none";
-  otpSection.style.display = "block";
+  try {
+    // Replace with your Twilio Verify API call or backend endpoint
+    const response = await fetch("https://bodymatchauth-4008.twil.io/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phoneNumber: fullNumber })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      sendOtpBtn.style.display = "none";
+      otpSection.style.display = "block";
+    } else {
+      alert("Failed to send OTP. Please try again.");
+    }
+  } catch (error) {
+    alert("Error sending OTP. Check console for details.");
+    console.error(error);
+  }
 });
 
-// Verify OTP (Mock Twilio API)
-verifyOtpBtn.addEventListener("click", () => {
+// Verify OTP (Using Twilio Verify API)
+verifyOtpBtn.addEventListener("click", async () => {
+  const countryCode = countryCodeSelect.value;
+  const phoneNumber = phoneNumberInput.value;
+  const fullNumber = countryCode + phoneNumber;
   const otp = otpInput.value;
   
   if (!otp) {
@@ -47,11 +66,27 @@ verifyOtpBtn.addEventListener("click", () => {
     return;
   }
   
-  console.log("Verifying OTP:", otp); // Replace with Twilio API call
-  
-  alert("Login successful! Redirecting...");
-  loginModal.style.display = "none";
-  resetForm();
+  try {
+    // Replace with your Twilio Verify API call or backend endpoint
+    const response = await fetch("https://bodymatchauth-4008.twil.io/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phoneNumber: fullNumber, otp })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      alert("Login successful! Redirecting...");
+      loginModal.style.display = "none";
+      resetForm();
+    } else {
+      alert("Invalid OTP. Please try again.");
+    }
+  } catch (error) {
+    alert("Error verifying OTP. Check console for details.");
+    console.error(error);
+  }
 });
 
 // Reset Form
