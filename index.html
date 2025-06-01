@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Body Match</title>
+  <title>You-Emil | Body Match</title>
   <style>
     * {
       margin: 0;
@@ -14,36 +14,30 @@
     
     body {
       color: #333;
+      background-color: #f5f5f5;
     }
     
-    .video-container {
-      width: 100%;
-      height: 60vh;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .content {
+    .container {
       max-width: 800px;
-      margin: -50px auto 0;
+      margin: 40px auto;
       padding: 40px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      position: relative;
       text-align: center;
     }
     
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #000;
+    }
+    
     h2 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       margin-bottom: 20px;
       color: #444;
+      font-weight: normal;
     }
     
     p {
@@ -70,13 +64,13 @@
     }
     
     @media (max-width: 768px) {
-      .video-container {
-        height: 50vh;
+      .container {
+        margin: 20px;
+        padding: 30px 20px;
       }
       
-      .content {
-        margin: -30px auto 0;
-        padding: 30px 20px;
+      h1 {
+        font-size: 2rem;
       }
       
       h2 {
@@ -86,25 +80,17 @@
   </style>
 </head>
 <body>
-  <!-- Fullscreen Video at Top -->
-  <div class="video-container">
-    <video autoplay muted loop>
-      <source src="video.mp4" type="video/mp4">
-      Your browser does not support HTML5 video.
-    </video>
-  </div>
-  
-  <!-- Content Below Video -->
-  <div class="content">
+  <div class="container">
+    <h1>You-Emil</h1>
     <h2>Let's Body Match</h2>
     <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
     <button class="login-button">Login</button>
   </div>
 
   <script>
-    // Add login functionality here if needed
     document.querySelector('.login-button').addEventListener('click', function() {
-      alert('Login button clicked - add your login modal here');
+      // Add your login functionality here
+      alert('Login functionality will go here');
     });
   </script>
 </body>
