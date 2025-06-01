@@ -22,17 +22,20 @@ body {
 }
 
 .login-button {
-  background-color: #007bff;
+  background-color: #000000; /* Black */
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #0056b3;
+  background-color: #333333; /* Darker black on hover */
+  transform: translateY(-2px);
 }
 
 /* Modal Styles */
