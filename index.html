@@ -36,16 +36,45 @@
       border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
+      transition: background-color 0.3s;
     }
-    /* New OTP input styles */
+    .login-button:hover {
+      background-color: #333;
+    }
+    .login-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
     .otp-box {
-      display: none; /* Hidden by default */
+      display: none;
       margin-top: 20px;
     }
     input {
       padding: 10px;
-      margin: 5px;
-      width: 200px;
+      margin: 5px 0;
+      width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #000;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      display: none;
+      margin: 10px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .status-message {
+      min-height: 20px;
+      color: #d9534f;
+      margin: 10px 0;
     }
   </style>
 </head>
@@ -59,47 +88,138 @@
     <h1>Let's Body Match</h1>
     <p class="tagline">With the right products, you don't just look good, you feel confident and unstoppable</p>
     
-    <!-- Phone number input (shown first) -->
+    <!-- Phone number input -->
     <div id="phone-box">
-      <input type="tel" id="phone" placeholder="Enter WhatsApp number (e.g., +919876543210)" />
-      <button class="login-button" onclick="sendOTP()">Send OTP</button>
+      <input type="tel" id="phone" placeholder="Enter phone number (e.g., +917339252175)" />
+      <button class="login-button" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
+      <div class="loader" id="send-loader"></div>
+      <p class="status-message" id="send-status"></p>
     </div>
 
-    <!-- OTP input (hidden until OTP is sent) -->
+    <!-- OTP input -->
     <div id="otp-box" class="otp-box">
-      <input type="text" id="otp" placeholder="Enter 6-digit OTP" />
-      <button class="login-button" onclick="verifyOTP()">Verify</button>
+      <p>Enter the 6-digit OTP sent to <strong id="phone-display"></strong></p>
+      <input type="text" id="otp" placeholder="123456" maxlength="6" />
+      <button class="login-button" id="verify-otp-btn" onclick="verifyOTP()">Verify</button>
+      <div class="loader" id="verify-loader"></div>
+      <p class="status-message" id="verify-status"></p>
     </div>
   </div>
 
-  <!-- Simple JavaScript for OTP flow -->
   <script>
+    // Twilio Function URL - Replace with yours if different
+    const TWILIO_FUNCTION_URL = 'https://bodymatchauth-4008.twil.io';
     let userPhone = '';
 
     async function sendOTP() {
-      userPhone = document.getElementById('phone').value;
+      userPhone = document.getElementById('phone').value.trim();
+      const sendBtn = document.getElementById('send-otp-btn');
+      const loader = document.getElementById('send-loader');
+      const status = document.getElementById('send-status');
+      
+      // Validate phone
       if (!userPhone.startsWith('+')) {
-        alert('Please include country code (e.g., +91 for India)');
+        status.textContent = 'Please include country code (e.g., +91 for India)';
         return;
       }
 
-      // Call your backend (we'll set this up next)
-      alert('OTP sent to ' + userPhone); // Temporary - replace with real code later
+      // Clear previous errors
+      status.textContent = '';
       
-      // Show OTP box
-      document.getElementById('phone-box').style.display = 'none';
-      document.getElementById('otp-box').style.display = 'block';
-    }
+      // Show loading state
+      sendBtn.disabled = true;
+      loader.style.display = 'block';
 
-    function verifyOTP() {
-      const otp = document.getElementById('otp').value;
-      if (otp.length === 6) {
-        alert('Login successful!'); // Temporary - replace later
-        window.location.href = "dashboard.html"; // Redirect after login
-      } else {
-        alert('OTP must be 6 digits');
+      try {
+        // Call Twilio to send OTP
+        const response = await fetch(`${TWILIO_FUNCTION_URL}/send-sms-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: userPhone })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Show OTP input
+          document.getElementById('phone-display').textContent = userPhone;
+          document.getElementById('phone-box').style.display = 'none';
+          document.getElementById('otp-box').style.display = 'block';
+        } else {
+          status.textContent = 'Error: ' + (result.error || 'Failed to send OTP');
+        }
+      } catch (error) {
+        status.textContent = 'Network error. Please try again.';
+      } finally {
+        sendBtn.disabled = false;
+        loader.style.display = 'none';
       }
     }
+
+    async function verifyOTP() {
+      const otp = document.getElementById('otp').value.trim();
+      const verifyBtn = document.getElementById('verify-otp-btn');
+      const loader = document.getElementById('verify-loader');
+      const status = document.getElementById('verify-status');
+      
+      // Validate OTP
+      if (otp.length !== 6) {
+        status.textContent = 'OTP must be 6 digits';
+        return;
+      }
+
+      // Clear previous errors
+      status.textContent = '';
+      
+      // Show loading state
+      verifyBtn.disabled = true;
+      loader.style.display = 'block';
+
+      try {
+        // 1. Verify OTP with Twilio
+        const verifyResponse = await fetch(`${TWILIO_FUNCTION_URL}/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: userPhone, otp })
+        });
+        
+        const verifyResult = await verifyResponse.json();
+        
+        if (verifyResult.success) {
+          // 2. Save number to database
+          const saveResponse = await fetch(`${TWILIO_FUNCTION_URL}/save-number`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: userPhone })
+          });
+          
+          const saveResult = await saveResponse.json();
+          
+          if (saveResult.success) {
+            // Redirect after successful login
+            window.location.href = "dashboard.html";
+          } else {
+            status.textContent = 'Error saving your number. Please contact support.';
+          }
+        } else {
+          status.textContent = 'Invalid OTP. Please try again.';
+        }
+      } catch (error) {
+        status.textContent = 'Verification failed. Please try again.';
+      } finally {
+        verifyBtn.disabled = false;
+        loader.style.display = 'none';
+      }
+    }
+
+    // Allow pressing Enter key to submit
+    document.getElementById('phone').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendOTP();
+    });
+    
+    document.getElementById('otp').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verifyOTP();
+    });
   </script>
 </body>
 </html>
