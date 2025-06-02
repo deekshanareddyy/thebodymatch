@@ -16,12 +16,37 @@
       background-color: #000;
       color: #fff;
       min-height: 100vh;
-      padding: 20px;
     }
 
-    .container {
+    /* YouTube-style video player */
+    .video-player {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      margin-bottom: 30px;
+      background: #000;
+    }
+    
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
       text-align: center;
     }
 
@@ -72,7 +97,7 @@
     }
 
     .navigation {
-      margin-top: 50px;
+      margin: 50px 0;
       display: flex;
       justify-content: center;
       gap: 20px;
@@ -105,7 +130,18 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- YouTube-style video player -->
+  <div class="video-player">
+    <div class="video-container">
+      <video controls autoplay>
+        <source src="body-shape.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Body shape selection content -->
+  <div class="content-container">
     <h1>HOW DOES YOUR BODY LOOK?</h1>
 
     <div class="shapes-grid">
@@ -169,6 +205,13 @@
     document.querySelector('.help-button').addEventListener('click', () => {
       alert("We'll help you determine your body shape!");
     });
+
+    // Auto-play video with sound (may be restricted by browser)
+    document.querySelector('video').play().catch(e => {
+      console.log("Autoplay with sound was prevented:", e);
+      // Fallback: Show play button
+      document.querySelector('video').controls = true;
+    });
   </script>
 </body>
-</html>
+</html> (is this correct?)
