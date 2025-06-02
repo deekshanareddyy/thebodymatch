@@ -20,11 +20,84 @@
       flex-direction: column;
       align-items: center;
     }
-    /* ... (keep all your existing styles) ... */
+    
+    /* Existing styles... */
+    
+    /* New styles for the services section */
+    .services-section {
+      width: 100%;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .services-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #333;
+      text-transform: uppercase;
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .service-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .service-card h3 {
+      margin: 15px 0;
+      color: #333;
+    }
+    
+    .service-btn {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    
+    .service-btn:hover {
+      background: #ff5252;
+    }
+    
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .footer p {
+      margin: 5px 0;
+    }
+    
+    .heart {
+      color: #ff6b6b;
+    }
   </style>
 </head>
 <body>
-  <!-- Your existing HTML structure -->
+  <!-- Your existing video and content sections -->
   <div class="video-container">
     <video autoplay muted loop playsinline>
       <source src="video.mp4" type="video/mp4" />
@@ -38,20 +111,49 @@
     <button id="loginBtn" class="login-button">Login</button>
   </div>
 
-  <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-content">
-      <h3 id="modalTitle">Enter Phone Number</h3>
-      <input type="tel" id="phoneInput" placeholder="Enter phone number" />
-      <button id="sendOtpBtn" class="login-button">Send OTP</button>
-
-      <div id="otpSection">
-        <h4>Enter OTP</h4>
-        <input type="text" id="otpInput" placeholder="6-digit OTP" maxlength="6" />
-        <button id="verifyOtpBtn" class="login-button">Verify OTP</button>
+  <!-- New Services Section -->
+  <section class="services-section">
+    <h2 class="services-title">Complimentary Styling Services</h2>
+    
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>FREE BODY SHAPE CALCULATOR</h3>
+        <button class="service-btn">Get Started</button>
       </div>
-
-      <p id="errorMsg"></p>
+      
+      <div class="service-card">
+        <h3>FREE BRA SIZE CALCULATOR</h3>
+        <button class="service-btn">Get Started</button>
+      </div>
+      
+      <div class="service-card">
+        <h3>FREE BANGLE SIZE CALCULATOR</h3>
+        <button class="service-btn">Get Started</button>
+      </div>
+      
+      <div class="service-card">
+        <h3>JEAN TYPES FOR YOUR BODY</h3>
+        <button class="service-btn">Explore</button>
+      </div>
     </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="services-section">
+    <h2 class="services-title">Contact Us</h2>
+    <p>Have questions? We're here to help!</p>
+    <!-- You can add a contact form here if needed -->
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Made with <span class="heart">♥</span> by Fashion Designer</p>
+    <p>Deekshana Reddy</p>
+  </footer>
+
+  <!-- Your existing modal and scripts -->
+  <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <!-- ... existing modal content ... -->
   </div>
 
   <!-- Hidden reCAPTCHA container -->
@@ -63,144 +165,7 @@
 
   <!-- Firebase Modular SDK -->
   <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithPhoneNumber, 
-      RecaptchaVerifier 
-    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-
-    // Your Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAY-nYzlWLN2KH8HFo6CjBv-8sn9FDuidU",
-      authDomain: "bodymatch.firebaseapp.com",
-      projectId: "bodymatch",
-      storageBucket: "bodymatch.firebasestorage.app",
-      messagingSenderId: "1011918299678",
-      appId: "1:1011918299678:web:61db01441d48dfc6c1c40f"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // DOM elements
-    const loginBtn = document.getElementById('loginBtn');
-    const loginModal = document.getElementById('loginModal');
-    const phoneInput = document.getElementById('phoneInput');
-    const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const otpSection = document.getElementById('otpSection');
-    const otpInput = document.getElementById('otpInput');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-    const errorMsg = document.getElementById('errorMsg');
-
-    // Initialize intl-tel-input
-    const iti = window.intlTelInput(phoneInput, {
-      initialCountry: "in",
-      separateDialCode: true,
-      preferredCountries: ["in", "us", "gb"],
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
-    });
-
-    // Set up reCAPTCHA
-    let appVerifier;
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      auth, 
-      'recaptcha-container', 
-      {
-        'size': 'invisible',
-        'callback': () => {
-          // reCAPTCHA solved, allow request
-        }
-      }
-    );
-
-    // Login button click handler
-    loginBtn.addEventListener('click', () => {
-      loginModal.style.display = 'flex';
-      errorMsg.textContent = '';
-      otpSection.style.display = 'none';
-      phoneInput.value = '';
-      otpInput.value = '';
-      iti.setCountry("in");
-      phoneInput.focus();
-    });
-
-    // Send OTP button click handler
-    sendOtpBtn.addEventListener('click', async () => {
-      const phoneNumber = iti.getNumber();
-      
-      if (!iti.isValidNumber()) {
-        showError("Please enter a valid phone number");
-        return;
-      }
-
-      try {
-        sendOtpBtn.disabled = true;
-        sendOtpBtn.textContent = "Sending...";
-
-        const confirmation = await signInWithPhoneNumber(
-          auth, 
-          phoneNumber, 
-          window.recaptchaVerifier
-        );
-
-        window.confirmationResult = confirmation;
-        errorMsg.style.color = 'green';
-        errorMsg.textContent = 'OTP sent! Please check your phone.';
-        otpSection.style.display = 'block';
-      } catch (error) {
-        console.error("Error sending OTP:", error);
-        showError(`Failed to send OTP: ${error.message}`);
-      } finally {
-        sendOtpBtn.disabled = false;
-        sendOtpBtn.textContent = "Send OTP";
-      }
-    });
-
-    // Verify OTP button click handler
-    verifyOtpBtn.addEventListener('click', async () => {
-      const otp = otpInput.value.trim();
-      
-      if (otp.length !== 6) {
-        showError("Please enter a 6-digit OTP");
-        return;
-      }
-
-      try {
-        verifyOtpBtn.disabled = true;
-        verifyOtpBtn.textContent = "Verifying...";
-
-        const result = await window.confirmationResult.confirm(otp);
-        alert("OTP Verified! Welcome!");
-        loginModal.style.display = 'none';
-      } catch (error) {
-        console.error("Error verifying OTP:", error);
-        showError("Invalid OTP. Please try again.");
-      } finally {
-        verifyOtpBtn.disabled = false;
-        verifyOtpBtn.textContent = "Verify OTP";
-      }
-    });
-
-    // Helper function to show error messages
-    function showError(msg) {
-      errorMsg.style.color = 'red';
-      errorMsg.textContent = msg;
-      setTimeout(() => {
-        errorMsg.textContent = '';
-      }, 4000);
-    }
-
-    // Close modal handlers
-    window.addEventListener('click', (e) => {
-      if (e.target === loginModal) loginModal.style.display = 'none';
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') loginModal.style.display = 'none';
-    });
+    // ... your existing Firebase code ...
   </script>
 </body>
 </html>
