@@ -198,22 +198,44 @@
   </div>
 
   <script>
-    function selectShape(shapeType) {
-      // Store the selected shape in sessionStorage
-      sessionStorage.setItem('selectedBodyShape', shapeType);
-      // Redirect to recommendations page
-      window.location.href = 'recommendations.html';
+  function selectShape(shapeType) {
+    // Optional: Store selected shape in sessionStorage
+    sessionStorage.setItem('selectedBodyShape', shapeType);
+
+    // Redirect to specific shape page
+    switch (shapeType) {
+      case 'rectangle':
+        window.location.href = 'rectangle.html';
+        break;
+      case 'oval':
+        window.location.href = 'oval.html';
+        break;
+      case 'inverted-triangle':
+        window.location.href = 'invertedtriangle.html';
+        break;
+      case 'pear':
+        window.location.href = 'pear.html';
+        break;
+      case 'hourglass':
+        window.location.href = 'hourglass.html';
+        break;
+      case 'plus-size':
+        window.location.href = 'plussize.html';
+        break;
+      default:
+        alert('Unknown shape selected!');
     }
+  }
 
-    document.querySelector('.help-button').addEventListener('click', () => {
-      alert("We'll help you determine your body shape!");
-    });
+  document.querySelector('.help-button').addEventListener('click', () => {
+    alert("We'll help you determine your body shape!");
+  });
 
-    // Auto-play video with sound (may be restricted by browser)
-    document.querySelector('video').play().catch(e => {
-      console.log("Autoplay with sound was prevented:", e);
-      document.querySelector('video').controls = true;
-    });
-  </script>
+  // Auto-play video with sound (may be restricted by browser)
+  document.querySelector('video').play().catch(e => {
+    console.log("Autoplay with sound was prevented:", e);
+    document.querySelector('video').controls = true;
+  });
+</script>
 </body>
 </html>
