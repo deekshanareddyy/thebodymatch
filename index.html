@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Match</title>
   <style>
     * {
@@ -14,14 +14,19 @@
 
     .video-container {
       width: 100%;
-      height: 50vh;
+      height: 50vh; /* fixed height for video */
+      background: black;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .video-container video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain; /* show full video without cropping */
+      background: black;
     }
 
     .content {
@@ -49,8 +54,15 @@
       padding: 15px 40px;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
     }
 
+    .login-button:hover {
+      background-color: #333;
+    }
+
+    /* Modal styles - unchanged from your code */
     .modal {
       display: none;
       position: fixed;
@@ -80,14 +92,31 @@
       border-radius: 5px;
       font-size: 1rem;
     }
+
+    /* Responsive font sizes */
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .login-button {
+        padding: 12px 30px;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- VIDEO -->
   <div class="video-container">
-    <video autoplay muted loop>
-      <source src="video.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline>
+      <source src="video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
   </div>
 
@@ -102,12 +131,12 @@
   <div id="loginModal" class="modal">
     <div class="modal-content">
       <h3>Enter Phone Number</h3>
-      <input type="tel" id="phoneInput" placeholder="+91 9876543210">
+      <input type="tel" id="phoneInput" placeholder="+91 9876543210" />
       <button id="sendOtpBtn" class="login-button">Send OTP</button>
 
       <div id="otpSection" style="display: none;">
         <h4>Enter OTP</h4>
-        <input type="text" id="otpInput" placeholder="6-digit OTP">
+        <input type="text" id="otpInput" placeholder="6-digit OTP" />
         <button id="verifyOtpBtn" class="login-button">Verify OTP</button>
       </div>
 
@@ -182,7 +211,7 @@
         const response = await fetch('https://bodymatchauth-4008.twil.io/verify-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: currentPhone, otp })
+          body: JSON.stringify({ phone: currentPhone, code: otp })
         });
 
         const data = await response.json();
@@ -191,7 +220,7 @@
           alert("OTP Verified! Welcome!");
           loginModal.style.display = 'none';
         } else {
-          showError(data.message || "Incorrect OTP");
+          showError(data.error || "Incorrect OTP");
         }
       } catch (err) {
         showError("Verification error. Try again.");
