@@ -13,25 +13,23 @@
 
     body {
       font-family: 'Helvetica Neue', sans-serif;
-      background-color: black;
-      color: white;
+      background-color: white;
+      color: black;
       text-align: center;
       padding: 20px;
     }
 
     .video-container {
       width: 100%;
-      max-height: 400px; /* Set a fixed height for the video container */
-      overflow: hidden;
-      background-color: black;
-      margin-bottom: 20px;
+      max-width: 800px; /* Optional max width for better control */
+      margin: 0 auto 20px auto; /* center horizontally and add bottom margin */
+      background-color: white; /* same as body */
     }
 
     .video-container video {
       width: 100%;
-      height: auto; /* Keep aspect ratio */
+      height: auto; /* maintain original aspect ratio */
       display: block;
-      object-fit: cover;
     }
 
     .content {
@@ -42,31 +40,29 @@
     .content h2 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .content p {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .button {
       display: inline-block;
       text-decoration: none;
-      background-color: white;
-      color: black;
+      background-color: black;
+      color: white;
       padding: 0.75rem 2rem;
       font-size: 1rem;
       border-radius: 4px;
       transition: all 0.3s ease;
-      border: 1px solid transparent;
+      border: 1px solid black;
     }
 
     .button:hover {
-      background-color: black;
-      color: white;
-      border: 1px solid white;
+      background-color: white;
+      color: black;
+      border: 1px solid black;
     }
   </style>
 </head>
