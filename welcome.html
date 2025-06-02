@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome - Body Match</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px 10px; /* improved mobile spacing */
+    }
+
+    .content {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .option-button {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      padding: 15px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      font-weight: bold;
+    }
+
+    .option-button:hover {
+      background-color: #45a049;
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    .back-button {
+      margin-top: 30px;
+      background-color: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h2>Welcome to Body Match</h2>
+    <p>Please select what you are looking for</p>
+
+    <div class="options-container">
+      <button class="option-button" aria-label="Browse clothes" onclick="logClick('clothes'); window.location.href='body-shapes.html'">🧥 CLOTHES</button>
+      <button class="option-button" aria-label="Browse bras" onclick="logClick('bra')">👙 BRA</button>
+      <button class="option-button" aria-label="Browse perfumes" onclick="logClick('perfume')">🌸 PERFUME</button>
+    </div>
+
+    <button class="option-button back-button" aria-label="Go back to home page" onclick="logClick('back'); window.location.href='index.html'">⬅ BACK</button>
+  </div>
+
+  <script>
+    function logClick(option) {
+      console.log("User clicked:", option);
+      // Optional: hook this into Google Analytics or save click to server
+    }
+  </script>
+</body>
+</html>
