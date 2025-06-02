@@ -5,117 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Match</title>
   <style>
+    /* Reset default styling */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
     }
+
     body {
-      background: #f7f7f7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: black;
+      color: white;
       text-align: center;
     }
+
+    /* Video container styles */
     .video-container {
       width: 100%;
-      max-width: 800px;
-      margin-bottom: 30px;
+      background-color: black;
     }
-    video {
+
+    .video-container video {
       width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .content {
-      padding: 0 20px;
-      max-width: 600px;
-    }
-    h2 {
-      font-size: 2.2rem;
-      color: #333;
-      margin-bottom: 15px;
-    }
-    p {
-      font-size: 1.1rem;
-      color: #555;
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
-    .start-button, .option-button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      margin: 10px;
-      width: 200px;
+      height: auto;
       display: block;
     }
-    .start-button:hover, .option-button:hover {
-      background-color: #45a049;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+
+    /* Content section */
+    .content {
+      padding: 60px 20px;
     }
-    #welcomeScreen {
-      display: none;
+
+    .content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
-    .options-container {
-      margin-top: 30px;
+
+    .content p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Button styling */
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      background-color: white;
+      color: black;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: black;
+      color: white;
+      border: 1px solid white;
     }
   </style>
 </head>
 <body>
-  <!-- Initial Screen -->
-  <div id="initialScreen">
-    <div class="video-container">
-      <video autoplay muted loop playsinline>
-        <source src="video.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
-
-    <div class="content">
-      <h2>Let's Body Match</h2>
-      <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
-      <button class="start-button">START</button>
-    </div>
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="images/video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   </div>
 
-  <!-- Welcome Screen (hidden initially) -->
-  <div id="welcomeScreen" class="content">
-    <h2>welcome to the body match</h2>
-    <p>Please select what you are looking for</p>
-    
-    <div class="options-container">
-      <button class="option-button">CLOTHES</button>
-      <button class="option-button">BRA</button>
-      <button class="option-button">PERFUME</button>
-    </div>
+  <div class="content">
+    <h2>Let's Body Match</h2>
+    <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
+    <a href="welcome.html" class="button">START</a>
   </div>
-
-  <script>
-    document.querySelector('.start-button').addEventListener('click', function() {
-      // Hide initial screen
-      document.getElementById('initialScreen').style.display = 'none';
-      // Show welcome screen
-      document.getElementById('welcomeScreen').style.display = 'block';
-    });
-
-    // Add click handlers for the option buttons
-    document.querySelectorAll('.option-button').forEach(button => {
-      button.addEventListener('click', function() {
-        alert('You selected: ' + this.textContent);
-        // Add your functionality for each option here
-      });
-    });
-  </script>
 </body>
 </html>
