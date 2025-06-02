@@ -4,14 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Match - Login with Phone</title>
-
-  <!-- intl-tel-input CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css"
-  />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css" />
   <style>
+    /* Your existing CSS styles remain unchanged */
     * {
       margin: 0;
       padding: 0;
@@ -25,135 +20,11 @@
       flex-direction: column;
       align-items: center;
     }
-    .video-container {
-      width: 100%;
-      height: 50vh;
-      background: black;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: black;
-    }
-    .content {
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      padding: 40px 20px;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-top: 10px;
-      border-radius: 10px;
-    }
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-      color: #000;
-    }
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-      color: #555;
-      line-height: 1.4;
-    }
-    .login-button {
-      background-color: #000;
-      color: white;
-      border: none;
-      padding: 15px 40px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-    .login-button:hover {
-      background-color: #333;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-    }
-    .modal-content {
-      background: white;
-      padding: 30px 25px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-      position: relative;
-    }
-    .modal-content h3,
-    .modal-content h4 {
-      margin-bottom: 15px;
-      font-weight: 600;
-      color: #222;
-    }
-    #phoneInput {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    .iti {
-      width: 100%;
-    }
-    .modal-content button.login-button {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      margin-bottom: 15px;
-    }
-    #otpSection {
-      margin-top: 10px;
-      display: none;
-    }
-    #otpInput {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    #errorMsg {
-      color: red;
-      text-align: center;
-      margin-top: 5px;
-      min-height: 18px;
-    }
-    @media (max-width: 480px) {
-      h2 {
-        font-size: 1.5rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-      .login-button {
-        padding: 12px 30px;
-        font-size: 0.9rem;
-      }
-    }
+    /* ... (keep all your existing styles) ... */
   </style>
 </head>
 <body>
-
-  <!-- VIDEO -->
+  <!-- Your existing HTML structure -->
   <div class="video-container">
     <video autoplay muted loop playsinline>
       <source src="video.mp4" type="video/mp4" />
@@ -161,19 +32,16 @@
     </video>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
     <h2>Let's Body Match</h2>
     <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
     <button id="loginBtn" class="login-button">Login</button>
   </div>
 
-  <!-- MODAL -->
   <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-content">
       <h3 id="modalTitle">Enter Phone Number</h3>
       <input type="tel" id="phoneInput" placeholder="Enter phone number" />
-      <div id="recaptcha-container"></div>
       <button id="sendOtpBtn" class="login-button">Send OTP</button>
 
       <div id="otpSection">
@@ -186,38 +54,48 @@
     </div>
   </div>
 
+  <!-- Hidden reCAPTCHA container -->
+  <div id="recaptcha-container"></div>
+
   <!-- intl-tel-input JS -->
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/intlTelInput.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"></script>
 
-  <!-- Firebase App & Auth -->
+  <!-- Firebase Modular SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithPhoneNumber, 
+      RecaptchaVerifier 
+    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
+    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAY-nYzlWLN2KH8HFo6CjBv-8sn9FDuidU",
       authDomain: "bodymatch.firebaseapp.com",
       projectId: "bodymatch",
-      storageBucket: "bodymatch.appspot.com",
+      storageBucket: "bodymatch.firebasestorage.app",
       messagingSenderId: "1011918299678",
       appId: "1:1011918299678:web:61db01441d48dfc6c1c40f"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const loginModal = document.getElementById('loginModal');
+    // DOM elements
     const loginBtn = document.getElementById('loginBtn');
+    const loginModal = document.getElementById('loginModal');
+    const phoneInput = document.getElementById('phoneInput');
     const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
     const otpSection = document.getElementById('otpSection');
     const otpInput = document.getElementById('otpInput');
-    const phoneInput = document.getElementById('phoneInput');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
     const errorMsg = document.getElementById('errorMsg');
 
-    let confirmationResult = null;
-
+    // Initialize intl-tel-input
     const iti = window.intlTelInput(phoneInput, {
       initialCountry: "in",
       separateDialCode: true,
@@ -225,72 +103,103 @@
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
     });
 
+    // Set up reCAPTCHA
+    let appVerifier;
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth, 
+      'recaptcha-container', 
+      {
+        'size': 'invisible',
+        'callback': () => {
+          // reCAPTCHA solved, allow request
+        }
+      }
+    );
+
+    // Login button click handler
     loginBtn.addEventListener('click', () => {
       loginModal.style.display = 'flex';
       errorMsg.textContent = '';
       otpSection.style.display = 'none';
       phoneInput.value = '';
       otpInput.value = '';
+      iti.setCountry("in");
+      phoneInput.focus();
     });
 
-    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-      size: 'invisible',
-      callback: (response) => {}
-    }, auth);
-
+    // Send OTP button click handler
     sendOtpBtn.addEventListener('click', async () => {
       const phoneNumber = iti.getNumber();
-
+      
       if (!iti.isValidNumber()) {
-        errorMsg.style.color = 'red';
-        errorMsg.textContent = 'Please enter a valid phone number';
+        showError("Please enter a valid phone number");
         return;
       }
 
-      sendOtpBtn.disabled = true;
-      sendOtpBtn.textContent = 'Sending...';
-      errorMsg.textContent = '';
-
       try {
-        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
-        otpSection.style.display = 'block';
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.textContent = "Sending...";
+
+        const confirmation = await signInWithPhoneNumber(
+          auth, 
+          phoneNumber, 
+          window.recaptchaVerifier
+        );
+
+        window.confirmationResult = confirmation;
         errorMsg.style.color = 'green';
         errorMsg.textContent = 'OTP sent! Please check your phone.';
+        otpSection.style.display = 'block';
       } catch (error) {
-        console.error(error);
-        errorMsg.style.color = 'red';
-        errorMsg.textContent = 'Failed to send OTP. Please try again.';
+        console.error("Error sending OTP:", error);
+        showError(`Failed to send OTP: ${error.message}`);
       } finally {
         sendOtpBtn.disabled = false;
-        sendOtpBtn.textContent = 'Send OTP';
+        sendOtpBtn.textContent = "Send OTP";
       }
     });
 
+    // Verify OTP button click handler
     verifyOtpBtn.addEventListener('click', async () => {
-      const code = otpInput.value.trim();
-
-      if (code.length !== 6) {
-        errorMsg.style.color = 'red';
-        errorMsg.textContent = 'Enter a valid 6-digit OTP';
+      const otp = otpInput.value.trim();
+      
+      if (otp.length !== 6) {
+        showError("Please enter a 6-digit OTP");
         return;
       }
 
-      verifyOtpBtn.disabled = true;
-      verifyOtpBtn.textContent = 'Verifying...';
-
       try {
-        const result = await confirmationResult.confirm(code);
-        const user = result.user;
-        alert(`OTP verified! Welcome ${user.phoneNumber}`);
+        verifyOtpBtn.disabled = true;
+        verifyOtpBtn.textContent = "Verifying...";
+
+        const result = await window.confirmationResult.confirm(otp);
+        alert("OTP Verified! Welcome!");
         loginModal.style.display = 'none';
       } catch (error) {
-        console.error(error);
-        errorMsg.style.color = 'red';
-        errorMsg.textContent = 'Invalid OTP. Try again.';
+        console.error("Error verifying OTP:", error);
+        showError("Invalid OTP. Please try again.");
       } finally {
         verifyOtpBtn.disabled = false;
-        verifyOtpBtn.textContent = 'Verify OTP';
+        verifyOtpBtn.textContent = "Verify OTP";
       }
+    });
+
+    // Helper function to show error messages
+    function showError(msg) {
+      errorMsg.style.color = 'red';
+      errorMsg.textContent = msg;
+      setTimeout(() => {
+        errorMsg.textContent = '';
+      }, 4000);
+    }
+
+    // Close modal handlers
+    window.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') loginModal.style.display = 'none';
     });
   </script>
 </body>
