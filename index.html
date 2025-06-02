@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Match</title>
+
+  <!-- intl-tel-input CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.min.css"
+  />
+
   <style>
     * {
       margin: 0;
@@ -14,7 +21,7 @@
 
     .video-container {
       width: 100%;
-      height: 50vh; /* fixed height for video */
+      height: 50vh;
       background: black;
       overflow: hidden;
       display: flex;
@@ -25,7 +32,7 @@
     .video-container video {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* show full video without cropping */
+      object-fit: contain;
       background: black;
     }
 
@@ -62,7 +69,6 @@
       background-color: #333;
     }
 
-    /* Modal styles - unchanged from your code */
     .modal {
       display: none;
       position: fixed;
@@ -131,7 +137,7 @@
   <div id="loginModal" class="modal">
     <div class="modal-content">
       <h3>Enter Phone Number</h3>
-      <input type="tel" id="phoneInput" placeholder="+91 9876543210" />
+      <input type="tel" id="phoneInput" placeholder="Enter phone number" />
       <button id="sendOtpBtn" class="login-button">Send OTP</button>
 
       <div id="otpSection" style="display: none;">
@@ -143,6 +149,9 @@
       <p id="errorMsg" style="color:red; display:none;"></p>
     </div>
   </div>
+
+  <!-- intl-tel-input JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
   <script>
     const loginBtn = document.getElementById('loginBtn');
@@ -156,15 +165,22 @@
 
     let currentPhone = '';
 
+    // Initialize intl-tel-input
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: 'in',  // Default to India
+      separateDialCode: true,
+      utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js',
+    });
+
     loginBtn.addEventListener('click', () => {
       loginModal.style.display = 'flex';
     });
 
     sendOtpBtn.addEventListener('click', async () => {
-      const phone = phoneInput.value.trim();
-      const phoneRegex = /^\+?[0-9]{10,15}$/;
+      // Use iti.getNumber() to get full international number
+      const phone = iti.getNumber();
 
-      if (!phoneRegex.test(phone)) {
+      if (!iti.isValidNumber()) {
         showError("Please enter a valid phone number");
         return;
       }
