@@ -12,6 +12,7 @@
   />
 
   <style>
+    /* Your existing styles here */
     * {
       margin: 0;
       padding: 0;
@@ -195,7 +196,7 @@
 
       <div id="otpSection">
         <h4>Enter OTP</h4>
-        <input type="text" id="otpInput" placeholder="6-digit OTP" />
+        <input type="text" id="otpInput" placeholder="6-digit OTP" maxlength="6" />
         <button id="verifyOtpBtn" class="login-button">Verify OTP</button>
       </div>
 
@@ -218,6 +219,7 @@
 
     let currentPhone = '';
 
+    // Initialize intl-tel-input
     const iti = window.intlTelInput(phoneInput, {
       initialCountry: "in",
       separateDialCode: true,
@@ -259,13 +261,13 @@
         });
 
         const data = await response.json();
-        console.log("Twilio Response:", data); // ✅ LOGGING FOR DEBUGGING
+        console.log("Twilio Response:", data); // Debug
 
-        // ✅ SMART CONDITION TO HANDLE TWILIO RESPONSES
-        if (data.success || data.status === "pending" || (data.message && data.message.includes("OTP"))) {
+        if (data.success || data.status === "pending" || (data.message && data.message.toLowerCase().includes("otp"))) {
           alert("OTP sent successfully!");
           currentPhone = phoneNumber;
           otpSection.style.display = 'block';
+          errorMsg.textContent = '';
         } else {
           showError(data.message || data.error || "Failed to send OTP");
         }
@@ -296,10 +298,12 @@
         });
 
         const data = await response.json();
+        console.log("Verify Response:", data);
 
         if (data.success || data.status === "approved") {
           alert("OTP Verified! Welcome!");
           loginModal.style.display = 'none';
+          errorMsg.textContent = '';
         } else {
           showError(data.message || data.error || "Incorrect OTP");
         }
@@ -319,6 +323,7 @@
       }, 4000);
     }
 
+    // Close modal on outside click or ESC key
     window.addEventListener('click', (e) => {
       if (e.target === loginModal) loginModal.style.display = 'none';
     });
