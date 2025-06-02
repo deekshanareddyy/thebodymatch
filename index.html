@@ -189,140 +189,91 @@
   <!-- intl-tel-input JS -->
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/intlTelInput.min.js"></script>
 
-  <script>
-    const loginBtn = document.getElementById('loginBtn');
-    const loginModal = document.getElementById('loginModal');
-    const phoneInput = document.getElementById('phoneInput');
-    const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const otpSection = document.getElementById('otpSection');
-    const otpInput = document.getElementById('otpInput');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-    const errorMsg = document.getElementById('errorMsg');
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
-    let currentPhone = '';
+  const firebaseConfig = {
+    apiKey: "AIzaSyAY-nYzlWLN2KH8HFo6CjBv-8sn9FDuidU",
+    authDomain: "bodymatch.firebaseapp.com",
+    projectId: "bodymatch",
+    storageBucket: "bodymatch.firebasestorage.app",
+    messagingSenderId: "1011918299678",
+    appId: "1:1011918299678:web:61db01441d48dfc6c1c40f"
+  };
 
-    // Initialize intl-tel-input
-    const iti = window.intlTelInput(phoneInput, {
-      initialCountry: "in",
-      separateDialCode: true,
-      preferredCountries: ["in", "us", "gb"],
-      utilsScript:
-        "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js",
-    });
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    loginBtn.addEventListener('click', () => {
-      loginModal.style.display = 'flex';
-      errorMsg.textContent = '';
-      errorMsg.style.color = 'red';
-      otpSection.style.display = 'none';
-      phoneInput.value = '';
-      otpInput.value = '';
-      sendOtpBtn.disabled = false;
-      sendOtpBtn.textContent = 'Send OTP';
-      verifyOtpBtn.disabled = false;
-      verifyOtpBtn.textContent = 'Verify OTP';
+  // Setup reCAPTCHA
+  window.recaptchaVerifier = new RecaptchaVerifier('sendOtpBtn', {
+    size: 'invisible',
+    callback: function(response) {
+      // reCAPTCHA solved
+    }
+  }, auth);
 
-      iti.setCountry("in");
-      phoneInput.focus();
-    });
+  const loginModal = document.getElementById('loginModal');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const otpSection = document.getElementById('otpSection');
+  const otpInput = document.getElementById('otpInput');
+  const phoneInput = document.getElementById('phoneInput');
+  const errorMsg = document.getElementById('errorMsg');
 
-    sendOtpBtn.addEventListener('click', async () => {
-      const phoneNumber = iti.getNumber();
-      if (!iti.isValidNumber()) {
-        showError("Please enter a valid phone number");
-        return;
-      }
+  let confirmationResult = null;
 
-      try {
-        sendOtpBtn.disabled = true;
-        sendOtpBtn.textContent = "Sending...";
+  sendOtpBtn.addEventListener('click', async () => {
+    const phoneNumber = window.intlTelInputGlobals.getInstance(phoneInput).getNumber();
 
-        const response = await fetch('https://bodymatchauth-4008.twil.io/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: phoneNumber })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Twilio send-otp response:", data);
-
-        if (data.success || data.status === "pending") {
-          errorMsg.style.color = 'green';
-          errorMsg.textContent = 'OTP sent! Please check your phone.';
-          currentPhone = phoneNumber;
-          otpSection.style.display = 'block';
-        } else {
-          showError(data.message || data.error || "Failed to send OTP");
-        }
-      } catch (err) {
-        showError("Connection error. Please try again.");
-        console.error(err);
-      } finally {
-        sendOtpBtn.disabled = false;
-        sendOtpBtn.textContent = "Send OTP";
-      }
-    });
-
-    verifyOtpBtn.addEventListener('click', async () => {
-      const otp = otpInput.value.trim();
-      if (!otp || otp.length !== 6) {
-        showError("Enter a valid 6-digit OTP");
-        return;
-      }
-
-      try {
-        verifyOtpBtn.disabled = true;
-        verifyOtpBtn.textContent = "Verifying...";
-
-        const response = await fetch('https://bodymatchauth-4008.twil.io/verify-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: currentPhone, code: otp })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Twilio verify-otp response:", data);
-
-        if (data.success || data.status === "approved") {
-          alert("OTP Verified! Welcome!");
-          loginModal.style.display = 'none';
-          errorMsg.textContent = '';
-        } else {
-          showError(data.message || data.error || "Incorrect OTP");
-        }
-      } catch (err) {
-        showError("Verification error. Try again.");
-        console.error(err);
-      } finally {
-        verifyOtpBtn.disabled = false;
-        verifyOtpBtn.textContent = "Verify OTP";
-      }
-    });
-
-    function showError(msg) {
-      errorMsg.style.color = 'red';
-      errorMsg.textContent = msg;
-      setTimeout(() => {
-        errorMsg.textContent = '';
-      }, 4000);
+    if (!window.intlTelInputGlobals.getInstance(phoneInput).isValidNumber()) {
+      errorMsg.textContent = 'Please enter a valid phone number';
+      return;
     }
 
-    // Close modal on outside click or ESC key
-    window.addEventListener('click', (e) => {
-      if (e.target === loginModal) loginModal.style.display = 'none';
-    });
+    sendOtpBtn.disabled = true;
+    sendOtpBtn.textContent = 'Sending...';
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') loginModal.style.display = 'none';
-    });
-  </script>
+    try {
+      confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+      otpSection.style.display = 'block';
+      errorMsg.style.color = 'green';
+      errorMsg.textContent = 'OTP sent! Please check your phone.';
+    } catch (error) {
+      console.error(error);
+      errorMsg.style.color = 'red';
+      errorMsg.textContent = 'Failed to send OTP.';
+    } finally {
+      sendOtpBtn.disabled = false;
+      sendOtpBtn.textContent = 'Send OTP';
+    }
+  });
+
+  verifyOtpBtn.addEventListener('click', async () => {
+    const code = otpInput.value.trim();
+    if (!code || code.length !== 6) {
+      errorMsg.style.color = 'red';
+      errorMsg.textContent = 'Enter a valid 6-digit OTP';
+      return;
+    }
+
+    verifyOtpBtn.disabled = true;
+    verifyOtpBtn.textContent = 'Verifying...';
+
+    try {
+      const result = await confirmationResult.confirm(code);
+      const user = result.user;
+      alert(`OTP verified! Welcome ${user.phoneNumber}`);
+      loginModal.style.display = 'none';
+    } catch (error) {
+      console.error(error);
+      errorMsg.style.color = 'red';
+      errorMsg.textContent = 'Invalid OTP. Try again.';
+    } finally {
+      verifyOtpBtn.disabled = false;
+      verifyOtpBtn.textContent = 'Verify OTP';
+    }
+  });
+</script>
 </body>
 </html>
