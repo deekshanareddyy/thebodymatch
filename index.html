@@ -12,7 +12,6 @@
   />
 
   <style>
-    /* Your existing styles */
     * {
       margin: 0;
       padding: 0;
@@ -174,6 +173,7 @@
     <div class="modal-content">
       <h3 id="modalTitle">Enter Phone Number</h3>
       <input type="tel" id="phoneInput" placeholder="Enter phone number" />
+      <div id="recaptcha-container"></div>
       <button id="sendOtpBtn" class="login-button">Send OTP</button>
 
       <div id="otpSection">
@@ -188,92 +188,110 @@
 
   <!-- intl-tel-input JS -->
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"></script>
 
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+  <!-- Firebase App & Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAY-nYzlWLN2KH8HFo6CjBv-8sn9FDuidU",
-    authDomain: "bodymatch.firebaseapp.com",
-    projectId: "bodymatch",
-    storageBucket: "bodymatch.firebasestorage.app",
-    messagingSenderId: "1011918299678",
-    appId: "1:1011918299678:web:61db01441d48dfc6c1c40f"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAY-nYzlWLN2KH8HFo6CjBv-8sn9FDuidU",
+      authDomain: "bodymatch.firebaseapp.com",
+      projectId: "bodymatch",
+      storageBucket: "bodymatch.appspot.com",
+      messagingSenderId: "1011918299678",
+      appId: "1:1011918299678:web:61db01441d48dfc6c1c40f"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // Setup reCAPTCHA
-  window.recaptchaVerifier = new RecaptchaVerifier('sendOtpBtn', {
-    size: 'invisible',
-    callback: function(response) {
-      // reCAPTCHA solved
-    }
-  }, auth);
+    const loginModal = document.getElementById('loginModal');
+    const loginBtn = document.getElementById('loginBtn');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const otpSection = document.getElementById('otpSection');
+    const otpInput = document.getElementById('otpInput');
+    const phoneInput = document.getElementById('phoneInput');
+    const errorMsg = document.getElementById('errorMsg');
 
-  const loginModal = document.getElementById('loginModal');
-  const sendOtpBtn = document.getElementById('sendOtpBtn');
-  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-  const otpSection = document.getElementById('otpSection');
-  const otpInput = document.getElementById('otpInput');
-  const phoneInput = document.getElementById('phoneInput');
-  const errorMsg = document.getElementById('errorMsg');
+    let confirmationResult = null;
 
-  let confirmationResult = null;
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "in",
+      separateDialCode: true,
+      preferredCountries: ["in", "us", "gb"],
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
+    });
 
-  sendOtpBtn.addEventListener('click', async () => {
-    const phoneNumber = window.intlTelInputGlobals.getInstance(phoneInput).getNumber();
+    loginBtn.addEventListener('click', () => {
+      loginModal.style.display = 'flex';
+      errorMsg.textContent = '';
+      otpSection.style.display = 'none';
+      phoneInput.value = '';
+      otpInput.value = '';
+    });
 
-    if (!window.intlTelInputGlobals.getInstance(phoneInput).isValidNumber()) {
-      errorMsg.textContent = 'Please enter a valid phone number';
-      return;
-    }
+    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible',
+      callback: (response) => {}
+    }, auth);
 
-    sendOtpBtn.disabled = true;
-    sendOtpBtn.textContent = 'Sending...';
+    sendOtpBtn.addEventListener('click', async () => {
+      const phoneNumber = iti.getNumber();
 
-    try {
-      confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
-      otpSection.style.display = 'block';
-      errorMsg.style.color = 'green';
-      errorMsg.textContent = 'OTP sent! Please check your phone.';
-    } catch (error) {
-      console.error(error);
-      errorMsg.style.color = 'red';
-      errorMsg.textContent = 'Failed to send OTP.';
-    } finally {
-      sendOtpBtn.disabled = false;
-      sendOtpBtn.textContent = 'Send OTP';
-    }
-  });
+      if (!iti.isValidNumber()) {
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = 'Please enter a valid phone number';
+        return;
+      }
 
-  verifyOtpBtn.addEventListener('click', async () => {
-    const code = otpInput.value.trim();
-    if (!code || code.length !== 6) {
-      errorMsg.style.color = 'red';
-      errorMsg.textContent = 'Enter a valid 6-digit OTP';
-      return;
-    }
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.textContent = 'Sending...';
+      errorMsg.textContent = '';
 
-    verifyOtpBtn.disabled = true;
-    verifyOtpBtn.textContent = 'Verifying...';
+      try {
+        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        otpSection.style.display = 'block';
+        errorMsg.style.color = 'green';
+        errorMsg.textContent = 'OTP sent! Please check your phone.';
+      } catch (error) {
+        console.error(error);
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = 'Failed to send OTP. Please try again.';
+      } finally {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = 'Send OTP';
+      }
+    });
 
-    try {
-      const result = await confirmationResult.confirm(code);
-      const user = result.user;
-      alert(`OTP verified! Welcome ${user.phoneNumber}`);
-      loginModal.style.display = 'none';
-    } catch (error) {
-      console.error(error);
-      errorMsg.style.color = 'red';
-      errorMsg.textContent = 'Invalid OTP. Try again.';
-    } finally {
-      verifyOtpBtn.disabled = false;
-      verifyOtpBtn.textContent = 'Verify OTP';
-    }
-  });
-</script>
+    verifyOtpBtn.addEventListener('click', async () => {
+      const code = otpInput.value.trim();
+
+      if (code.length !== 6) {
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = 'Enter a valid 6-digit OTP';
+        return;
+      }
+
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.textContent = 'Verifying...';
+
+      try {
+        const result = await confirmationResult.confirm(code);
+        const user = result.user;
+        alert(`OTP verified! Welcome ${user.phoneNumber}`);
+        loginModal.style.display = 'none';
+      } catch (error) {
+        console.error(error);
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = 'Invalid OTP. Try again.';
+      } finally {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.textContent = 'Verify OTP';
+      }
+    });
+  </script>
 </body>
 </html>
