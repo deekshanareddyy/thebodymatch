@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Shapes - Body Match</title>
   <style>
     * {
@@ -16,146 +16,158 @@
       background-color: #000;
       color: #fff;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
       padding: 20px;
     }
 
-    .content {
-      max-width: 600px;
-      width: 100%;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
     }
 
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .options-container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin: 30px 0;
+    .shapes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
 
-    .shape-option {
-      background-color: #222;
+    .shape-card {
+      background: #222;
       border-radius: 10px;
       padding: 20px;
       transition: all 0.3s ease;
       cursor: pointer;
     }
 
-    .shape-option:hover {
-      background-color: #333;
-      transform: translateY(-3px);
+    .shape-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
-    .shape-option img {
-      width: 120px;
-      height: 120px;
+    .shape-image {
+      width: 180px;
+      height: 180px;
       object-fit: contain;
-      margin-bottom: 10px;
+      margin: 0 auto 15px;
+      display: block;
     }
 
-    .shape-option h3 {
-      font-size: 1.2rem;
+    .shape-title {
+      font-size: 1.3rem;
       margin-bottom: 5px;
+      font-weight: bold;
     }
 
-    .shape-option p {
+    .shape-desc {
       color: #aaa;
       font-size: 0.9rem;
     }
 
-    .back-button {
-      background-color: transparent;
-      color: #fff;
-      border: 1px solid #fff;
-      padding: 12px 25px;
-      border-radius: 8px;
-      margin-top: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .navigation {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
     }
 
-    .back-button:hover {
-      background-color: rgba(255,255,255,0.1);
+    .nav-button {
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .help-button {
       background-color: #45a049;
       color: white;
-      padding: 12px 25px;
-      border-radius: 8px;
       border: none;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
     }
 
-    .help-button:hover {
-      background-color: #3d8a40;
+    .back-button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+    }
+
+    .nav-button:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>HOW DOES YOUR BODY LOOK?</h1>
 
-  <div class="content">
-    <h2>How does your body look?</h2>
-
-    <div class="options-container">
-      <div class="shape-option" onclick="selectShape('rectangle')">
-        <img src="rectangle.png" alt="Rectangle shape">
-        <h3>SKINNY</h3>
-        <p>(Rectangle Shape)</p>
+    <div class="shapes-grid">
+      <!-- Rectangle Shape -->
+      <div class="shape-card" onclick="selectShape('rectangle')" title="Rectangle - Skinny Body Type">
+        <img src="rectangle.png" alt="Rectangle Body Shape" class="shape-image" />
+        <div class="shape-title">SKINNY</div>
+        <div class="shape-desc">(Rectangle Shape)</div>
       </div>
 
-      <div class="shape-option" onclick="selectShape('oval')">
-        <img src="apple.png" alt="Oval shape">
-        <h3>SKINNY WITH A BELLY</h3>
-        <p>(Oval Shape)</p>
+      <!-- Oval Shape -->
+      <div class="shape-card" onclick="selectShape('oval')" title="Oval - Skinny with Belly">
+        <img src="apple.png" alt="Oval Body Shape" class="shape-image" />
+        <div class="shape-title">SKINNY WITH A BELLY</div>
+        <div class="shape-desc">(Oval Shape)</div>
       </div>
 
-      <div class="shape-option" onclick="selectShape('inverted-triangle')">
-        <img src="inverted triangle.png" alt="Inverted triangle">
-        <h3>BIG BREAST</h3>
-        <p>(Inverted Triangle)</p>
+      <!-- Inverted Triangle -->
+      <div class="shape-card" onclick="selectShape('inverted-triangle')" title="Inverted Triangle - Big Breast">
+        <img src="inverted-triangle.png" alt="Inverted Triangle Body Shape" class="shape-image" />
+        <div class="shape-title">BIG BREAST</div>
+        <div class="shape-desc">(Inverted Triangle)</div>
       </div>
 
-      <div class="shape-option" onclick="selectShape('pear')">
-        <img src="pear.png" alt="Pear shape">
-        <h3>BIG BUM OR THIGH</h3>
-        <p>(Pear Shape)</p>
+      <!-- Pear Shape -->
+      <div class="shape-card" onclick="selectShape('pear')" title="Pear - Big Bum or Thick Thigh">
+        <img src="pear.png" alt="Pear Body Shape" class="shape-image" />
+        <div class="shape-title">BIG BUM OR THICK THIGH</div>
+        <div class="shape-desc">(Pear Shape)</div>
       </div>
 
-      <div class="shape-option" onclick="selectShape('hourglass')">
-        <img src="hourglass.png" alt="Hourglass shape">
-        <h3>SMALL WAIST</h3>
-        <p>(Hourglass Shape)</p>
+      <!-- Hourglass -->
+      <div class="shape-card" onclick="selectShape('hourglass')" title="Hourglass - Small Waist">
+        <img src="hourglass.png" alt="Hourglass Body Shape" class="shape-image" />
+        <div class="shape-title">SMALL WAIST</div>
+        <div class="shape-desc">(Hourglass Shape)</div>
       </div>
 
-      <div class="shape-option" onclick="selectShape('plus-size')">
-        <img src="plus size.png" alt="Plus size shape">
-        <h3>PLUS SIZE</h3>
+      <!-- Plus Size -->
+      <div class="shape-card" onclick="selectShape('plus-size')" title="Plus Size">
+        <img src="plus size.png" alt="Plus Size Body Shape" class="shape-image" />
+        <div class="shape-title">PLUS SIZE</div>
+        <div class="shape-desc">(Plus Size Shape)</div>
       </div>
     </div>
 
-    <button class="help-button">HELP ME DECIDE</button>
-    <button class="back-button" onclick="window.location.href='welcome.html'">BACK</button>
+    <div class="navigation">
+      <button class="help-button nav-button">HELP ME DECIDE</button>
+      <button class="back-button nav-button" onclick="window.location.href='welcome.html'">BACK</button>
+    </div>
   </div>
 
   <script>
     function selectShape(shapeType) {
+      // Store the selected shape in sessionStorage
       sessionStorage.setItem('selectedBodyShape', shapeType);
+      // Redirect to recommendations page
       window.location.href = 'recommendations.html';
     }
 
-    document.querySelector('.help-button').addEventListener('click', function () {
-      alert("We'll help you decide your shape with a few quick questions.");
+    document.querySelector('.help-button').addEventListener('click', () => {
+      alert("We'll help you determine your body shape!");
     });
   </script>
 </body>
