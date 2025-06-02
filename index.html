@@ -12,14 +12,13 @@
   />
 
   <style>
-    /* Your existing styles here */
+    /* Your existing styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Arial', sans-serif;
     }
-
     body {
       background: #f7f7f7;
       min-height: 100vh;
@@ -27,7 +26,6 @@
       flex-direction: column;
       align-items: center;
     }
-
     .video-container {
       width: 100%;
       height: 50vh;
@@ -37,14 +35,12 @@
       justify-content: center;
       align-items: center;
     }
-
     .video-container video {
       width: 100%;
       height: 100%;
       object-fit: contain;
       background: black;
     }
-
     .content {
       width: 100%;
       max-width: 480px;
@@ -55,20 +51,17 @@
       margin-top: 10px;
       border-radius: 10px;
     }
-
     h2 {
       font-size: 2rem;
       margin-bottom: 15px;
       color: #000;
     }
-
     p {
       font-size: 1.1rem;
       margin-bottom: 30px;
       color: #555;
       line-height: 1.4;
     }
-
     .login-button {
       background-color: #000;
       color: white;
@@ -79,11 +72,9 @@
       font-size: 1rem;
       transition: background-color 0.3s ease;
     }
-
     .login-button:hover {
       background-color: #333;
     }
-
     .modal {
       display: none;
       position: fixed;
@@ -97,7 +88,6 @@
       align-items: center;
       padding: 15px;
     }
-
     .modal-content {
       background: white;
       padding: 30px 25px;
@@ -107,14 +97,12 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       position: relative;
     }
-
     .modal-content h3,
     .modal-content h4 {
       margin-bottom: 15px;
       font-weight: 600;
       color: #222;
     }
-
     #phoneInput {
       width: 100%;
       padding: 12px 15px;
@@ -123,23 +111,19 @@
       border-radius: 6px;
       font-size: 1rem;
     }
-
     .iti {
       width: 100%;
     }
-
     .modal-content button.login-button {
       width: 100%;
       padding: 12px;
       font-size: 1rem;
       margin-bottom: 15px;
     }
-
     #otpSection {
       margin-top: 10px;
       display: none;
     }
-
     #otpInput {
       width: 100%;
       padding: 12px 15px;
@@ -148,14 +132,12 @@
       border-radius: 6px;
       font-size: 1rem;
     }
-
     #errorMsg {
       color: red;
       text-align: center;
       margin-top: 5px;
       min-height: 18px;
     }
-
     @media (max-width: 480px) {
       h2 {
         font-size: 1.5rem;
@@ -231,6 +213,7 @@
     loginBtn.addEventListener('click', () => {
       loginModal.style.display = 'flex';
       errorMsg.textContent = '';
+      errorMsg.style.color = 'red';
       otpSection.style.display = 'none';
       phoneInput.value = '';
       otpInput.value = '';
@@ -260,25 +243,21 @@
           body: JSON.stringify({ phone: phoneNumber })
         });
 
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
         const data = await response.json();
-        console.log("Twilio Response:", data); // Debug
+        console.log("Twilio send-otp response:", data);
 
-       if (data.success || data.status === "pending" || (data.message && data.message.toLowerCase().includes("otp"))) {
-  // Replace this alert:
-  // alert("OTP sent successfully!");
-
-  // With this:
-  errorMsg.style.color = 'green';
-  errorMsg.textContent = 'OTP sent! Please check your phone.';
-  
-  currentPhone = phoneNumber;
-  otpSection.style.display = 'block';
-  // clear any previous errors or messages (optional)
-  // errorMsg.textContent = '';
-} else {
-  showError(data.message || data.error || "Failed to send OTP");
-}
-
+        if (data.success || data.status === "pending") {
+          errorMsg.style.color = 'green';
+          errorMsg.textContent = 'OTP sent! Please check your phone.';
+          currentPhone = phoneNumber;
+          otpSection.style.display = 'block';
+        } else {
+          showError(data.message || data.error || "Failed to send OTP");
+        }
       } catch (err) {
         showError("Connection error. Please try again.");
         console.error(err);
@@ -305,8 +284,12 @@
           body: JSON.stringify({ phone: currentPhone, code: otp })
         });
 
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
         const data = await response.json();
-        console.log("Verify Response:", data);
+        console.log("Twilio verify-otp response:", data);
 
         if (data.success || data.status === "approved") {
           alert("OTP Verified! Welcome!");
@@ -325,6 +308,7 @@
     });
 
     function showError(msg) {
+      errorMsg.style.color = 'red';
       errorMsg.textContent = msg;
       setTimeout(() => {
         errorMsg.textContent = '';
