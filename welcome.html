@@ -20,8 +20,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 20px 10px;
       text-align: center;
-      padding: 20px 10px; /* improved mobile spacing */
     }
 
     .content {
@@ -30,10 +30,11 @@
     }
 
     h2 {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 1px;
+      line-height: 1.3;
     }
 
     p {
@@ -81,12 +82,12 @@
 </head>
 <body>
   <div class="content">
-    <h2>Welcome to TheBodyMatch.com</h2>
+    <h2>Welcome to<br>TheBodyMatch.com</h2>
     <p>Please select what you are looking for</p>
 
     <div class="options-container">
       <button class="option-button" aria-label="Browse clothes" onclick="logClick('clothes'); window.location.href='body-shapes.html'">🧥 CLOTHES</button>
-      <button class="option-button" aria-label="Browse bras" onclick="logClick('bra'); window.location.href='bre-shapes.html'">👙 BRA</button>
+      <button class="option-button" aria-label="Browse bras" onclick="logClick('bra'); window.location.href='breast-shapes.html'">👙 BRA</button>
       <button class="option-button" aria-label="Browse perfumes" onclick="logClick('perfume'); window.location.href='perfume.html'">🌸 PERFUME</button>
     </div>
 
@@ -96,7 +97,7 @@
   <script>
     function logClick(option) {
       console.log("User clicked:", option);
-      // Optional: hook this into Google Analytics or save click to server
+      // Optional: send this data to a server or analytics
     }
   </script>
 </body>
