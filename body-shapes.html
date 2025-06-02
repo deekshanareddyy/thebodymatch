@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Body Shapes - Body Match</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .content {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .shape-option {
+      background-color: #222;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .shape-option:hover {
+      background-color: #333;
+      transform: translateY(-3px);
+    }
+
+    .shape-option img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .shape-option h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .shape-option p {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .back-button {
+      background-color: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 12px 25px;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .help-button {
+      background-color: #45a049;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .help-button:hover {
+      background-color: #3d8a40;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content">
+    <h2>How does your body look?</h2>
+
+    <div class="options-container">
+      <div class="shape-option" onclick="selectShape('rectangle')">
+        <img src="rectangle.png" alt="Rectangle shape">
+        <h3>SKINNY</h3>
+        <p>(Rectangle Shape)</p>
+      </div>
+
+      <div class="shape-option" onclick="selectShape('oval')">
+        <img src="apple.png" alt="Oval shape">
+        <h3>SKINNY WITH A BELLY</h3>
+        <p>(Oval Shape)</p>
+      </div>
+
+      <div class="shape-option" onclick="selectShape('inverted-triangle')">
+        <img src="inverted triangle.png" alt="Inverted triangle">
+        <h3>BIG BREAST</h3>
+        <p>(Inverted Triangle)</p>
+      </div>
+
+      <div class="shape-option" onclick="selectShape('pear')">
+        <img src="pear.png" alt="Pear shape">
+        <h3>BIG BUM OR THIGH</h3>
+        <p>(Pear Shape)</p>
+      </div>
+
+      <div class="shape-option" onclick="selectShape('hourglass')">
+        <img src="hourglass.png" alt="Hourglass shape">
+        <h3>SMALL WAIST</h3>
+        <p>(Hourglass Shape)</p>
+      </div>
+
+      <div class="shape-option" onclick="selectShape('plus-size')">
+        <img src="plus size.png" alt="Plus size shape">
+        <h3>PLUS SIZE</h3>
+      </div>
+    </div>
+
+    <button class="help-button">HELP ME DECIDE</button>
+    <button class="back-button" onclick="window.location.href='welcome.html'">BACK</button>
+  </div>
+
+  <script>
+    function selectShape(shapeType) {
+      sessionStorage.setItem('selectedBodyShape', shapeType);
+      window.location.href = 'recommendations.html';
+    }
+
+    document.querySelector('.help-button').addEventListener('click', function () {
+      alert("We'll help you decide your shape with a few quick questions.");
+    });
+  </script>
+</body>
+</html>
