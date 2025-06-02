@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Breast Shape - Body Match</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* Video player container */
+    .video-player {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000;
+      margin-bottom: 30px;
+    }
+
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .shapes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .shape-card {
+      background: #222;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .shape-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .shape-image {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      margin: 0 auto 15px;
+      display: block;
+    }
+
+    .shape-title {
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .shape-desc {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .navigation {
+      margin: 50px 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .nav-button {
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .help-button {
+      background-color: #45a049;
+      color: white;
+      border: none;
+    }
+
+    .back-button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+    }
+
+    .nav-button:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Video Section -->
+  <div class="video-player">
+    <div class="video-container">
+      <video autoplay muted playsinline controls>
+        <source src="breast-shape.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content-container">
+    <h1>Please select your breast shape</h1>
+
+    <div class="shapes-grid">
+      <!-- Bell Shape -->
+      <div class="shape-card" onclick="selectShape('saggy')" title="Saggy - Bell Shape">
+        <img src="bell.png" alt="Bell shaped breast" class="shape-image" />
+        <div class="shape-title">SAGGY BREAST</div>
+        <div class="shape-desc">(Bell Shape Breast)</div>
+      </div>
+
+      <!-- Round Shape -->
+      <div class="shape-card" onclick="selectShape('round')" title="Round - Full Breasts">
+        <img src="round.png" alt="Round shaped breast" class="shape-image" />
+        <div class="shape-title">ROUND BREAST</div>
+        <div class="shape-desc">(Full or Even Breasts)</div>
+      </div>
+
+      <!-- East & West Shape -->
+      <div class="shape-card" onclick="selectShape('east-west')" title="East & West - Wide-Set">
+        <img src="East-&-West.png" alt="East and West shaped breast" class="shape-image" />
+        <div class="shape-title">EAST & WEST BREAST</div>
+        <div class="shape-desc">(Wide-Set Breasts)</div>
+      </div>
+
+      <!-- Asymmetrical Shape -->
+      <div class="shape-card" onclick="selectShape('asymmetrical')" title="1 Up, 1 Down - Asymmetrical">
+        <img src="oneup-&-onedown.png" alt="Asymmetrical breast shape" class="shape-image" />
+        <div class="shape-title">1UP, 1 DOWN BREAST</div>
+        <div class="shape-desc">(Asymmetrical Breasts)</div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation">
+      <button class="help-button nav-button">HELP ME DECIDE</button>
+      <button class="back-button nav-button" onclick="window.location.href='welcome.html'">BACK</button>
+    </div>
+  </div>
+
+  <script>
+    function selectShape(shapeType) {
+      sessionStorage.setItem('selectedBreastShape', shapeType);
+      window.location.href = 'recommendations.html';
+    }
+
+    document.querySelector('.help-button').addEventListener('click', () => {
+      alert("We'll help you determine your breast shape!");
+    });
+  </script>
+
+</body>
+</html>
