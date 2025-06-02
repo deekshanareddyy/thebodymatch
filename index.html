@@ -20,16 +20,16 @@
     }
 
     .video-container {
-      width: 100%;
-      max-width: 800px; /* Optional max width for better control */
-      margin: 0 auto 20px auto; /* center horizontally and add bottom margin */
-      background-color: white; /* same as body */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
     }
 
     .video-container video {
-      width: 100%;
-      height: auto; /* maintain original aspect ratio */
       display: block;
+      max-width: none;
+      height: auto;
     }
 
     .content {
