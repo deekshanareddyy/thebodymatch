@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px; /* Leave space for the header */
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-buttons button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .price-dropdown select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .price-dropdown select:hover {
+            border-color: #ff4081;
+        }
+
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 16px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div>
+
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="kurtis">Kurtis</button>
+            <button data-category="kurta">Kurta</button>
+            <button data-category="Tops">Tops</button>
+            <button data-category="Jeans">Jeans</button>
+            <button data-category="Traditional Saree">Traditional Saree</button>
+            <button data-category="Dress">Dress</button>
+        </div>
+        
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="500">Up to ₹500</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000">Up to ₹3000</option>
+                <option value="5000" selected>Up to ₹5000</option> <!-- Default to ₹5000 -->
+            </select>
+            <span id="priceValue">₹5000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+    const allProducts = [
+
+    {
+        "id": "product14",
+        "url": "https://tinyurl.com/mr278jsu",
+        "image": "plusimage/1.jpg",
+        "name": "Women Plus Size Extra Wide Jeans",
+        "brand": "Turning Blue",
+        "price": "₹1,549",
+        "oldPrice": "₹2,999",
+        "discount": "48% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product15",
+        "url": "https://tinyurl.com/ybx3w4uz",
+        "image": "plusimage/2.jpg",
+        "name": "Women Plus Size High-Rise Mom Fit Jeans",
+        "brand": "Freakins",
+        "price": "₹1,496",
+        "oldPrice": "₹3,399",
+        "discount": "56% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product16",
+        "url": "https://tinyurl.com/4a3hz5mm",
+        "image": "plusimage/3.jpg",
+        "name": "Women Plus Size High-Rise Cargo Jeans",
+        "brand": "Freakins",
+        "price": "₹1,616",
+        "oldPrice": "₹4,899",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product17",
+        "url": "https://tinyurl.com/nhknxunm",
+        "image": "plusimage/4.jpg",
+        "name": "Women Plus Size Wide Leg High Stretchable Jeans",
+        "brand": "Freakins",
+        "price": "₹1,663",
+        "oldPrice": "₹5,199",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product18",
+        "url": "https://tinyurl.com/3dpknjjm",
+        "image": "plusimage/5.jpg",
+        "name": "Women Plus Size High-Rise Mom Fit Jeans",
+        "brand": "Freakins",
+        "price": "₹1,768",
+        "oldPrice": "₹5,199",
+        "discount": "66% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product19",
+        "url": "https://tinyurl.com/j4j4puh2",
+        "image": "plusimage/6.jpg",
+        "name": "Women Straight Fit High-Rise Mildly Distressed Light Fade Stretchable Jeans",
+        "brand": "Freakins",
+        "price": "₹1,931",
+        "oldPrice": "₹4,599",
+        "discount": "58% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product20",
+        "url": "https://tinyurl.com/ycy5wdht",
+        "image": "plusimage/7.jpg",
+        "name": "Women Plus Size Mom Fit Solid Mildly Distressed High-Rise Jeans",
+        "brand": "Freakins",
+        "price": "₹1,786",
+        "oldPrice": "₹4,699",
+        "discount": "62% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product21",
+        "url": "https://tinyurl.com/5h468wb2",
+        "image": "plusimage/8.jpg",
+        "name": "Women Plus Size Mom Fit Heavy Fade High-Rise Slash Knee Stretchable Jeans",
+        "brand": "Freakins",
+        "price": "₹1,959",
+        "oldPrice": "₹3,999",
+        "discount": "51% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product22",
+        "url": "https://tinyurl.com/yc6m6j97",
+        "image": "plusimage/9.jpg",
+        "name": "Women Plus Size Mom Fit High-Rise Low Distress Light Fade Jeans",
+        "brand": "Freakins",
+        "price": "₹1,666",
+        "oldPrice": "₹4,899",
+        "discount": "66% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product23",
+        "url": "https://tinyurl.com/548seyae",
+        "image": "plusimage/10.jpg",
+        "name": "The Lifestyle Co. Women Plus Size Straight Fit High-Rise Stretchable Jeans",
+        "brand": "Roadster",
+        "price": "₹911",
+        "oldPrice": "₹2,399",
+        "discount": "62% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+{
+        "id": "product24",
+        "url": "https://tinyurl.com/yx3bs7t3",
+        "image": "plusimage/11.jpg",
+        "name": "The Lifestyle Co. Women Plus Size Wide Leg Jeans",
+        "brand": "Roadster",
+        "price": "₹942",
+        "oldPrice": "₹2,299",
+        "discount": "59% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product25",
+        "url": "https://tinyurl.com/ysk8yp9j",
+        "image": "plusimage/12.jpg",
+        "name": "Plus Size Bootcut High-Rise Jeans",
+        "brand": "Roadster",
+        "price": "₹1,103",
+        "oldPrice": "₹2,399",
+        "discount": "54% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product26",
+        "url": "https://tinyurl.com/5esa6ufb",
+        "image": "plusimage/13.jpg",
+        "name": "Plus Size High-Rise Wide Leg Jeans",
+        "brand": "Roadster",
+        "price": "₹839",
+        "oldPrice": "₹2,399",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product27",
+        "url": "https://tinyurl.com/4e4t565u",
+        "image": "plusimage/14.jpg",
+        "name": "Plus Size Black Wide Leg Jeans",
+        "brand": "Style Quotient",
+        "price": "₹999",
+        "oldPrice": "₹2,499",
+        "discount": "60% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product28",
+        "url": "https://tinyurl.com/27vdm9d3",
+        "image": "plusimage/15.jpg",
+        "name": "Plus Size High-Rise Stretchable Jeans",
+        "brand": "Roadster",
+        "price": "₹839",
+        "oldPrice": "₹2,399",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+      
+      {
+        "id": "product29",
+        "url": "https://tinyurl.com/4mzvmnkd",
+        "image": "plusimage/16.jpg",
+        "name": "Blue Mid-Rise Stretchable Cotton Jeans",
+        "brand": "plusS",
+        "price": "₹809",
+        "oldPrice": "₹2,999",
+        "discount": "73% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product30",
+        "url": "https://tinyurl.com/35arwtbm",
+        "image": "plusimage/17.jpg",
+        "name": "Blue Baggy Straight Fit Plus Size Jeans",
+        "brand": "Bewakoof",
+        "price": "₹1,499",
+        "oldPrice": "₹3,599",
+        "discount": "₹2,100 OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product31",
+        "url": "https://tinyurl.com/29chhruy",
+        "image": "plusimage/18.jpg",
+        "name": "Plus Size Extra Wide Cargo Jeans",
+        "brand": "Turning Blue",
+        "price": "₹1,699",
+        "oldPrice": "₹3,199",
+        "discount": "₹1,500 OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product32",
+        "url": "https://tinyurl.com/3m7n4hy5",
+        "image": "plusimage/19.jpg",
+        "name": "Plus Size Bootcut High-Rise Clean Look Jeans",
+        "brand": "Orchid Blues",
+        "price": "₹1,074",
+        "oldPrice": "₹4,299",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+    {
+        "id": "product33",
+        "url": "https://tinyurl.com/3za9u7v2",
+        "image": "plusimage/20.jpg",
+        "name": "Plus Size Wide Leg High-Rise Jeans",
+        "brand": "Freeform by High Star",
+        "price": "₹987",
+        "oldPrice": "₹2,599",
+        "discount": "62% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },
+      
+  {
+        "id": "product34",
+        "url": "https://tinyurl.com/472k4knz",
+        "image": "plusimage/21.jpg",
+        "name": "Wide Leg Distressed Cotton Jeans",
+        "brand": "Freeform by High Star",
+        "price": "₹1,399",
+        "oldPrice": "₹3,499",
+        "discount": "60% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans",
+    },    
+      
+{
+    id: "product071",
+    url: "https://tinyurl.com/yxx7e5vw",
+    image: "plusimage/22.jpg",
+    name: "Women Plus Size Ombre-Dyed Straight Kurta",
+    brand: "AMYDUS",
+    price: "₹1,799",
+    oldPrice: "₹1,999",
+    discount: "10% OFF",
+    logo: "logo/A.png", 
+    category: "kurta",
+},
+{
+    id: "product072",
+    url: "https://tinyurl.com/2d8n9wv3",
+    image: "plusimage/23.jpg",
+    name: "Plus Size Floral Kalamkari Printed Round Neck Cotton Anarkali Kurta",
+    brand: "KALINI",
+    price: "₹949",
+    oldPrice: "₹4,999",
+    discount: "81% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product073",
+    url: "https://tinyurl.com/33hpnkv5",
+    image: "plusimage/24.jpg",
+    name: "Plus Size Women Olive Green Solid Straight Kurta",
+    brand: "Yash Gallery",
+    price: "₹791",
+    oldPrice: "₹2,199",
+    discount: "64% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product074",
+    url: "https://tinyurl.com/2ps943sv",
+    image: "plusimage/25.jpg",
+    name: "Plus Size Women Off-White & Red Printed A-Line Kurta",
+    brand: "YASH GALLERY",
+    price: "₹1,149",
+    oldPrice: "₹2,499",
+    discount: "54% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product076",
+    url: "https://tinyurl.com/367xe365",
+    image: "plusimage/26.jpg",
+    name: "Plus Size Printed V-Neck A-Line Kurta",
+    brand: "LetsDressUp",
+    price: "₹832",
+    oldPrice: "₹1665",
+    discount: "50% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product077",
+    url: "https://tinyurl.com/mr3vue7t",
+    image: "plusimage/27.jpg",
+    name: "Women Plus Size Ombre-dyed Straight Kurta",
+    brand: "Amydus",
+    price: "₹1,799",
+    oldPrice: "₹1,999",
+    discount: "10% OFF",
+    logo: "logo/A.png", 
+    category: "kurta",
+},
+{
+    id: "product078",
+    url: "https://tinyurl.com/5n8knbsb",
+    image: "plusimage/28.jpg",
+    name: "Women Plus Size White Ethnic Motifs Pure Cotton Chikankari Embroidered Handloom Kurta",
+    brand: "ADA",
+    price: "₹1,440",
+    oldPrice: "₹1,440",
+    discount: "No discount",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product079",
+    url: "https://tinyurl.com/4vffek34",
+    image: "plusimage/29.jpg",
+    name: "Women Plus Size Straight Kurta with Three-Fourth Sleeves",
+    brand: "AMYDUS",
+    price: "₹2,039",
+    oldPrice: "₹3,999",
+    discount: "49% OFF",
+    logo: "logo/A.png", 
+    category: "kurta",
+},
+{
+    id: "product080",
+    url: "https://tinyurl.com/mr3nznyu",
+    image: "plusimage/30.jpg",
+    name: "Women Plus Size Ethnic Motifs Printed Kurta",
+    brand: "Amydus",
+    price: "₹1,799",
+    oldPrice: "₹1,999",
+    discount: "₹200 OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product081",
+    url: "https://tinyurl.com/yvpjhvf3",
+    image: "plusimage/31.jpg",
+    name: "Women Plus Size Printed Straight Kurta",
+    brand: "Amydus",
+    price: "₹3,324",
+    oldPrice: "₹3,499",
+    discount: "5% OFF",
+    logo: "logo/A.png", 
+    category: "kurta",
+},
+{
+    id: "product082",
+    url: "https://tinyurl.com/nhja8uz2",
+    image: "plusimage/32.jpg",
+    name: "Women Plus Size Red & Golden Paisley Printed Anarkali Kurta",
+    brand: "Yash Gallery",
+    price: "₹1,255",
+    oldPrice: "₹4,649",
+    discount: "73% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product083",
+    url: "https://tinyurl.com/5n7uxcht",
+    image: "plusimage/33.jpg",
+    name: "Women Plus Size Maroon & Golden Ethnic Motifs Printed A-Line Kurta",
+    brand: "Yash Gallery",
+    price: "₹949",
+    oldPrice: "₹3,799",
+    discount: "75% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product084",
+    url: "https://tinyurl.com/3rmxh8x3",
+    image: "plusimage/34.jpg",
+    name: "Plus Size Floral Embroidered Anarkali Kurta",
+    brand: "Kalini",
+    price: "₹881",
+    oldPrice: "₹4,899",
+    discount: "82% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product085",
+    url: "https://tinyurl.com/mr4zkhkj",
+    image: "plusimage/35.jpg",
+    name: "Plus Size Ethnic Motifs Printed Pure Cotton Straight Kurta",
+    brand: "Anayna",
+    price: "₹959",
+    oldPrice: "₹2,398",
+    discount: "60% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product086",
+    url: "https://tinyurl.com/mr2xxsb9",
+    image: "plusimage/36.jpg",
+    name: "Women Plus Size Black & White Geometric Printed Angrakha Anarkali Kurta",
+    brand: "Yash Gallery",
+    price: "₹999",
+    oldPrice: "₹3,999",
+    discount: "75% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product087",
+    url: "https://tinyurl.com/mwmcw3zx",
+    image: "plusimage/37.jpg",
+    name: "Plus Size Women Pure Cotton Printed Kurta",
+    brand: "Varanga",
+    price: "₹945",
+    oldPrice: "₹2,199",
+    discount: "57% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product088",
+    url: "https://tinyurl.com/2ptht3bx",
+    image: "plusimage/38.jpg",
+    name: "Plus Size Floral Printed Patch Work Angrakha Anarkali Kurta",
+    brand: "Kalini",
+    price: "₹791",
+    oldPrice: "₹2,199",
+    discount: "64% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product089",
+    url: "https://tinyurl.com/acnkrd4a",
+    image: "plusimage/39.jpg",
+    name: "Plus Size Floral Embroidered Bell Sleeves Kurta",
+    brand: "Kalini",
+    price: "₹778",
+    oldPrice: "₹4,099",
+    discount: "81% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product090",
+    url: "https://tinyurl.com/vcanyjwt",
+    image: "plusimage/40.jpg",
+    name: "Plus Size Geometric Printed Lace Work Pure Cotton Straight Kurta",
+    brand: "Anayna",
+    price: "₹863",
+    oldPrice: "₹2,158",
+    discount: "60% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product091",
+    url: "https://tinyurl.com/2bz5usba",
+    image: "plusimage/41.jpg",
+    name: "Women Plus Size Navy Blue & Golden Printed A-Line Kurta",
+    brand: "Yash Gallery",
+    price: "₹1,255",
+    oldPrice: "₹4,649",
+    discount: "73% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product092",
+    url: "https://tinyurl.com/ympx3ssa",
+    image: "plusimage/42.jpg",
+    name: "Ethnic Motifs Printed Cotton Kurta",
+    brand: "Kalini",
+    price: "₹749",
+    oldPrice: "₹2,999",
+    discount: "75% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product093",
+    url: "https://tinyurl.com/yeyrycpb",
+    image: "plusimage/43.jpg",
+    name: "Plus Size Women Blue & White Printed A-Line Kurta",
+    brand: "Yash Gallery",
+    price: "₹989",
+    oldPrice: "₹3,299",
+    discount: "70% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product094",
+    url: "https://tinyurl.com/5ymvc7p8",
+    image: "plusimage/44.jpg",
+    name: "Navy Blue Panelled Anarkali Kurta",
+    brand: "Yash Gallery",
+    price: "₹1,364",
+    oldPrice: "₹5,249",
+    discount: "74% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+    id: "product095",
+    url: "https://tinyurl.com/59kpe8a2",
+    image: "plusimage/45.jpg",
+    name: "Navy Blue & White Geometric Printed Angrakha Kurta",
+    brand: "Yash Gallery",
+    price: "₹999",
+    oldPrice: "₹3,999",
+    discount: "75% OFF",
+    logo: "logo/M.png", 
+    category: "kurta",
+},
+{
+        id: "product096",
+        url: "https://tinyurl.com/2mr3sh2c",
+        image: "plusimage/46.jpg",
+        name: "Green Plus Size Printed Straight Kurta",
+        brand: "Amydus",
+        price: "₹2,323",
+        oldPrice: "₹2,799",
+        discount: "17% OFF",
+        logo: "logo/A.png",
+        category: "kurta",
+    },
+    {
+        id: "product097",
+        url: "https://tinyurl.com/3jmjn7ax",
+        image: "plusimage/47.jpg",
+        name: "Plus Size Lilac Chikankari Cotton Kurta",
+        brand: "Janasya",
+        price: "₹1,329",
+        oldPrice: "₹3,499",
+        discount: "62% OFF",
+        logo: "logo/M.png",
+        category: "kurta",
+    },
+    {
+        id: "product098",
+        url: "https://tinyurl.com/4xssttza",
+        image: "plusimage/48.jpg",
+        name: "Plus Size Red & Beige Bandhani Anarkali Kurta",
+        brand: "Yash Gallery",
+        price: "₹1,091",
+        oldPrice: "₹4,549",
+        discount: "76% OFF",
+        logo: "logo/M.png",
+        category: "kurta",
+    },
+{
+    id: "product099",
+    url: "https://tinyurl.com/ycxmpw6j",
+    image: "plusimage/49.jpg",
+    name: "Plus Size Dobby Cotton Straight Kurta",
+    brand: "Anayna",
+    price: "₹863",
+    oldPrice: "₹2,158",
+    discount: "60% OFF",
+    logo: "logo/M.png", 
+    category: "Kurta",
+},
+{
+    id: "product100",
+    url: "https://tinyurl.com/5ezm6v37",
+    image: "plusimage/50.jpg",
+    name: "Plus Size Floral Mukta Anarkali Cotton Kurta",
+    brand: "Miravan",
+    price: "₹1,319",
+    oldPrice: "₹2,999",
+    discount: "56% OFF",
+    logo: "logo/M.png", 
+    category: "Kurta",
+},
+{
+    id: "product101",
+    url: "https://tinyurl.com/54xah63y",
+    image: "plusimage/51.jpg",
+    name: "Plus Size Embroidered Chikankari Cotton Kurta",
+    brand: "Janasya",
+    price: "₹1,329",
+    oldPrice: "₹3,499",
+    discount: "62% OFF",
+    logo: "logo/M.png", 
+    category: "Kurta",
+},
+{
+    id: "product32",
+    url: "https://tinyurl.com/yzk4srf8",
+    image: "plusimage/52.jpg",
+    name: "Plus Size Black & White Bandhani Kurti",
+    brand: "Yash Gallery",
+    price: "₹809",
+    oldPrice: "₹2,999",
+    discount: "73% OFF",
+    logo: "logo/M.png", 
+    category: "Kurtis",
+},
+{
+    id: "product33",
+    url: "https://tinyurl.com/2rv3dk73",
+    image: "plusimage/53.jpg",
+    name: "Plus Size Floral Kurti with Three-Quarter Sleeves",
+    brand: "Extra Love by Libas",
+    price: "₹509",
+    oldPrice: "₹1,699",
+    discount: "70% OFF",
+    logo: "logo/M.png", 
+    category: "Kurtis",
+},
+{
+    "id": "product34",
+    "url": "https://tinyurl.com/366rs9vz",
+    "image": "plusimage/54.jpg",
+    "name": "Keyhole Neck Ethnic A-line Short Kurti",
+    "brand": "Kalini",
+    "price": "₹615",
+    "oldPrice": "₹2,799",
+    "discount": "78% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product35",
+    "url": "https://tinyurl.com/3nv48j4y",
+    "image": "plusimage/55.jpg",
+    "name": "Green & Off White Floral Bell Sleeves Kurti",
+    "brand": "Yash Gallery",
+    "price": "₹719",
+    "oldPrice": "₹2,999",
+    "discount": "76% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product36",
+    "url": "https://tinyurl.com/4e247hm7",
+    "image": "plusimage/56.jpg",
+    "name": "Plus Size Printed Short Kurti",
+    "brand": "Fashion Zest",
+    "price": "₹769",
+    "oldPrice": "₹1,399",
+    "discount": "45% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product37",
+    "url": "https://tinyurl.com/4935dy56",
+    "image": "plusimage/57.jpg",
+    "name": "Plus Size Striped Straight Kurti",
+    "brand": "Kalini",
+    "price": "₹556",
+    "oldPrice": "₹2,649",
+    "discount": "79% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product38",
+    "url": "https://tinyurl.com/52zmmwnb",
+    "image": "plusimage/58.jpg",
+    "name": "Ethnic Motifs Printed Plus Size Kurti",
+    "brand": "Fashion Zest",
+    "price": "₹769",
+    "oldPrice": "₹1,399",
+    "discount": "45% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+
+ {
+    "id": "product39",
+    "url": "https://tinyurl.com/bdcne4bs",
+    "image": "plusimage/59.jpg",
+    "name": "Pink & White Ethnic Motifs Embroidered Plus Size Chikankari Kurti",
+    "brand": "ADA",
+    "price": "₹1,940",
+    "oldPrice": "₹1,940",
+    "discount": "No Discount",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product40",
+    "url": "https://tinyurl.com/5n8b4k4z",
+    "image": "plusimage/60.jpg",
+    "name": "Plus Size Striped V-Neck Kurti",
+    "brand": "PrettyPlus by Desinoor.com",
+    "price": "₹984",
+    "oldPrice": "₹2,895",
+    "discount": "66% OFF",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+{
+    "id": "product41",
+    "url": "https://tinyurl.com/2h3bpsyc",
+    "image": "plusimage/61.jpg",
+    "name": "Red & White Ethnic Motifs Embroidered Plus Size Chikankari Kurti",
+    "brand": "ADA",
+    "price": "₹1,940",
+    "oldPrice": "₹1,940",
+    "discount": "No Discount",
+    "logo": "logo/M.png",
+    "category": "Kurtis",
+},
+
+{
+    "id": "product125",
+    "url": "https://tinyurl.com/4znbd44s",
+    "image": "plusimage/62.jpg",
+    "name": "Floral Zari Silk Blend Banarasi Saree",
+    "brand": "Sztori",
+    "price": "₹948",
+    "oldPrice": "₹2,635",
+    "discount": "64% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product126",
+    "url": "https://tinyurl.com/y62yy8ry",
+    "image": "plusimage/63.jpg",
+    "name": "Solid Zari Pure Cotton Bhagalpuri Saree",
+    "brand": "Sztori",
+    "price": "₹404",
+    "oldPrice": "₹1,499",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product127",
+    "url": "https://tinyurl.com/47d6mhb4",
+    "image": "plusimage/64.jpg",
+    "name": "Floral Zari Silk Blend Banarasi Saree",
+    "brand": "Sztori",
+    "price": "₹1,499",
+    "oldPrice": "₹4,999",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    id: "product815",
+    url: "https://tinyurl.com/yhstr9vs",
+    image: "plusimage/65.jpg",
+    name: "Women Plus Size Black Pleated A-Line Top",
+    brand: "Sztori",
+    price: "₹509",
+    oldPrice: "₹1,699",
+    discount: "70% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product816",
+    url: "https://tinyurl.com/b6jxunye",
+    image: "plusimage/66.jpg",
+    name: "Plus Size Peplum Top",
+    brand: "CURVY STREET",
+    price: "₹759",
+    oldPrice: "₹1,999",
+    discount: "62% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product817",
+    url: "https://tinyurl.com/ykjrh8p9",
+    image: "plusimage/67.jpg",
+    name: "Plus Size Shimmer Wrap Top",
+    brand: "Sztori",
+    price: "₹1,169",
+    oldPrice: "₹2,599",
+    discount: "55% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product818",
+    url: "https://tinyurl.com/45ppwhvz",
+    image: "plusimage/68.jpg",
+    name: "Plus Size Square Neck Top",
+    brand: "SASSAFRAS Curve",
+    price: "₹674",
+    oldPrice: "₹1,499",
+    discount: "55% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product819",
+    url: "https://tinyurl.com/5n7fejzb",
+    image: "plusimage/69.jpg",
+    name: "Plus Size Zipper Fitted Top",
+    brand: "SASSAFRAS Curve",
+    price: "₹719",
+    oldPrice: "₹1,499",
+    discount: "52% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product820",
+    url: "https://tinyurl.com/2v3eutew",
+    image: "plusimage/70.jpg",
+    name: "A-Line Regular Top",
+    brand: "Berrylush Curve",
+    price: "₹719",
+    oldPrice: "₹1,999",
+    discount: "64% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product821",
+    url: "https://tinyurl.com/mucwrkxh",
+    image: "plusimage/71.jpg",
+    name: "Ribbed Square Neck Fitted Top",
+    brand: "SASSAFRAS Curve",
+    price: "₹824",
+    oldPrice: "₹1,499",
+    discount: "45% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product822",
+    url: "https://tinyurl.com/3bjsuexj",
+    image: "plusimage/72.jpg",
+    name: "Colourblocked Cuffed Sleeves Shirt Style Top",
+    brand: "Trendyol",
+    price: "₹2,239",
+    oldPrice: "₹2,799",
+    discount: "20% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product823",
+    url: "https://tinyurl.com/4ucc64xn",
+    image: "plusimage/73.jpg",
+    name: "Plus Size Self Design Puff Sleeves Fitted Regular Top",
+    brand: "Trendyol",
+    price: "₹2,099",
+    oldPrice: "₹2,999",
+    discount: "30% OFF",
+    logo: "logo/M.png", 
+    category: "Tops",
+},
+{
+    id: "product824",
+    url: "https://tinyurl.com/36dc383m",
+    image: "plusimage/74.jpg",
+    name: "Ruffled A-Line Midi Dress",
+    brand: "Berrylush Curve",
+    price: "₹986",
+    oldPrice: "₹2,099",
+    discount: "53% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product825",
+    url: "https://tinyurl.com/34h9xs4p",
+    image: "plusimage/75.jpg",
+    name: "Green Velvet A-Line Dress",
+    brand: "SASSAFRAS Curve",
+    price: "₹999",
+    oldPrice: "₹2,498",
+    discount: "60% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product826",
+    url: "https://tinyurl.com/4kuv7szb",
+    image: "plusimage/76.jpg",
+    name: "Printed Basic Jumpsuit",
+    brand: "Berrylush Curve",
+    price: "₹944",
+    oldPrice: "₹2,099",
+    discount: "55% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product827",
+    url: "https://tinyurl.com/48a7rsj6",
+    image: "plusimage/77.jpg",
+    name: "Tropical Printed Fit & Flare Dress",
+    brand: "SASSAFRAS Curve",
+    price: "₹1,649",
+    oldPrice: "₹3,299",
+    discount: "50% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product828",
+    url: "https://tinyurl.com/tve8dxcf",
+    image: "plusimage/78.jpg",
+    name: "Sweetheart Neck Fit & Flare Dress",
+    brand: "Berrylush Curve",
+    price: "₹934",
+    oldPrice: "₹2,749",
+    discount: "66% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product829",
+    url: "https://tinyurl.com/nbx35n8x",
+    image: "plusimage/79.jpg",
+    name: "Sheath Midi Dress",
+    brand: "SASSAFRAS Curve",
+    price: "₹1,049",
+    oldPrice: "₹2,498",
+    discount: "58% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product830",
+    url: "https://tinyurl.com/mpujpwnk",
+    image: "plusimage/80.jpg",
+    name: "Maxi Dress",
+    brand: "U&F",
+    price: "₹849",
+    oldPrice: "₹3,399",
+    discount: "75% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product831",
+    url: "https://tinyurl.com/44cmc52a",
+    image: "plusimage/81.jpg",
+    name: "Empire Midi Dress",
+    brand: "Athena Ample",
+    price: "₹1,293",
+    oldPrice: "₹2,695",
+    discount: "52% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product832",
+    url: "https://tinyurl.com/4wfdwzjk",
+    image: "plusimage/82.jpg",
+    name: "Sheath Dress",
+    brand: "SASSAFRAS Curve",
+    price: "₹1,273",
+    oldPrice: "₹2,498",
+    discount: "49% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product833",
+    url: "https://tinyurl.com/2s37sfua",
+    image: "plusimage/83.jpg",
+    name: "Maxi Dress",
+    brand: "Berrylush Curve",
+    price: "₹832",
+    oldPrice: "₹2,249",
+    discount: "63% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+{
+    id: "product834",
+    url: "https://tinyurl.com/ye26s2e9",
+    image: "plusimage/84.jpg",
+    name: "Layered Playsuit",
+    brand: "Berrylush Curve",
+    price: "₹840",
+    oldPrice: "₹2,899",
+    discount: "71% OFF",
+    logo: "logo/M.png", 
+    category: "Dress",
+},
+
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+        const buttons = document.querySelectorAll(".filter-buttons button");
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+
+        // Utility function to clean the price string
+        function cleanPrice(price) {
+            if (!price || isNaN(price.replace(/₹|,|\s+/g, ""))) return Infinity;
+            return parseInt(price.replace(/₹|,|\s+/g, ""), 10);
+        }
+
+        // Function to filter products by category
+        function filterByCategory(products, category) {
+            if (category === "all") return products;
+            return products.filter(
+                (product) => product.category.toLowerCase() === category.toLowerCase()
+            );
+        }
+
+        // Function to render products
+        function renderProducts(filteredProducts) {
+            catalog.innerHTML = "";
+
+            if (filteredProducts.length === 0) {
+                catalog.innerHTML = "<p>No products found!</p>";
+                return;
+            }
+
+            filteredProducts.forEach((product) => {
+                const productCard = `
+                    <div class="product">
+                        <a href="${product.url}" target="_blank">
+                            <img src="${product.image}" alt="${product.name}">
+                        </a>
+                        <img class="logo" src="${product.logo}" alt="Logo">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.brand}</p>
+                            <div class="price">
+                                ${product.price}
+                                ${
+                                    product.oldPrice
+                                        ? `<span class="old-price">${product.oldPrice}</span>`
+                                        : ""
+                                }
+                            </div>
+                            ${
+                                product.discount
+                                    ? `<div class="discount">${product.discount}</div>`
+                                    : ""
+                            }
+                        </div>
+                    </div>
+                `;
+                catalog.innerHTML += productCard;
+            });
+        }
+
+        // Initial Render
+        renderProducts(allProducts);
+
+        // Filter products on button click
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const category = button.getAttribute("data-category").toLowerCase();
+                const maxPrice = parseInt(priceRange.value);
+
+                let filteredProducts = filterByCategory(allProducts, category);
+                filteredProducts = filteredProducts.filter(
+                    (product) => cleanPrice(product.price) <= maxPrice
+                );
+
+                renderProducts(filteredProducts);
+            });
+        });
+
+        // Filter products on dropdown change
+        priceRange.addEventListener("change", () => {
+            const maxPrice = parseInt(priceRange.value);
+            priceValue.textContent = `₹${maxPrice}`;
+
+            const activeButton = document.querySelector(".filter-buttons .active");
+            const category = activeButton.getAttribute("data-category").toLowerCase();
+
+            let filteredProducts = filterByCategory(allProducts, category);
+            filteredProducts = filteredProducts.filter(
+                (product) => cleanPrice(product.price) <= maxPrice
+            );
+
+            renderProducts(filteredProducts);
+        });
+    </script>
+</body>
+</html>
