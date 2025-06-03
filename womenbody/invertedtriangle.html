@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px; /* Space for the header */
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 15px auto;
+            max-width: 1200px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-buttons button {
+            padding: 8px 14px; /* Smaller padding for compactness */
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-buttons button.active {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .price-dropdown select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .price-dropdown select:hover {
+            border-color: #ff4081;
+        }
+
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div>
+
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="kurtis">Kurtis</button>
+            <button data-category="kurta">Kurta</button>
+            <button data-category="Jeans">Jeans</button>
+            <button data-category="Traditional Saree">Traditional Saree</button>
+        </div>
+
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="500">Up to ₹500</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000">Up to ₹3000</option>
+                <option value="5000" selected>Up to ₹5000</option> <!-- Default to ₹5000 -->
+            </select>
+            <span id="priceValue">₹5000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+    const allProducts = [
+
+         
+ {
+        id: "product621",
+        url: "https://tinyurl.com/3eu83dsx",
+        image: "invertedimage/1.jpg",
+        name: "Women Green Embroidered Chikankari Georgette Kurta",
+        brand: "SWAGG INDIA",
+        price: "₹449",
+        oldPrice: "₹2999",
+        discount: "85% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product622",
+        url: "https://tinyurl.com/mrxsavwj",
+        image: "invertedimage/2.jpeg",
+        name: "Women Embellished Straight Kurta with Pants & Dupatta",
+        brand: "ZIKARAA",
+        price: "₹969",
+        oldPrice: "₹2849",
+        discount: "66% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product623",
+        url: "https://tinyurl.com/ykasvf2v",
+        image: "invertedimage/3.jpg",
+        name: "Ethnic Motif Printed High-Slit Kurta",
+        brand: "KALINI",
+        price: "₹524",
+        oldPrice: "₹2499",
+        discount: "79% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product624",
+        url: "https://tinyurl.com/5n69davy",
+        image: "invertedimage/4.jpeg",
+        name: "Women Embellished Straight Kurta Set with Dupatta",
+        brand: "18INDIA",
+        price: "₹1376",
+        oldPrice: "₹4440",
+        discount: "69% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product625",
+        url: "https://tinyurl.com/4axpees",
+        image: "invertedimage/5.jpg",
+        name: "Ethnic Motifs Printed Straight Kurta",
+        brand: "KALINI",
+        price: "₹499",
+        oldPrice: "₹2499",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+
+    {
+        id: "product627",
+        url: "https://tinyurl.com/3prt27ka",
+        image: "invertedimage/6.jpg",
+        name: "Women Floral Embroidered Keyhole Neck Flared Sleeves Thread Work Liva Kurta",
+        brand: "Anouk",
+        price: "₹626",
+        oldPrice: "₹1899",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product628",
+        url: "https://tinyurl.com/2s3uyb25",
+        image: "invertedimage/7.jpeg",
+        name: "Women Embroidered Flared Kurta Suit Set",
+        brand: "AVAASA SET",
+        price: "₹1427",
+        oldPrice: "₹2799",
+        discount: "49% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product629",
+        url: "https://tinyurl.com/3fpspz4f",
+        image: "invertedimage/8.jpg",
+        name: "Women Ethnic Motifs Foil Print Pure Cotton Kurta",
+        brand: "Sangria",
+        price: "₹739",
+        oldPrice: "₹1999",
+        discount: "63% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product630",
+        url: "https://tinyurl.com/4pna23pt",
+        image: "invertedimage/9.jpg",
+        name: "Floral Printed Mandarin Collar Empire A-Line Kurta",
+        brand: "Anouk",
+        price: "₹569",
+        oldPrice: "₹1899",
+        discount: "70% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product631",
+        url: "https://tinyurl.com/4dyuv9k7",
+        image: "invertedimage/10.jpeg",
+        name: "Women V-Neck Alia Cut Kurta",
+        brand: "AVAASA MIX N' MATCH",
+        price: "₹764",
+        oldPrice: "₹1499",
+        discount: "49% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product632",
+        url: "https://tinyurl.com/ywp2rvne",
+        image: "invertedimage/11.jpg",
+        name: "Women Printed Pathani Kurta",
+        brand: "Mera Rang",
+        price: "₹1724",
+        oldPrice: "₹2653",
+        discount: "35% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product633",
+        url: "https://tinyurl.com/4x2vh9nm",
+        image: "invertedimage/12.jpg",
+        name: "Round Neck Chikankari Cotton Kurta",
+        brand: "NIGHTSPREE",
+        price: "₹876",
+        oldPrice: "₹2039",
+        discount: "57% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product634",
+        url: "https://tinyurl.com/3fke2dnr",
+        image: "invertedimage/13.jpeg",
+        name: "Women Floral Print Flared Kurta Set",
+        brand: "KIMAYRA",
+        price: "₹1036",
+        oldPrice: "₹3699",
+        discount: "72% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product635",
+        url: "https://tinyurl.com/yucdhchu",
+        image: "invertedimage/14.jpg",
+        name: "Yoke Design Straight Kurta",
+        brand: "Rimeline",
+        price: "₹549",
+        oldPrice: "₹2499",
+        discount: "78% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+     {
+        id: "product636",
+        url: "https://tinyurl.com/25a2fkk3",
+        image: "invertedimage/15.jpeg",
+        name: "Women Floral Print Flared Kurta with Pants & Dupatta",
+        brand: "GULMOHAR JAIPUR",
+        price: "₹1292",
+        oldPrice: "₹3799",
+        discount: "66% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product637",
+        url: "https://tinyurl.com/3zrdd5s4",
+        image: "invertedimage/16.jpg",
+        name: "Striped Mandarin Collar Straight Kurta",
+        brand: "Rimeline",
+        price: "₹475",
+        oldPrice: "₹1399",
+        discount: "66% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product638",
+        url: "https://tinyurl.com/5hmsc42x",
+        image: "invertedimage/17.jpg",
+        name: "Women Green & Silver-Toned Embroidered Rayon Straight Kurta",
+        brand: "Charu",
+        price: "₹575",
+        oldPrice: "₹3199",
+        discount: "82% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product639",
+        url: "https://tinyurl.com/yu8as4jk",
+        image: "invertedimage/18.jpg",
+        name: "Pink Zari and Thread Embroidered Bandhani Printed Straight Kurta",
+        brand: "Sarai Creations",
+        price: "₹559",
+        oldPrice: "₹1399",
+        discount: "60% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product640",
+        url: "https://tinyurl.com/2s3hn8r7",
+        image: "invertedimage/19.jpeg",
+        name: "Women Embroidered Straight Kurta Set with Dupatta",
+        brand: "MOMINA FASHION",
+        price: "₹1050",
+        oldPrice: "₹5249",
+        discount: "80% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product641",
+        url: "https://tinyurl.com/k7z6dsjz",
+        image: "invertedimage/20.jpg",
+        name: "Women Green Kurta",
+        brand: "Libas",
+        price: "₹597",
+        oldPrice: "₹1299",
+        discount: "54% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product642",
+        url: "https://tinyurl.com/yth68ts8",
+        image: "invertedimage/21.jpg",
+        name: "Floral Embroidered Chikankari A-Line Kurta",
+        brand: "HOUSE OF KARI",
+        price: "₹2339",
+        oldPrice: "₹4499",
+        discount: "48% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product643",
+        url: "https://tinyurl.com/yc58nyaa",
+        image: "invertedimage/22.jpg",
+        name: "Women Blue Ethnic Motifs Printed Anarkali Kurta",
+        brand: "Divena",
+        price: "₹2159",
+        oldPrice: "₹4799",
+        discount: "55% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product644",
+        url: "https://tinyurl.com/a638us3p",
+        image: "invertedimage/23.jpeg",
+        name: "Embroidered Anarkali Kurta Suit Set",
+        brand: "WEAVLLITE",
+        price: "₹2794",
+        oldPrice: "₹4299",
+        discount: "35% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product645",
+        url: "https://tinyurl.com/36cnvte8",
+        image: "invertedimage/24.jpg",
+        name: "Women Navy Blue White Bandhani Printed Liva Pathani Kurta",
+        brand: "Juniper",
+        price: "₹764",
+        oldPrice: "₹1699",
+        discount: "55% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product646",
+        url: "https://tinyurl.com/5xr7ymsu",
+        image: "invertedimage/25.jpg",
+        name: "Floral Printed Boat Neck Kaftan Kurta",
+        brand: "LetsDressUp",
+        price: "₹832",
+        oldPrice: "₹1665",
+        discount: "50% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product647",
+        url: "https://tinyurl.com/5n8kxjz5",
+        image: "invertedimage/26.jpg",
+        name: "Women Black & Gold-Toned Striped Kurta",
+        brand: "KALINI",
+        price: "₹552",
+        oldPrice: "₹1227",
+        discount: "55% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product648",
+        url: "https://tinyurl.com/288ppk7z",
+        image: "invertedimage/27.jpeg",
+        name: "Women Embroidered Anarkali Kurta with Pants & Dupatta",
+        brand: "Havishe Club",
+        price: "₹1720",
+        oldPrice: "₹4299",
+        discount: "60% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product649",
+        url: "https://tinyurl.com/yvsd7b3p",
+        image: "invertedimage/28.jpg",
+        name: "Women Ethnic Motifs Embroidered Kurta",
+        brand: "Sangria",
+        price: "₹587",
+        oldPrice: "₹2799",
+        discount: "79% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product650",
+        url: "https://tinyurl.com/2s48h4j9",
+        image: "invertedimage/29.jpg",
+        name: "Women Green Striped Kurta",
+        brand: "Anouk",
+        price: "₹492",
+        oldPrice: "₹1699",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product651",
+        url: "https://tinyurl.com/ms3ejz8a",
+        image: "invertedimage/30.jpeg",
+        name: "Women Floral Print A-Line Kurta",
+        brand: "Avaasa Mix N' Match",
+        price: "₹407",
+        oldPrice: "₹799",
+        discount: "49% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product652",
+        url: "https://tinyurl.com/2rdjdjwa",
+        image: "invertedimage/31.jpg",
+        name: "Round Neck Straight Kurta",
+        brand: "KPF",
+        price: "₹359",
+        oldPrice: "₹1799",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product653",
+        url: "https://tinyurl.com/5bkahspj",
+        image: "invertedimage/32.jpg",
+        name: "Women Green Kurta",
+        brand: "Fabclub",
+        price: "₹599",
+        oldPrice: "₹999",
+        discount: "40% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product654",
+        url: "https://tinyurl.com/mr35zynh",
+        image: "invertedimage/33.jpg",
+        name: "Yellow Ethnic Motifs Printed V-Neck Chanderi Silk Straight Kurta",
+        brand: "Anouk",
+        price: "₹599",
+        oldPrice: "₹1999",
+        discount: "70% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product655",
+        url: "https://tinyurl.com/2wambayh",
+        image: "invertedimage/34.jpg",
+        name: "Floral Printed Keyhole Neck Linen Straight Kurta",
+        brand: "Jaipur Kurti",
+        price: "₹599",
+        oldPrice: "₹2499",
+        discount: "76% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product656",
+        url: "https://tinyurl.com/yehedsbu",
+        image: "invertedimage/35.jpeg",
+        name: "Floral Print Flared Kurta",
+        brand: "Nishabd",
+        price: "₹640",
+        oldPrice: "₹1,999",
+        discount: "68% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product657",
+        url: "https://tinyurl.com/yehwndxs",
+        image: "invertedimage/36.jpg",
+        name: "Zari Work Striped Straight Kurta",
+        brand: "Jaipur Kurti",
+        price: "₹577",
+        oldPrice: "₹1,699",
+        discount: "66% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product658",
+        url: "https://tinyurl.com/2r9x84v9",
+        image: "invertedimage/37.jpeg",
+        name: "Women Floral Print Flared Kurta",
+        brand: "NEHU EMPIRES",
+        price: "₹630",
+        oldPrice: "₹1,499",
+        discount: "58% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product659",
+        url: "https://tinyurl.com/mrjyfv8d",
+        image: "invertedimage/38.jpg",
+        name: "Ethnic Motifs Printed Thread Work Straight Kurta",
+        brand: "GLOWWORLD",
+        price: "₹549",
+        oldPrice: "₹2,499",
+        discount: "78% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product660",
+        url: "https://tinyurl.com/bdfup95j",
+        image: "invertedimage/39.jpeg",
+        name: "Women Embroidered Straight Kurta Set",
+        brand: "Japnaam",
+        price: "₹1,699",
+        oldPrice: "₹4,499",
+        discount: "62% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product661",
+        url: "https://tinyurl.com/y2c6b5ut",
+        image: "invertedimage/40.jpg",
+        name: "Embroidered Sequinned Kurta",
+        brand: "DIVYANK",
+        price: "₹559",
+        oldPrice: "₹1,999",
+        discount: "72% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product662",
+        url: "https://tinyurl.com/2uwxb7ak",
+        image: "invertedimage/41.jpeg",
+        name: "Women Floral Print Anarkali Kurta & Palazzos with Dupatta",
+        brand: "Kimayra",
+        price: "₹1,036",
+        oldPrice: "₹3,699",
+        discount: "72% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product663",
+        url: "https://tinyurl.com/3a69cmcn",
+        image: "invertedimage/42.jpg",
+        name: "Striped Kurta",
+        brand: "HRITIKA",
+        price: "₹619",
+        oldPrice: "₹1,999",
+        discount: "69% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product664",
+        url: "https://tinyurl.com/ycx4up3k",
+        image: "invertedimage/43.jpeg",
+        name: "Women Printed Flared Kurta",
+        brand: "AVAASA MIX N' MATCH",
+        price: "₹662",
+        oldPrice: "₹1,299",
+        discount: "49% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product665",
+        url: "https://tinyurl.com/4j42apmt",
+        image: "invertedimage/44.jpeg",
+        name: "Embroidered Straight Kurta Set",
+        brand: "CHANDALIYO",
+        price: "₹1,520",
+        oldPrice: "₹3,999",
+        discount: "62% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product666",
+        url: "https://tinyurl.com/ywf5wxpz",
+        image: "invertedimage/45.jpg",
+        name: "Women Yellow & Gold-Toned Ethnic Motifs Printed Kurta",
+        brand: "AURELIA",
+        price: "₹600",
+        oldPrice: "₹1,299",
+        discount: "53% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product667",
+        url: "https://tinyurl.com/bdcs9h7s",
+        image: "invertedimage/46.jpeg",
+        name: "Women Printed Straight Kurta with Pants & Dupatta",
+        brand: "Hetvi Creation",
+        price: "₹1,199",
+        oldPrice: "₹2,498",
+        discount: "52% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product668",
+        url: "https://tinyurl.com/yf96peuy",
+        image: "invertedimage/47.jpg",
+        name: "Women Thread Work Kurta",
+        brand: "Marcia",
+        price: "₹569",
+        oldPrice: "₹1,899",
+        discount: "70% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product669",
+        url: "https://tinyurl.com/y3rv5vsa",
+        image: "invertedimage/48.jpeg",
+        name: "Ruffled Flared Kurta Set",
+        brand: "Wedani",
+        price: "₹2,199",
+        oldPrice: "₹4,999",
+        discount: "56% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product670",
+        url: "https://tinyurl.com/ydzjxbbh",
+        image: "invertedimage/49.jpg",
+        name: "Ethnic Motifs Printed Keyhole Neck Pure Cotton Kurta",
+        brand: "FERANOID",
+        price: "₹624",
+        oldPrice: "₹2,499",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product671",
+        url: "https://tinyurl.com/3yp69x76",
+        image: "invertedimage/50.jpg",
+        name: "Women Maroon Solid Straight Kurta",
+        brand: "Libas",
+        price: "₹506",
+        oldPrice: "₹1,299",
+        discount: "61% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product672",
+        url: "https://tinyurl.com/3jxn337c",
+        image: "invertedimage/51.jpeg",
+        name: "Women Embroidered Straight Kurta Set",
+        brand: "Black Scissor",
+        price: "₹1,636",
+        oldPrice: "₹8,179",
+        discount: "80% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product673",
+        url: "https://tinyurl.com/3hx4x743",
+        image: "invertedimage/52.jpg",
+        name: "Women Olive Green & Gold-toned Geometric Foil Printed Kurta",
+        brand: "Anouk",
+        price: "₹485",
+        oldPrice: "₹1,799",
+        discount: "73% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product674",
+        url: "https://tinyurl.com/muwjsx42",
+        image: "invertedimage/53.jpg",
+        name: "Green Floral Printed Tiered Kurti",
+        brand: "Kalini",
+        price: "₹652",
+        oldPrice: "₹1,999",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+      {
+        id: "product681",
+        url: "https://tinyurl.com/4svhwb48",
+        image: "invertedimage/54.jpg",
+        name: "Floral Printed Pure Cotton Kurti",
+        brand: "Rustorange",
+        price: "₹799",
+        oldPrice: "₹2,199",
+        discount: "64% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product682",
+        url: "https://tinyurl.com/tsddpyh5",
+        image: "invertedimage/55.jpg",
+        name: "Floral Printed Sequinned Pure Cotton Kurti",
+        brand: "Rain & Rainbow",
+        price: "₹698",
+        oldPrice: "₹1,995",
+        discount: "65% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product683",
+        url: "https://tinyurl.com/j2vwzeyn",
+        image: "invertedimage/56.jpg",
+        name: "Floral Printed Pure Cotton Kurti",
+        brand: "FERANOID",
+        price: "₹574",
+        oldPrice: "₹2,499",
+        discount: "77% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product684",
+        url: "https://tinyurl.com/4eetbxk5",
+        image: "invertedimage/57.jpg",
+        name: "Geometric Embroidered Kurti",
+        brand: "Libas",
+        price: "₹749",
+        oldPrice: "₹1,499",
+        discount: "50% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product685",
+        url: "https://tinyurl.com/f5dyptwk",
+        image: "invertedimage/58.jpg",
+        name: "Floral Printed Mandarin Collar Kurti",
+        brand: "CHANSI",
+        price: "₹799",
+        oldPrice: "₹3,199",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product686",
+        url: "https://tinyurl.com/yv5465ay",
+        image: "invertedimage/59.jpg",
+        name: "Ethnic Motifs Printed Pleated Anarkali Kurti",
+        brand: "Anouk",
+        price: "₹626",
+        oldPrice: "₹1,899",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product687",
+        url: "https://tinyurl.com/yckmdwk2",
+        image: "invertedimage/60.jpg",
+        name: "Floral Printed Puff Sleeves Pure Cotton A-Line Kurti",
+        brand: "God Bless",
+        price: "₹499",
+        oldPrice: "₹1,999",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product688",
+        url: "https://tinyurl.com/3mj8havz",
+        image: "invertedimage/61.jpg",
+        name: "Red Floral Printed Kurti",
+        brand: "Sangria",
+        price: "₹494",
+        oldPrice: "₹1,499",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product689",
+        url: "https://tinyurl.com/uvjkfk7s",
+        image: "invertedimage/62.jpg",
+        name: "Solid Straight Kurti",
+        brand: "Sangria",
+        price: "₹494",
+        oldPrice: "₹1,499",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product690",
+        url: "https://tinyurl.com/39pu9dmf",
+        image: "invertedimage/63.jpg",
+        name: "Floral Printed A-Line Kurtis",
+        brand: "Sangria",
+        price: "₹895",
+        oldPrice: "₹2,799",
+        discount: "68% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product691",
+        url: "https://tinyurl.com/yd2rvvmj",
+        image: "invertedimage/64.jpg",
+        name: "Floral Printed Pure Cotton Kurti",
+        brand: "Nayo",
+        price: "₹599",
+        oldPrice: "₹1199",
+        discount: "50% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+
+    },
+    {
+        id: "product692",
+        url: "https://tinyurl.com/2t469ev5",
+        image: "invertedimage/65.jpg",
+        name: "Floral Printed Pure Cotton Kurti",
+        brand: "Nayo",
+        price: "₹599",
+        oldPrice: "₹1199",
+        discount: "50% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product693",
+        url: "https://tinyurl.com/44bmdevw",
+        image: "invertedimage/66.jpg",
+        name: "Geometric Printed Pure Cotton Pleated Anarkali Kurti",
+        brand: "Sangria",
+        price: "₹739",
+        oldPrice: "₹3,699",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product694",
+        url: "https://tinyurl.com/3vmnw37x",
+        image: "invertedimage/67.jpg",
+        name: "Yoke Design Pleated Kurti",
+        brand: "HERE&NOW",
+        price: "₹429",
+        oldPrice: "₹999",
+        discount: "57% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product695",
+        url: "https://tinyurl.com/3ykj3295",
+        image: "invertedimage/68.jpg",
+        name: "Floral Yoke Design Sequinned Pure Cotton Puff Sleeves Pleated Kurti",
+        brand: "Libas",
+        price: "₹623",
+        oldPrice: "₹1,599",
+        discount: "61% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product696",
+        url: "https://tinyurl.com/4bx6a9hk",
+        image: "invertedimage/69.jpg",
+        name: "Striped Thread Work Mandarin Collar Pure Cotton A-Line Kurti",
+        brand: "Anouk",
+        price: "₹593",
+        oldPrice: "₹1,799",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product697",
+        url: "https://tinyurl.com/55c2spws",
+        image: "invertedimage/70.jpg",
+        name: "Olive Green Pure Cotton Kurti",
+        brand: "Malhaar",
+        price: "₹611",
+        oldPrice: "₹1,799",
+        discount: "66% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product698",
+        url: "https://tinyurl.com/4k3n346w",
+        image: "invertedimage/71.jpg",
+        name: "Floral Printed Pure Cotton A-Line Kurti",
+        brand: "Feranoid",
+        price: "₹724",
+        oldPrice: "₹2,499",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product699",
+        url: "https://tinyurl.com/72mnf72f",
+        image: "invertedimage/71.jpg",
+        name: "Blue & Beige Floral Printed Band Collar Straight Kurti",
+        brand: "Anouk",
+        price: "₹399",
+        oldPrice: "₹1,999",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product700",
+        url: "https://tinyurl.com/mvm9jhh6",
+        image: "invertedimage/72.jpg",
+        name: "Ethnic Motifs Printed Pure Cotton Kurti",
+        brand: "Kalini",
+        price: "₹551",
+        oldPrice: "₹2,399",
+        discount: "77% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+     {
+        id: "product701",
+        url: "https://tinyurl.com/n28kfu7u",
+        image: "invertedimage/73.jpg",
+        name: "Floral Printed V-Neck Pure Cotton A-Line Kurti",
+        brand: "Feranoid",
+        price: "₹774",
+        oldPrice: "₹2,499",
+        discount: "69% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product702",
+        url: "https://tinyurl.com/v7x7fd92",
+        image: "invertedimage/74.jpg",
+        name: "Floral Printed Pure Cotton Kurti",
+        brand: "Nayo",
+        price: "₹594",
+        oldPrice: "₹1,699",
+        discount: "65% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product703",
+        url: "https://tinyurl.com/53pcyw27",
+        image: "invertedimage/75.jpg",
+        name: "Floral Embroidered Pure Cotton Kurti",
+        brand: "Kalini",
+        price: "₹747",
+        oldPrice: "₹2,199",
+        discount: "66% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+      
+    {
+        "id": "product80",
+        "url": "https://tinyurl.com/4k88eu9n",
+        "image": "invertedimage/76.jpg",
+        "name": "Women Jean Straight Fit High-Rise Stretchable Cargo Jeans.",
+        "brand": "Kotty",
+        "price": "₹774",
+        "oldPrice": "₹2,499",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product81",
+        "url": "https://tinyurl.com/2p857pu6",
+        "image": "invertedimage/77.jpg",
+        "name": "Women Black Jean Clean Look Straight Fit High-Rise Stretchable Jeans.",
+        "brand": "Kotty",
+        "price": "₹774",
+        "oldPrice": "₹2,499",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product82",
+        "url": "https://tinyurl.com/2f4haa9k",
+        "image": "invertedimage/78.jpeg",
+        "name": "Women Straight Fit Cargo Pants with Insert Pockets.",
+        "brand": "ZHEIA",
+        "price": "₹903",
+        "oldPrice": "₹2,099",
+        "discount": "57% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product83",
+        "url": "https://tinyurl.com/ms7rk489",
+        "image": "invertedimage/79.jpg",
+        "name": "Women Black Straight Fit High-Rise Jeans",
+        "brand": "Kotty",
+        "price": "₹1,049",
+        "oldPrice": "₹2,499",
+        "discount": "58% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    }, 
+    {
+        "id": "product8",
+        "url": "https://tinyurl.com/27pf9v8b",
+        "image": "invertedimage/80.jpg",
+        "name": "Women Straight Fit Jeans",
+        "brand": "Kotty",
+        "price": "₹649",
+        "oldPrice": "₹2,499",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product9",
+        "url": "https://tinyurl.com/yeynn7yw",
+        "image": "invertedimage/81.jpg",
+        "name": "Women Straight Fit High-Rise Light Shade Stretchable Cotton Lycra Blend Jeans",
+        "brand": "Kotty",
+        "price": "₹649",
+        "oldPrice": "₹2,499",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product10",
+        "url": "https://tinyurl.com/mrxz68cm",
+        "image": "invertedimage/82.jpeg",
+        "name": "Straight Fit Pleat-Front Pants",
+        "brand": "Kotty",
+        "price": "₹300",
+        "oldPrice": "₹1,999",
+        "discount": "85% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+
+{
+    "id": "product78",
+    "url": "https://tinyurl.com/3jmhe9zs",
+    "image": "invertedimage/83.jpg",
+    "name": "Women Jean Straight Fit High-Rise Stretchable Cargo Jeans.",
+    "brand": "Kotty",
+    "price": "₹774",
+    "oldPrice": "₹2,499",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product79",
+    "url": "https://tinyurl.com/5n8vnfvv",
+    "image": "invertedimage/84.jpeg",
+    "name": "Women Straight Fit Cargo Pants.",
+    "brand": "Dimpy Garments",
+    "price": "₹350",
+    "oldPrice": "₹1,399",
+    "discount": "75% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+
+{
+    "id": "product84",
+    "url": "https://tinyurl.com/4nr522hk",
+    "image": "invertedimage/85.jpg",
+    "name": "Women Straight Fit High-Rise Jeans",
+    "brand": "Kotty",
+    "price": "₹924",
+    "oldPrice": "₹2,499",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+}, 
+    {
+        "id": "product1",
+        "url": "https://tinyurl.com/d96m4yuh",
+        "image": "invertedimage/86.jpg",
+        "name": "Women Flared High-Rise Heavy Fade Jeans",
+        "brand": "StyleCast",
+        "price": "₹899",
+        "oldPrice": "₹2,949",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product2",
+        "url": "https://tinyurl.com/yckyfmwu",
+        "image": "invertedimage/87.jpeg",
+        "name": "Women High-Rise Bootcut Jeans",
+        "brand": "LULU & SKY",
+        "price": "₹3,302",
+        "oldPrice": "₹8,254",
+        "discount": "60% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product3",
+        "url": "https://tinyurl.com/4856w9pc",
+        "image": "invertedimage/88.jpg",
+        "name": "Women Black Jean Straight Fit High-Rise Stretchable Jeans",
+        "brand": "Kotty",
+        "price": "₹839",
+        "oldPrice": "₹1,999",
+        "discount": "58% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product4",
+        "url": "https://tinyurl.com/ywrpjsmr",
+        "image": "invertedimage/89.jpeg",
+        "name": "Women Heavily Washed Bootcut Jeans",
+        "brand": "Lee Cooper",
+        "price": "₹1,019",
+        "oldPrice": "₹1,999",
+        "discount": "49% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product5",
+        "url": "https://tinyurl.com/yyupu4r6",
+        "image": "invertedimage/90.jpg",
+        "name": "Stylish Blue High-Rise Straight Fit Jeans",
+        "brand": "Sassafras",
+        "price": "₹804",
+        "oldPrice": "₹2,299",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product6",
+        "url": "https://tinyurl.com/3sxsz3xk",
+        "image": "invertedimage/91.jpeg",
+        "name": "Women Straight Fit Pleated Pants",
+        "brand": "Rio Basic",
+        "price": "₹699",
+        "oldPrice": "₹999",
+        "discount": "30% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product7",
+        "url": "https://tinyurl.com/jnkhnbez",
+        "image": "invertedimage/92.jpg",
+        "name": "Women Blue Jean Straight Fit High-Rise Stretchable Jeans",
+        "brand": "Kotty",
+        "price": "₹874",
+        "oldPrice": "₹2,499",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+          {
+    "id": "product108",
+    "url": "https://tinyurl.com/3cmvsuyx",
+    "image": "invertedimage/93.jpg",
+    "name": "Wide-leg high-rise cotton jeans",
+    "brand": "Street 9",
+    "price": "₹649",
+    "oldPrice": "₹2,599",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product109",
+    "url": "https://tinyurl.com/36rar36x",
+    "image": "invertedimage/94.jpeg",
+    "name": "High-rise straight-fit pants",
+    "brand": "Kotty",
+    "price": "₹300",
+    "oldPrice": "₹1,999",
+    "discount": "85% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product110",
+    "url": "https://tinyurl.com/3nxs3djj",
+    "image": "invertedimage/95.jpg",
+    "name": "Wide-leg high-rise cotton jeans",
+    "brand": "Street 9",
+    "price": "₹701",
+    "oldPrice": "₹2,599",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product111",
+    "url": "https://tinyurl.com/yk9cwtnc",
+    "image": "invertedimage/96.jpg",
+    "name": "Grey wide-leg high-rise jeans",
+    "brand": "Street 9",
+    "price": "₹701",
+    "oldPrice": "₹2,699",
+    "discount": "74% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product112",
+    "url": "https://tinyurl.com/4vmaby98",
+    "image": "invertedimage/97.jpeg",
+    "name": "Flat-front straight-fit cargo trousers",
+    "brand": "Zheia",
+    "price": "₹903",
+    "oldPrice": "₹2,099",
+    "discount": "57% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product113",
+    "url": "https://tinyurl.com/33dn74ev",
+    "image": "invertedimage/98.jpg",
+    "name": "Straight-fit high-rise stretchable jeans",
+    "brand": "Kotty",
+    "price": "₹774",
+    "oldPrice": "₹2,499",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product114",
+    "url": "https://tinyurl.com/724nfext",
+    "image": "invertedimage/99.jpg",
+    "name": "Wide-leg high-rise cotton jeans",
+    "brand": "AngelFab",
+    "price": "₹629",
+    "oldPrice": "₹2,999",
+    "discount": "79% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product115",
+    "url": "https://tinyurl.com/57a8s5xz",
+    "image": "invertedimage/100.jpeg",
+    "name": "Straight-fit cargo pants",
+    "brand": "DNMx",
+    "price": "₹922",
+    "oldPrice": "₹1,299",
+    "discount": "29% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product116",
+    "url": "https://tinyurl.com/rtsakhf4",
+    "image": "invertedimage/101.jpeg",
+    "name": "Tie-dye pleated pants",
+    "brand": "Freakins",
+    "price": "₹2,099",
+    "oldPrice": "₹4,999",
+    "discount": "58% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product117",
+    "url": "https://tinyurl.com/wct5m2ac",
+    "image": "invertedimage/102.jpg",
+    "name": "High-rise cotton jeans",
+    "brand": "AngelFab",
+    "price": "₹629",
+    "oldPrice": "₹2,999",
+    "discount": "79% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product118",
+    "url": "https://tinyurl.com/47fz83n2",
+    "image": "invertedimage/103.jpg",
+    "name": "High-rise cotton jeans",
+    "brand": "AngelFab",
+    "price": "₹719",
+    "oldPrice": "₹2,999",
+    "discount": "76% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product119",
+    "url": "https://tinyurl.com/e6kmem8b",
+    "image": "invertedimage/104.jpeg",
+    "name": "Straight fit pleated cargo pants",
+    "brand": "Fithub",
+    "price": "₹650",
+    "oldPrice": "₹2,499",
+    "discount": "74% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product120",
+    "url": "https://tinyurl.com/4p9saup9",
+    "image": "invertedimage/105.jpg",
+    "name": "Straight fit high-rise cotton jeans",
+    "brand": "Kotty",
+    "price": "₹739",
+    "oldPrice": "₹1,999",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product121",
+    "url": "https://tinyurl.com/mvtyarts",
+    "image": "invertedimage/106.jpg",
+    "name": "Blue straight fit high-rise jeans",
+    "brand": "Kotty",
+    "price": "₹924",
+    "oldPrice": "₹2,499",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product122",
+    "url": "https://tinyurl.com/5n8t2apt",
+    "image": "invertedimage/107.jpeg",
+    "name": "Straight fit high-rise denim cargo pants",
+    "brand": "Freakins",
+    "price": "₹1,995",
+    "oldPrice": "₹5,699",
+    "discount": "65% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product123",
+    "url": "https://tinyurl.com/2xm6kwc9",
+    "image": "invertedimage/108.jpg",
+    "name": "Straight fit high-rise stretchable jeans",
+    "brand": "Kotty",
+    "price": "₹774",
+    "oldPrice": "₹2,499",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+    
+{
+    "id": "product85",
+    "url": "https://tinyurl.com/53w7rpaa",
+    "image": "invertedimage/109.jpeg",
+    "name": "Women Flat-Front Straight Trousers",
+    "brand": "Yousta",
+    "price": "₹450",
+    "oldPrice": "₹899",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product86",
+    "url": "https://tinyurl.com/w7chdj4f",
+    "image": "invertedimage/110.jpg",
+    "name": "Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Kotty",
+    "price": "₹649",
+    "oldPrice": "₹2,499",
+    "discount": "74% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product87",
+    "url": "https://tinyurl.com/38x8mb93",
+    "image": "invertedimage/111.jpg",
+    "name": "Women Wide Leg High-Rise Jeans",
+    "brand": "THIRD QUADRANT",
+    "price": "₹1,022",
+    "oldPrice": "₹3,099",
+    "discount": "67% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product88",
+    "url": "https://tinyurl.com/2p82xta8",
+    "image": "invertedimage/112.jpeg",
+    "name": "Women Regular Fit Flat-Front Trousers",
+    "brand": "YOUSTA",
+    "price": "₹450",
+    "oldPrice": "₹899",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product89",
+    "url": "https://tinyurl.com/3cbw8e48",
+    "image": "invertedimage/113.jpg",
+    "name": "Women High-Rise Light Fade Wide Leg Jeans",
+    "brand": "FREAKINS",
+    "price": "₹1819",
+    "oldPrice": "₹5199",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product90",
+    "url": "https://tinyurl.com/35sbmdwu",
+    "image": "invertedimage/114.jpg",
+    "name": "Women Clean Look Wide Leg Jeans",
+    "brand": "LULU & SKY",
+    "price": "₹3112",
+    "oldPrice": "₹7781",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product91",
+    "url": "https://tinyurl.com/yc78mn58",
+    "image": "invertedimage/115.jpeg",
+    "name": "Women Straight Fit Cargo Pants",
+    "brand": "Rio for Trends Select",
+    "price": "₹799",
+    "oldPrice": "₹799",
+    "discount": "No discount",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product92",
+    "url": "https://tinyurl.com/y33sa9fe",
+    "image": "invertedimage/116.jpeg",
+    "name": "Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Kotty",
+    "price": "₹674",
+    "oldPrice": "₹2,499",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+          {
+    "id": "product93",
+    "url": "https://tinyurl.com/2j75et2u",
+    "image": "invertedimage/117.jpg",
+    "name": "Stylish Blue High-Rise Straight Fit Jeans",
+    "brand": "SASSAFRAS",
+    "price": "₹965",
+    "oldPrice": "₹2,299",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product94",
+    "url": "https://tinyurl.com/2r7aub2v",
+    "image": "invertedimage/118.jpeg",
+    "name": "Mid-Rise Pull-On Cargo Pants",
+    "brand": "GAP",
+    "price": "₹2,000",
+    "oldPrice": "₹3,999",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product95",
+    "url": "https://tinyurl.com/2nbekhw6",
+    "image": "invertedimage/119.jpg",
+    "name": "Women Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Stylecast X Kotty",
+    "price": "₹674",
+    "oldPrice": "₹2,499",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product96",
+    "url": "https://tinyurl.com/2akkbehn",
+    "image": "invertedimage/120.jpg",
+    "name": "Women Black Straight Fit High Rise Jeans",
+    "brand": "Kotty",
+    "price": "₹639",
+    "oldPrice": "₹1,999",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product97",
+    "url": "https://tinyurl.com/8sx2jn6e",
+    "image": "invertedimage/121.jpeg",
+    "name": "Straight Fit Cargo Pants",
+    "brand": "Fithub",
+    "price": "₹625",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product98",
+    "url": "https://tinyurl.com/5bekpt94",
+    "image": "invertedimage/122.jpg",
+    "name": "Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Kotty",
+    "price": "₹674",
+    "oldPrice": "₹2,499",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product99",
+    "url": "https://tinyurl.com/39af429h",
+    "image": "invertedimage/123.jpg",
+    "name": "Straight Fit High-Rise Heavy Fade Jeans",
+    "brand": "AngelFab",
+    "price": "₹599",
+    "oldPrice": "₹2,999",
+    "discount": "80% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product100",
+    "url": "https://tinyurl.com/27rs6fnr",
+    "image": "invertedimage/124.jpeg",
+    "name": "Pleated Straight Fit High-Rise Trousers",
+    "brand": "Kotty",
+    "price": "₹300",
+    "oldPrice": "₹1,999",
+    "discount": "85% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product101",
+    "url": "https://tinyurl.com/5yn9pdk4",
+    "image": "invertedimage/125.jpg",
+    "name": "Straight Fit High-Rise Heavy Fade Jeans",
+    "brand": "M Moddy",
+    "price": "₹799",
+    "oldPrice": "₹1,999",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product102",
+    "url": "https://tinyurl.com/ydpsmhn7",
+    "image": "invertedimage/126.jpg",
+    "name": "Women Black Jean Straight Fit High-Rise Stretchable",
+    "brand": "Kotty",
+    "price": "₹774",
+    "oldPrice": "₹2,499",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product103",
+    "url": "https://tinyurl.com/hed6tvw7",
+    "image": "invertedimage/127.jpeg",
+    "name": "Brown Wide Straight-Fit Cargo Pants",
+    "brand": "H&M",
+    "price": "₹1,129",
+    "oldPrice": "₹1,499",
+    "discount": "25% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product104",
+    "url": "https://tinyurl.com/mvazwhud",
+    "image": "invertedimage/128.jpg",
+    "name": "Heavy Fade High-Rise Jeans",
+    "brand": "Freakins",
+    "price": "₹1,959",
+    "oldPrice": "₹4,899",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product105",
+    "url": "https://tinyurl.com/57b37bsf",
+    "image": "invertedimage/129.jpg",
+    "name": "Wide-Leg High-Rise Cotton Jeans",
+    "brand": "Street 9",
+    "price": "₹647",
+    "oldPrice": "₹2,699",
+    "discount": "76% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product106",
+    "url": "https://tinyurl.com/yckdur4b",
+    "image": "invertedimage/130.jpeg",
+    "name": "Black Mid-Rise Pull-On Cargo Pants",
+    "brand": "GAP",
+    "price": "₹2,000",
+    "oldPrice": "₹3,999",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product107",
+    "url": "https://tinyurl.com/yb7xh35v",
+    "image": "invertedimage/131.jpg",
+    "name": "Women Black Jean Straight Fit High-Rise Stretchable",
+    "brand": "Kotty",
+    "price": "₹639",
+    "oldPrice": "₹1,999",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product119",
+    "url": "https://tinyurl.com/4f6tx7jp",
+    "image": "invertedimage/132.jpg",
+    "name": "Woven Design Zari Pure Silk Banarasi Saree",
+    "brand": "Jinax",
+    "price": "₹879",
+    "oldPrice": "₹5,499",
+    "discount": "84% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product120",
+    "url": "https://tinyurl.com/mr3w8p43",
+    "image": "invertedimage/133.jpg",
+    "name": "Woven Design Pure Cotton Saree",
+    "brand": "TEEHJ",
+    "price": "₹2,239",
+    "oldPrice": "₹15,999",
+    "discount": "86% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product121",
+    "url": "https://tinyurl.com/y4j8cht9",
+    "image": "invertedimage/134.jpg",
+    "name": "Black & Green Woven Design Zari Pallu Saree",
+    "brand": "Arhi",
+    "price": "₹3,243",
+    "oldPrice": "₹4,990",
+    "discount": "35% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+    
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+    const priceRange = document.getElementById("priceRange");
+    const priceValue = document.getElementById("priceValue");
+
+    function cleanPrice(price) {
+        if (!price || isNaN(price.replace(/₹|,|\s+/g, ""))) return Infinity;
+        return parseInt(price.replace(/₹|,|\s+/g, ""), 10);
+    }
+
+    function filterByCategory(products, category) {
+        if (category === "all") return products;
+        return products.filter(
+            (product) => product.category.toLowerCase() === category.toLowerCase()
+        );
+    }
+
+    function renderProducts(filteredProducts) {
+        catalog.innerHTML = "";
+
+        if (filteredProducts.length === 0) {
+            catalog.innerHTML = "<p>No products found!</p>";
+            return;
+        }
+
+        filteredProducts.forEach((product) => {
+            const productCard = `
+                <div class="product">
+                    <a href="${product.url}" target="_blank">
+                        <img src="${product.image}" alt="${product.name}">
+                    </a>
+                    <img class="logo" src="${product.logo}" alt="Logo">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.brand}</p>
+                        <div class="price">
+                            ${product.price}
+                            ${
+                                product.oldPrice
+                                    ? `<span class="old-price">${product.oldPrice}</span>`
+                                    : ""
+                            }
+                        </div>
+                        ${
+                            product.discount
+                                ? `<div class="discount">${product.discount}</div>`
+                                : ""
+                        }
+                    </div>
+                </div>
+            `;
+            catalog.innerHTML += productCard;
+        });
+    }
+
+    priceRange.value = 5000;
+    priceValue.textContent = `₹${priceRange.value}`;
+
+    renderProducts(allProducts);
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            buttons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            const category = button.getAttribute("data-category").toLowerCase();
+            const maxPrice = parseInt(priceRange.value);
+
+            let filteredProducts = filterByCategory(allProducts, category);
+            filteredProducts = filteredProducts.filter(
+                (product) => cleanPrice(product.price) <= maxPrice
+            );
+
+            renderProducts(filteredProducts);
+        });
+    });
+
+    priceRange.addEventListener("change", () => {
+        const maxPrice = parseInt(priceRange.value);
+        priceValue.textContent = `₹${maxPrice}`;
+
+        const activeButton = document.querySelector(".filter-buttons .active");
+        const category = activeButton ? activeButton.getAttribute("data-category").toLowerCase() : "all";
+
+        let filteredProducts = filterByCategory(allProducts, category);
+        filteredProducts = filteredProducts.filter(
+            (product) => cleanPrice(product.price) <= maxPrice
+        );
+
+        renderProducts(filteredProducts);
+    });
+</script>
+</body>
+</html>
