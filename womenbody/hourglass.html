@@ -1,0 +1,3706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px; /* Space for the header */
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 15px auto;
+            max-width: 1200px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-buttons button {
+            padding: 8px 14px; /* Smaller padding for compactness */
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-buttons button.active {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .price-dropdown select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .price-dropdown select:hover {
+            border-color: #ff4081;
+        }
+
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div>
+
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="kurtis">Kurtis</button>
+            <button data-category="kurta">Kurta</button>
+            <button data-category="Tops">Tops</button>
+            <button data-category="jeans">Jeans</button>
+            <button data-category="Traditional Saree">Traditional Saree</button>
+            <button data-category="Modern Saree">Modern Saree</button>
+            <button data-category="Dress">Dress</button>
+        </div>
+
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="500">Up to ₹500</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000">Up to ₹3000</option>
+                <option value="5000" selected>Up to ₹5000</option> <!-- Default to ₹5000 -->
+            </select>
+            <span id="priceValue">₹5000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+    const allProducts = [
+
+         
+  {
+        id: "product801",
+        url: "https://tinyurl.com/yckytdz7",
+        image: "hourglassimage/1.jpg",
+        name: "Yoke Design Mirror Work Kurta",
+        brand: "Sangria",
+        price: "₹1,200",
+        oldPrice: "₹2,449",
+        discount: "51% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product802",
+        url: "https://tinyurl.com/45p26y7c",
+        image: "hourglassimage/2.jpeg",
+        name: "Women Embroidered Straight Kurta Set",
+        brand: "Zeepkart",
+        price: "₹1,512",
+        oldPrice: "₹6,049",
+        discount: "75% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product803",
+        url: "https://tinyurl.com/mry32w4w",
+        image: "hourglassimage/3.jpg",
+        name: "Women Peach Round Neck Embroidered Rayon Straight Kurta",
+        brand: "Charu",
+        price: "₹575",
+        oldPrice: "₹3,199",
+        discount: "82% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product804",
+        url: "https://tinyurl.com/3c69xwzt",
+        image: "hourglassimage/4.jpg",
+        name: "Printed Mandarin Collar Kurta",
+        brand: "RANGMANCH BY PANTALOONS",
+        price: "₹608",
+        oldPrice: "₹699",
+        discount: "13% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product805",
+        url: "https://tinyurl.com/32fp6j9v",
+        image: "hourglassimage/5.jpeg",
+        name: "Women Straight Kurta",
+        brand: "GOSRIKI",
+        price: "₹649",
+        oldPrice: "₹2,599",
+        discount: "75% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+     {
+        id: "product806",
+        url: "https://tinyurl.com/4mk77u4z",
+        image: "hourglassimage/6.jpg",
+        name: "Women Teal Geometric Thread Work Straight Kurta",
+        brand: "Charu",
+        price: "₹599",
+        oldPrice: "₹2,999",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product807",
+        url: "https://tinyurl.com/4354vctf",
+        image: "hourglassimage/7.jpg",
+        name: "Floral Printed Pure Cotton Kurta",
+        brand: "Feranoid",
+        price: "₹624",
+        oldPrice: "₹2,499",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product808",
+        url: "https://tinyurl.com/yc49jpb9",
+        image: "hourglassimage/8.jpeg",
+        name: "Floral Printed Pure Cotton Kurta",
+        brand: "Feranoid",
+        price: "₹624",
+        oldPrice: "₹2,499",
+        discount: "75% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product809",
+        url: "https://tinyurl.com/4de3mehn",
+        image: "hourglassimage/9.jpg",
+        name: "Ethnic Motifs Embroidered Straight Kurta",
+        brand: "Paramount Chikan",
+        price: "₹2,159",
+        oldPrice: "₹4,799",
+        discount: "55% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product810",
+        url: "https://tinyurl.com/3x5swtva",
+        image: "hourglassimage/10.jpg",
+        name: "Ethnic Motifs Printed Kurta",
+        brand: "Anayna",
+        price: "₹539",
+        oldPrice: "₹1,998",
+        discount: "73% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product811",
+        url: "https://tinyurl.com/4tafwu7v",
+        image: "hourglassimage/11.jpg",
+        name: "Ethnic Motifs Printed Pure Cotton Straight Kurta",
+        brand: "Rimeline",
+        price: "₹615",
+        oldPrice: "₹2,199",
+        discount: "72% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product812",
+        url: "https://tinyurl.com/4bku9hys",
+        image: "hourglassimage/12.jpg",
+        name: "Women Mustard Yellow Printed A-Line Kurta",
+        brand: "Anouk",
+        price: "₹399",
+        oldPrice: "₹1,999",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product813",
+        url: "https://tinyurl.com/55zppdw6",
+        image: "hourglassimage/13.jpg",
+        name: "Women Navy Blue & White Printed Straight Kurta",
+        brand: "Anayna",
+        price: "₹527",
+        oldPrice: "₹1,599",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product814",
+        url: "https://tinyurl.com/rezd5395",
+        image: "hourglassimage/14.jpg",
+        name: "Ethnic Motif-Printed A-Line Kurta",
+        brand: "Sangria",
+        price: "₹579",
+        oldPrice: "₹1,999",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product815",
+        url: "https://tinyurl.com/sm5yre58",
+        image: "hourglassimage/15.jpg",
+        name: "Women Embroidered Straight Kurta",
+        brand: "Ode by House of Pataudi",
+        price: "₹679",
+        oldPrice: "₹1,999",
+        discount: "66% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product816",
+        url: "https://tinyurl.com/2rv5vvcz",
+        image: "hourglassimage/16.jpeg",
+        name: "Women Floral Kurti",
+        brand: "Werolia",
+        price: "₹495",
+        oldPrice: "₹1,499",
+        discount: "67% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product817",
+        url: "https://tinyurl.com/ab9jpf5p",
+        image: "hourglassimage/17.jpg",
+        name: "Women Thread Work Kurta",
+        brand: "Anouk",
+        price: "₹626",
+        oldPrice: "₹1,899",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product818",
+        url: "https://tinyurl.com/4ej9acfy",
+        image: "hourglassimage/18.jpg",
+        name: "Women Black Kurta",
+        brand: "Kalini",
+        price: "₹374",
+        oldPrice: "₹1,499",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product819",
+        url: "https://tinyurl.com/3dd95d69",
+        image: "hourglassimage/19.jpg",
+        name: "Lavender White Floral Printed Kurta",
+        brand: "Nayo",
+        price: "₹584",
+        oldPrice: "₹1,299",
+        discount: "55% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product820",
+        url: "https://tinyurl.com/5fjeytyy",
+        image: "hourglassimage/20.jpeg",
+        name: "Floral Pattern Straight Kurta Suit Set",
+        brand: "Estela",
+        price: "₹810",
+        oldPrice: "₹2,999",
+        discount: "73% OFF",
+        logo: "logo/A.png", // Ajio logo
+        category: "kurta",
+    },
+    {
+        id: "product821",
+        url: "https://tinyurl.com/2vupwmkb",
+        image: "hourglassimage/21.jpg",
+        name: "Women Black & White Floral Printed Straight Kurta",
+        brand: "Nayo",
+        price: "₹604",
+        oldPrice: "₹1,099",
+        discount: "45% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product822",
+        url: "https://tinyurl.com/yc8f6ynh",
+        image: "hourglassimage/22.jpg",
+        name: "Women Maroon Ethnic Motifs Printed Cotton Thread Work Kurta",
+        brand: "Varanga",
+        price: "₹499",
+        oldPrice: "₹2,999",
+        discount: "83% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product823",
+        url: "https://tinyurl.com/fjvhvba6",
+        image: "hourglassimage/23.jpg",
+        name: "Pailey Chikankari Shadow Work Georgette Kurta",
+        brand: "Kalini",
+        price: "₹531",
+        oldPrice: "₹2,796",
+        discount: "81% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product824",
+        url: "https://tinyurl.com/hdafry8c",
+        image: "hourglassimage/24.jpg",
+        name: "Women Yellow Pure Cotton Kantha Work Striped Kurta",
+        brand: "Anayna",
+        price: "₹492",
+        oldPrice: "₹1,699",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product825",
+        url: "https://tinyurl.com/repju562",
+        image: "hourglassimage/25.jpg",
+        name: "Leheriya Printed Halter Neck Thread Work Kurta",
+        brand: "Anouk",
+        price: "₹492",
+        oldPrice: "₹1,699",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product826",
+        url: "https://tinyurl.com/4ussbhzu",
+        image: "hourglassimage/26.jpg",
+        name: "Women Floral Printed Kurta",
+        brand: "Anouk",
+        price: "₹599",
+        oldPrice: "₹2,499",
+        discount: "76% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+    id: "product827",
+    url: "https://tinyurl.com/389jf422",
+    image: "hourglassimage/27.jpg",
+    name: "Geometric Printed Kurta",
+    brand: "Anouk",
+    price: "₹560",
+    oldPrice: "₹1,699",
+    discount: "67% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurta",
+},
+    {
+        id: "product828",
+        url: "https://tinyurl.com/4avcm857",
+        image: "hourglassimage/28.jpg",
+        name: "Women Yellow & White Pure Cotton Floral Printed Floral Kurta",
+        brand: "Anayna",
+        price: "₹509",
+        oldPrice: "₹1,699",
+        discount: "70% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product829",
+        url: "https://tinyurl.com/4244cka5",
+        image: "hourglassimage/29.jpg",
+        name: "Women Green Embroidered Straight Kurta",
+        brand: "Libas",
+        price: "₹415",
+        oldPrice: "₹1,599",
+        discount: "74% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product830",
+        url: "https://tinyurl.com/mtsvcsx3",
+        image: "hourglassimage/30.jpg",
+        name: "Women Maroon & Beige Ethnic Motifs Printed Thread Work Kurta",
+        brand: "Varanga",
+        price: "₹956",
+        oldPrice: "₹3,299",
+        discount: "71% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurta",
+    },
+    {
+        id: "product831",
+        url: "https://tinyurl.com/4uc6d34c",
+        image: "hourglassimage/31.jpg",
+        name: "Women Floral Embroidered Thread Work Pure Cotton Kurti",
+        brand: "RIYA",
+        price: "₹607",
+        oldPrice: "₹1,899",
+        discount: "68% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product832",
+        url: "https://tinyurl.com/37vvxbyj",
+        image: "hourglassimage/32.jpg",
+        name: "Navy Blue Printed Kurti",
+        brand: "Saree Swarg",
+        price: "₹858",
+        oldPrice: "₹1,950",
+        discount: "56% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product833",
+        url: "https://tinyurl.com/mta4x69e",
+        image: "hourglassimage/33.jpg",
+        name: "Floral Printed Kurti",
+        brand: "Anouk",
+        price: "₹588",
+        oldPrice: "₹1,899",
+        discount: "69% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+        id: "product834",
+        url: "https://tinyurl.com/2yycxwum",
+        image: "hourglassimage/34.jpg",
+        name: "Floral Embroidered Kurtis",
+        brand: "Vairagee",
+        price: "₹899",
+        oldPrice: "₹4,495",
+        discount: "80% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "kurtis",
+    },
+    {
+    id: "product835",
+    url: "https://tinyurl.com/yc7adntr",
+    image: "hourglassimage/35.jpeg",
+    name: "Embellished Straight Kurta with Pants",
+    brand: "Hritika",
+    price: "₹649",
+    oldPrice: "₹2,949",
+    discount: "78% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product836",
+    url: "https://tinyurl.com/4cnbzjhd",
+    image: "hourglassimage/36.jpg",
+    name: "Floral Printed Square Neck Pleated Pure Cotton A-Line Kurti",
+    brand: "Aadat",
+    price: "₹749",
+    oldPrice: "₹1,199",
+    discount: "38% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product837",
+    url: "https://tinyurl.com/2pttjmz6",
+    image: "hourglassimage/37.jpg",
+    name: "Ethnic Motifs Printed Pure Cotton Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹997",
+    oldPrice: "₹1,995",
+    discount: "50% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product838",
+    url: "https://tinyurl.com/486jnr38",
+    image: "hourglassimage/38.jpeg",
+    name: "Floral Print V-Neck Straight Kurta",
+    brand: "Gulmohar Jaipur",
+    price: "₹429",
+    oldPrice: "₹1,299",
+    discount: "67% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product839",
+    url: "https://tinyurl.com/3nsjww3d",
+    image: "hourglassimage/39.jpg",
+    name: "Floral Printed Mandarin Collar Pure Cotton A-Line Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹628",
+    oldPrice: "₹1,795",
+    discount: "65% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product840",
+    url: "https://tinyurl.com/mr2b893a",
+    image: "hourglassimage/40.jpg",
+    name: "Floral Printed V-Neck Flared Sleeves Pure Cotton Pleated Kurti",
+    brand: "Libas",
+    price: "₹576",
+    oldPrice: "₹1,049",
+    discount: "45% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product841",
+    url: "https://tinyurl.com/3vfsrz6e",
+    image: "hourglassimage/41.jpg",
+    name: "Ethnic Motifs Printed Sequinned Pure Cotton Ethnic Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹718",
+    oldPrice: "₹1,795",
+    discount: "60% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product842",
+    url: "https://tinyurl.com/3asvme7e",
+    image: "hourglassimage/42.jpg",
+    name: "Green Woven Design Zari Straight Pure Cotton Kurti",
+    brand: "Anouk",
+    price: "₹611",
+    oldPrice: "₹1,699",
+    discount: "64% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product843",
+    url: "https://tinyurl.com/y7dfnzy3",
+    image: "hourglassimage/43.jpeg",
+    name: "Women Floral Embroidered Straight Kurta Set with Dupatta",
+    brand: "Zeepkart",
+    price: "₹1,470",
+    oldPrice: "₹4,199",
+    discount: "65% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product844",
+    url: "https://tinyurl.com/3mnhpnar",
+    image: "hourglassimage/44.jpeg",
+    name: "Floral Print Anarkali Kurta with Pants & Dupatta",
+    brand: "Fusionic",
+    price: "₹1,927",
+    oldPrice: "₹4,100",
+    discount: "53% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product045",
+    url: "https://tinyurl.com/5n8f42wa",
+    image: "hourglassimage/45.jpeg",
+    name: "Women Floral Print Straight Kurta",
+    brand: "Avaasa Mix N' Match",
+    price: "₹407",
+    oldPrice: "₹799",
+    discount: "49% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product046",
+    url: "https://tinyurl.com/35tx93u3",
+    image: "hourglassimage/46.jpg",
+    name: "Green Floral Embroidered Thread Work Pure Cotton A-Line Kurti",
+    brand: "Anouk",
+    price: "₹611",
+    oldPrice: "₹1699",
+    discount: "64% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product047",
+    url: "https://tinyurl.com/3fd4pvc4",
+    image: "hourglassimage/47.jpg",
+    name: "Ethnic Motifs Printed V-Neck Pure Cotton Straight Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹718",
+    oldPrice: "₹1795",
+    discount: "60% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product048",
+    url: "https://tinyurl.com/mrx5j3v4",
+    image: "hourglassimage/48.jpeg",
+    name: "Floral Print A-Line Kurta",
+    brand: "Stylum",
+    price: "₹460",
+    oldPrice: "₹1999",
+    discount: "77% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product049",
+    url: "https://tinyurl.com/3xyj99kc",
+    image: "hourglassimage/49.jpg",
+    name: "Women Navy Blue & Off-White Printed Pure Cotton A-Line Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹726",
+    oldPrice: "₹2795",
+    discount: "74% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product050",
+    url: "https://tinyurl.com/4aa6dpmw",
+    image: "hourglassimage/50.jpg",
+    name: "Maroon & Black Ethnic Motifs Printed Pure Cotton Kurti",
+    brand: "Rain & Rainbow",
+    price: "₹663",
+    oldPrice: "₹1895",
+    discount: "65% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product051",
+    url: "https://tinyurl.com/49nza5fh",
+    image: "hourglassimage/51.jpeg",
+    name: "Women Flared Kurta with Pants & Dupatta",
+    brand: "Wedani",
+    price: "₹2149",
+    oldPrice: "₹4999",
+    discount: "57% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product052",
+    url: "https://tinyurl.com/yc2aftby",
+    image: "hourglassimage/52.jpg",
+    name: "Ethnic Printed V-Neck Pure Cotton A-Line Kurti",
+    brand: "Feranoid",
+    price: "₹674",
+    oldPrice: "₹2499",
+    discount: "73% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product053",
+    url: "https://tinyurl.com/4x5562ax",
+    image: "hourglassimage/53.jpg",
+    name: "Floral Printed Pleated Anarkali Kurti",
+    brand: "Anouk",
+    price: "₹626",
+    oldPrice: "₹1899",
+    discount: "67% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product054",
+    url: "https://tinyurl.com/4kz79wcf",
+    image: "hourglassimage/54.jpeg",
+    name: "Women Embroidered Straight Kurta with Pants & Dupatta",
+    brand: "JAPNAAM",
+    price: "₹1699",
+    oldPrice: "₹4499",
+    discount: "62% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product055",
+    url: "https://tinyurl.com/73w92bjz",
+    image: "hourglassimage/55.jpg",
+    name: "Floral Printed V-Neck Pure Cotton Pleated Kurti",
+    brand: "Libas",
+    price: "₹624",
+    oldPrice: "₹1249",
+    discount: "50% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product056",
+    url: "https://tinyurl.com/5ea897zv",
+    image: "hourglassimage/56.jpg",
+    name: "White Floral Chikankari Embroidered Pure Cotton Kurti",
+    brand: "Anouk",
+    price: "₹607",
+    oldPrice: "₹1899",
+    discount: "68% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product057",
+    url: "https://tinyurl.com/9bpda87s",
+    image: "hourglassimage/57.jpeg",
+    name: "Women Paisley Print Anarkali Kurta Set",
+    brand: "Taranjal",
+    price: "₹880",
+    oldPrice: "₹3999",
+    discount: "78% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product058",
+    url: "https://tinyurl.com/52am3sz4",
+    image: "hourglassimage/58.jpg",
+    name: "Tribal Printed Pure Cotton Straight Short Kurti",
+    brand: "Anouk",
+    price: "₹464",
+    oldPrice: "₹1499",
+    discount: "69% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product059",
+    url: "https://tinyurl.com/2w4sp44s",
+    image: "hourglassimage/59.jpg",
+    name: "Floral Printed Kantha Work Pure Cotton Kurti",
+    brand: "Anouk",
+    price: "₹495",
+    oldPrice: "₹1599",
+    discount: "69% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product060",
+    url: "https://tinyurl.com/3jvmums7",
+    image: "hourglassimage/60.jpeg",
+    name: "Embroidered Flared Kurta",
+    brand: "Purvija Kurties",
+    price: "₹592",
+    oldPrice: "₹1599",
+    discount: "63% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product061",
+    url: "https://tinyurl.com/5e36vjpt",
+    image: "hourglassimage/61.jpg",
+    name: "Floral Embroidered Kurtis",
+    brand: "Vairagee",
+    price: "₹899",
+    oldPrice: "₹4495",
+    discount: "80% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product062",
+    url: "https://tinyurl.com/28rb5ukx",
+    image: "hourglassimage/62.jpg",
+    name: "Black Ethnic Motif Embroidered Bell Sleeves A-Line Kurti",
+    brand: "HERE&NOW",
+    price: "₹598",
+    oldPrice: "₹2139",
+    discount: "72% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product063",
+    url: "https://tinyurl.com/yenczxhh",
+    image: "hourglassimage/63.jpeg",
+    name: "Women Paisley Print Straight Kurta",
+    brand: "GULMOHAR JAIPUR",
+    price: "₹400",
+    oldPrice: "₹1599",
+    discount: "75% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product064",
+    url: "https://tinyurl.com/8ee9vmus",
+    image: "hourglassimage/64.jpg",
+    name: "Maroon & Gold-Toned Ethnic Motifs Embroidered Velvet Kurti",
+    brand: "Shae by SASSAFRAS",
+    price: "₹759",
+    oldPrice: "₹1999",
+    discount: "62% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product066",
+    url: "https://tinyurl.com/p33nhddx",
+    image: "hourglassimage/65.jpg",
+    name: "Floral Printed Tie-Up Three-Quarter Sleeve A-line Pleated Kurti",
+    brand: "YASH GALLERY",
+    price: "₹666",
+    oldPrice: "₹2299",
+    discount: "71% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "kurtis",
+},
+{
+    id: "product067",
+    url: "https://tinyurl.com/ys7fc522",
+    image: "hourglassimage/66.jpeg",
+    name: "Women Floral Print Pant-Suit Set",
+    brand: "DAEVISH",
+    price: "₹1000",
+    oldPrice: "₹3999",
+    discount: "75% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product068",
+    url: "https://tinyurl.com/yfzvdvvu",
+    image: "hourglassimage/67.jpeg",
+    name: "Embroidered Flared Kurta",
+    brand: "ANANDITA",
+    price: "₹690",
+    oldPrice: "₹1499",
+    discount: "54% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product069",
+    url: "https://tinyurl.com/yc4x6xh5",
+    image: "hourglassimage/68.jpeg",
+    name: "Women No Darts Floral Print Flared Kurta",
+    brand: "GULMOHAR JAIPUR",
+    price: "₹720",
+    oldPrice: "₹1999",
+    discount: "64% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+{
+    id: "product070",
+    url: "https://tinyurl.com/mrucp5pz",
+    image: "hourglassimage/69.jpeg",
+    name: "Women Printed Anarkali Kurta with Dupatta",
+    brand: "FUSIONIC",
+    price: "₹1927",
+    oldPrice: "₹4100",
+    discount: "53% OFF",
+    logo: "logo/A.png", // Ajio logo
+    category: "kurta",
+},
+
+{
+    "id": "product46",
+    "url": "https://tinyurl.com/dyau7b9u",
+    "image": "hourglassimage/70.jpg",
+    "name": "Women Blue Smart Flared High-Rise Jeans",
+    "brand": "Street 9 Basics",
+    "price": "₹782",
+    "oldPrice": "₹2,899",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product47",
+    "url": "https://tinyurl.com/hzcauhe8",
+    "image": "hourglassimage/71.jpeg",
+    "name": "Women Lightly Washed High-Rise Flared Jeans",
+    "brand": "American Eagle",
+    "price": "₹2,999",
+    "oldPrice": "₹4,999",
+    "discount": "40% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product48",
+    "url": "https://tinyurl.com/mvuyb7tu",
+    "image": "hourglassimage/72.jpg",
+    "name": "Flared High-Rise Stretchable Jeans with Chains",
+    "brand": "DressBerry Basics",
+    "price": "₹719",
+    "oldPrice": "₹2,399",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product49",
+    "url": "https://tinyurl.com/mrx543j3",
+    "image": "hourglassimage/73.jpg",
+    "name": "Cotton Comfort Flared High-Rise Jeans with Low Distress",
+    "brand": "Sassafras",
+    "price": "₹1,124",
+    "oldPrice": "₹2,498",
+    "discount": "55% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product50",
+    "url": "https://tinyurl.com/bdz446dp",
+    "image": "hourglassimage/74.jpg",
+    "name": "Flared fit clean look cotton jeans",
+    "brand": "Ketch",
+    "price": "₹461",
+    "oldPrice": "₹2,099",
+    "discount": "78% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product51",
+    "url": "https://tinyurl.com/45tcc73t",
+    "image": "hourglassimage/75.jpg",
+    "name": "Blue flared high-rise clean look jeans",
+    "brand": "Basics By Tokyo Talkies",
+    "price": "₹699",
+    "oldPrice": "₹1,899",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product52",
+    "url": "https://tinyurl.com/4ccye996",
+    "image": "hourglassimage/76.jpg",
+    "name": "Blue flared mid-rise clean look jeans",
+    "brand": "Tokyo Talkies",
+    "price": "₹599",
+    "oldPrice": "₹1,899",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product53",
+    "url": "https://tinyurl.com/4uda98c5",
+    "image": "hourglassimage/77.jpg",
+    "name": "Cargo-style flared stretchable jeans",
+    "brand": "Mast & Harbour",
+    "price": "₹874",
+    "oldPrice": "₹2,499",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product54",
+    "url": "https://tinyurl.com/4vcwur42",
+    "image": "hourglassimage/78.jpg",
+    "name": "Flared high-rise light fade stretchable jeans",
+    "brand": "Mast & Harbour",
+    "price": "₹749",
+    "oldPrice": "₹2,499",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product55",
+    "url": "https://tinyurl.com/3wbdwr6f",
+    "image": "hourglassimage/79.jpg",
+    "name": "High-rise flared fit jeans with a distressed look.",
+    "brand": "Roadster",
+    "price": "₹624",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product56",
+    "url": "https://tinyurl.com/2xx5an2b",
+    "image": "hourglassimage/80.jpeg",
+    "name": "Heavy-wash flared jeans",
+    "brand": "DNMX",
+    "price": "₹270",
+    "oldPrice": "₹899",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product57",
+    "url": "https://tinyurl.com/4uhrwa2w",
+    "image": "hourglassimage/81.jpg",
+    "name": "Black flared high-rise jeans with low distress",
+    "brand": "Kotty",
+    "price": "₹639",
+    "oldPrice": "₹1,999",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product58",
+    "url": "https://tinyurl.com/345b5hvt",
+    "image": "hourglassimage/82.jpeg",
+    "name": "Lightly washed flared jeans",
+    "brand": "ONLY",
+    "price": "₹1,485",
+    "oldPrice": "₹3,299",
+    "discount": "55% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product59",
+    "url": "https://tinyurl.com/59xhcw7v",
+    "image": "hourglassimage/83.jpg",
+    "name": "Vintage vibes palazzo fit jeans.",
+    "brand": "Roadster",
+    "price": "₹617",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product60",
+    "url": "https://tinyurl.com/yeu82rsr",
+    "image": "hourglassimage/84.jpeg",
+    "name": "Heavily washed distressed bootcut jeans.",
+    "brand": "American Eagle",
+    "price": "₹3,299",
+    "oldPrice": "₹5,499",
+    "discount": "40% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product61",
+    "url": "https://tinyurl.com/5xwjmh8k",
+    "image": "hourglassimage/85.jpg",
+    "name": "Boot cut fit, no fade, high-rise jeans.",
+    "brand": "Roadster",
+    "price": "₹1,183",
+    "oldPrice": "₹3,199",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product62",
+    "url": "https://tinyurl.com/42zvxf6u",
+    "image": "hourglassimage/86.jpeg",
+    "name": "Mid-wash flared jeans.",
+    "brand": "Pepe Jeans",
+    "price": "₹1,750",
+    "oldPrice": "₹3,499",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product63",
+    "url": "https://tinyurl.com/yc6n8b4a",
+    "image": "hourglassimage/87.jpg",
+    "name": "Flared low-rise mildly distressed jeans.",
+    "brand": "Virgío",
+    "price": "₹2,590",
+    "oldPrice": "₹2,590",
+    "discount": "No discount",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product64",
+    "url": "https://tinyurl.com/9trunhct",
+    "image": "hourglassimage/88.jpg",
+    "name": "Flared high-rise light fade jeans.",
+    "brand": "StyleCast",
+    "price": "₹929",
+    "oldPrice": "₹2,949",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product65",
+    "url": "https://tinyurl.com/56apswa3",
+    "image": "hourglassimage/89.jpeg",
+    "name": "Flared high-rise jeans in dark blue.",
+    "brand": "Wrangler",
+    "price": "₹2,250",
+    "oldPrice": "₹4,499",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product66",
+    "url": "https://tinyurl.com/ymxth3b8",
+    "image": "hourglassimage/90.jpg",
+    "name": "Tailored bootcut high-rise jeans.",
+    "brand": "Lee",
+    "price": "₹6,499",
+    "oldPrice": "₹12,999",
+    "discount": "50% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product67",
+    "url": "https://tinyurl.com/5dssw4k6",
+    "image": "hourglassimage/91.jpeg",
+    "name": "Lightly washed distressed bootcut jeans.",
+    "brand": "Showoff",
+    "price": "₹1,393",
+    "oldPrice": "₹4,220",
+    "discount": "67% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product68",
+    "url": "https://tinyurl.com/4ryruzfj",
+    "image": "hourglassimage/92.jpg",
+    "name": "Bootcut high-rise cropped stretchable denim jeans.",
+    "brand": "Roadster",
+    "price": "₹1,371",
+    "oldPrice": "₹3,429",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product69",
+    "url": "https://tinyurl.com/yc4cj8tm",
+    "image": "hourglassimage/93.jpeg",
+    "name": "High-rise flared jeans with distressed detailing.",
+    "brand": "Orchid Blues",
+    "price": "₹812",
+    "oldPrice": "₹2,799",
+    "discount": "71% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product70",
+    "url": "https://tinyurl.com/r7cehtuz",
+    "image": "hourglassimage/94.jpg",
+    "name": "Women flared stretchable jeans.",
+    "brand": "DressBerry",
+    "price": "₹644",
+    "oldPrice": "₹1,499",
+    "discount": "57% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product71",
+    "url": "https://tinyurl.com/4a3xa957",
+    "image": "hourglassimage/95.jpeg",
+    "name": "Women flared jeans.",
+    "brand": "Lulu & Sky",
+    "price": "₹3,256",
+    "oldPrice": "₹8,140",
+    "discount": "60% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product72",
+    "url": "https://tinyurl.com/3apfs8yf",
+    "image": "hourglassimage/96.jpg",
+    "name": "Flared Fit High-Rise Stretchable Jeans.",
+    "brand": "Roadster",
+    "price": "₹1,217",
+    "oldPrice": "₹2,899",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product73",
+    "url": "https://tinyurl.com/msf2cpb9",
+    "image": "hourglassimage/97.jpeg",
+    "name": "Women Lightly-Washed Flared Jeans.",
+    "brand": "Orchid Blues",
+    "price": "₹957",
+    "oldPrice": "₹2,899",
+    "discount": "67% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+          {
+    "id": "product74",
+    "url": "https://tinyurl.com/mcshewc",
+    "image": "hourglassimage/98.jpg",
+    "name": "Non-Stretch Flare Fit High Distress Jeans.",
+    "brand": "High Star",
+    "price": "₹999",
+    "oldPrice": "₹2,499",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product75",
+    "url": "https://tinyurl.com/36bhwnkr",
+    "image": "hourglassimage/99.jpeg",
+    "name": "Lightly Washed Flared Jeans.",
+    "brand": "Orchid Blues",
+    "price": "₹812",
+    "oldPrice": "₹2,799",
+    "discount": "71% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product76",
+    "url": "https://tinyurl.com/y9jxvj37",
+    "image": "hourglassimage/100.jpg",
+    "name": "Black Flared High-Rise Chain Slit Jeans.",
+    "brand": "Sassafras",
+    "price": "₹965",
+    "oldPrice": "₹2,299",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product77",
+    "url": "https://tinyurl.com/2s4unc59",
+    "image": "hourglassimage/101.jpg",
+    "name": "Women Flat-Front Flared High-Rise Jeans.",
+    "brand": "Turning Blue",
+    "price": "₹1,499",
+    "oldPrice": "₹3,899",
+    "discount": "61% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product1",
+    "url": "https://tinyurl.com/d96m4yuh",
+    "image": "hourglassimage/102.jpg",
+    "name": "Women Flared High-Rise Heavy Fade Jeans",
+    "brand": "StyleCast",
+    "price": "₹899",
+    "oldPrice": "₹2,949",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product2",
+    "url": "https://tinyurl.com/yckyfmwu",
+    "image": "hourglassimage/103.jpeg",
+    "name": "Women High-Rise Bootcut Jeans",
+    "brand": "LULU & SKY",
+    "price": "₹3,302",
+    "oldPrice": "₹8,254",
+    "discount": "60% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product3",
+    "url": "https://tinyurl.com/4856w9pc",
+    "image": "hourglassimage/104.jpg",
+    "name": "Women Black Jean Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Kotty",
+    "price": "₹839",
+    "oldPrice": "₹1,999",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product4",
+    "url": "https://tinyurl.com/ywrpjsmr",
+    "image": "hourglassimage/105.jpeg",
+    "name": "Women Heavily Washed Bootcut Jeans",
+    "brand": "Lee Cooper",
+    "price": "₹1,019",
+    "oldPrice": "₹1,999",
+    "discount": "49% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product5",
+    "url": "https://tinyurl.com/yyupu4r6",
+    "image": "hourglassimage/106.jpg",
+    "name": "Stylish Blue High-Rise Straight Fit Jeans",
+    "brand": "Sassafras",
+    "price": "₹804",
+    "oldPrice": "₹2,299",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product6",
+    "url": "https://tinyurl.com/3sxsz3xk",
+    "image": "hourglassimage/107.jpeg",
+    "name": "Women Straight Fit Pleated Pants",
+    "brand": "Rio Basic",
+    "price": "₹699",
+    "oldPrice": "₹999",
+    "discount": "30% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+{
+    "id": "product7",
+    "url": "https://tinyurl.com/jnkhnbez",
+    "image": "hourglassimage/108.jpg",
+    "name": "Women Blue Jean Straight Fit High-Rise Stretchable Jeans",
+    "brand": "Kotty",
+    "price": "₹874",
+    "oldPrice": "₹2,499",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+      {
+"id": "product108",
+"url": "https://tinyurl.com/3cmvsuyx",
+"image": "hourglassimage/109.jpg",
+"name": "Wide-leg high-rise cotton jeans",
+"brand": "Street 9",
+"price": "₹649",
+"oldPrice": "₹2,599",
+"discount": "75% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product109",
+"url": "https://tinyurl.com/36rar36x",
+"image": "hourglassimage/110.jpeg",
+"name": "High-rise straight-fit pants",
+"brand": "Kotty",
+"price": "₹300",
+"oldPrice": "₹1,999",
+"discount": "85% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product110",
+"url": "https://tinyurl.com/3nxs3djj",
+"image": "hourglassimage/111.jpg",
+"name": "Wide-leg high-rise cotton jeans",
+"brand": "Street 9",
+"price": "₹701",
+"oldPrice": "₹2,599",
+"discount": "73% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product111",
+"url": "https://tinyurl.com/yk9cwtnc",
+"image": "hourglassimage/112.jpg",
+"name": "Grey wide-leg high-rise jeans",
+"brand": "Street 9",
+"price": "₹701",
+"oldPrice": "₹2,699",
+"discount": "74% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product112",
+"url": "https://tinyurl.com/4vmaby98",
+"image": "hourglassimage/113.jpeg",
+"name": "Flat-front straight-fit cargo trousers",
+"brand": "Zheia",
+"price": "₹903",
+"oldPrice": "₹2,099",
+"discount": "57% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product113",
+"url": "https://tinyurl.com/33dn74ev",
+"image": "hourglassimage/114.jpg",
+"name": "Straight-fit high-rise stretchable jeans",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product114",
+"url": "https://tinyurl.com/724nfext",
+"image": "hourglassimage/115.jpg",
+"name": "Wide-leg high-rise cotton jeans",
+"brand": "AngelFab",
+"price": "₹629",
+"oldPrice": "₹2,999",
+"discount": "79% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product115",
+"url": "https://tinyurl.com/57a8s5xz",
+"image": "hourglassimage/116.jpeg",
+"name": "Straight-fit cargo pants",
+"brand": "DNMx",
+"price": "₹922",
+"oldPrice": "₹1,299",
+"discount": "29% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product116",
+"url": "https://tinyurl.com/rtsakhf4",
+"image": "hourglassimage/117.jpeg",
+"name": "Tie-dye pleated pants",
+"brand": "Freakins",
+"price": "₹2,099",
+"oldPrice": "₹4,999",
+"discount": "58% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product117",
+"url": "https://tinyurl.com/wct5m2ac",
+"image": "hourglassimage/118.jpg",
+"name": "High-rise cotton jeans",
+"brand": "AngelFab",
+"price": "₹629",
+"oldPrice": "₹2,999",
+"discount": "79% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product118",
+"url": "https://tinyurl.com/47fz83n2",
+"image": "hourglassimage/119.jpg",
+"name": "High-rise cotton jeans",
+"brand": "AngelFab",
+"price": "₹719",
+"oldPrice": "₹2,999",
+"discount": "76% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product119",
+"url": "https://tinyurl.com/e6kmem8b",
+"image": "hourglassimage/120.jpeg",
+"name": "Straight fit pleated cargo pants",
+"brand": "Fithub",
+"price": "₹650",
+"oldPrice": "₹2,499",
+"discount": "74% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product120",
+"url": "https://tinyurl.com/4p9saup9",
+"image": "hourglassimage/121.jpg",
+"name": "Straight fit high-rise cotton jeans",
+"brand": "Kotty",
+"price": "₹739",
+"oldPrice": "₹1,999",
+"discount": "63% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product121",
+"url": "https://tinyurl.com/mvtyarts",
+"image": "hourglassimage/122.jpg",
+"name": "Blue straight fit high-rise jeans",
+"brand": "Kotty",
+"price": "₹924",
+"oldPrice": "₹2,499",
+"discount": "63% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product122",
+"url": "https://tinyurl.com/5n8t2apt",
+"image": "hourglassimage/123.jpeg",
+"name": "Straight fit high-rise denim cargo pants",
+"brand": "Freakins",
+"price": "₹1,995",
+"oldPrice": "₹5,699",
+"discount": "65% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product123",
+"url": "https://tinyurl.com/2xm6kwc9",
+"image": "hourglassimage/124.jpg",
+"name": "Straight fit high-rise stretchable jeans",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+    "id": "product8",
+    "url": "https://tinyurl.com/27pf9v8b",
+    "image": "hourglassimage/125.jpg",
+    "name": "Women Straight Fit Jeans",
+    "brand": "Kotty",
+    "price": "₹649",
+    "oldPrice": "₹2,499",
+    "discount": "74% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product9",
+    "url": "https://tinyurl.com/yeynn7yw",
+    "image": "hourglassimage/126.jpg",
+    "name": "Women Straight Fit High-Rise Light Shade Stretchable Cotton Lycra Blend Jeans",
+    "brand": "Kotty",
+    "price": "₹649",
+    "oldPrice": "₹2,499",
+    "discount": "74% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans",
+},
+{
+    "id": "product10",
+    "url": "https://tinyurl.com/mrxz68cm",
+    "image": "hourglassimage/127.jpeg",
+    "name": "Straight Fit Pleat-Front Pants",
+    "brand": "Kotty",
+    "price": "₹300",
+    "oldPrice": "₹1,999",
+    "discount": "85% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans",
+},
+
+{
+"id": "product78",
+"url": "https://tinyurl.com/3jmhe9zs",
+"image": "hourglassimage/128.jpg",
+"name": "Women Jean Straight Fit High-Rise Stretchable Cargo Jeans.",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product79",
+"url": "https://tinyurl.com/5n8vnfvv",
+"image": "hourglassimage/129.jpeg",
+"name": "Women Straight Fit Cargo Pants.",
+"brand": "Dimpy Garments",
+"price": "₹350",
+"oldPrice": "₹1,399",
+"discount": "75% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product80",
+"url": "https://tinyurl.com/4k88eu9n",
+"image": "hourglassimage/130.jpg",
+"name": "Women Jean Straight Fit High-Rise Stretchable Cargo Jeans.",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product81",
+"url": "https://tinyurl.com/2p857pu6",
+"image": "hourglassimage/131.jpg",
+"name": "Women Black Jean Clean Look Straight Fit High-Rise Stretchable Jeans.",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product82",
+"url": "https://tinyurl.com/2f4haa9k",
+"image": "hourglassimage/132.jpeg",
+"name": "Women Straight Fit Cargo Pants with Insert Pockets.",
+"brand": "ZHEIA",
+"price": "₹903",
+"oldPrice": "₹2,099",
+"discount": "57% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product83",
+"url": "https://tinyurl.com/ms7rk489",
+"image": "hourglassimage/133.jpg",
+"name": "Women Black Straight Fit High-Rise Jeans",
+"brand": "Kotty",
+"price": "₹1,049",
+"oldPrice": "₹2,499",
+"discount": "58% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product84",
+"url": "https://tinyurl.com/4nr522hk",
+"image": "hourglassimage/134.jpg",
+"name": "Women Straight Fit High-Rise Jeans",
+"brand": "Kotty",
+"price": "₹924",
+"oldPrice": "₹2,499",
+"discount": "63% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product85",
+"url": "https://tinyurl.com/53w7rpaa",
+"image": "hourglassimage/135.jpeg",
+"name": "Women Flat-Front Straight Trousers",
+"brand": "Yousta",
+"price": "₹450",
+"oldPrice": "₹899",
+"discount": "50% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product86",
+"url": "https://tinyurl.com/w7chdj4f",
+"image": "hourglassimage/136.jpg",
+"name": "Straight Fit High-Rise Stretchable Jeans",
+"brand": "Kotty",
+"price": "₹649",
+"oldPrice": "₹2,499",
+"discount": "74% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product87",
+"url": "https://tinyurl.com/38x8mb93",
+"image": "hourglassimage/137.jpg",
+"name": "Women Wide Leg High-Rise Jeans",
+"brand": "THIRD QUADRANT",
+"price": "₹1,022",
+"oldPrice": "₹3,099",
+"discount": "67% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product88",
+"url": "https://tinyurl.com/2p82xta8",
+"image": "hourglassimage/138.jpeg",
+"name": "Women Regular Fit Flat-Front Trousers",
+"brand": "YOUSTA",
+"price": "₹450",
+"oldPrice": "₹899",
+"discount": "50% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product89",
+"url": "https://tinyurl.com/3cbw8e48",
+"image": "hourglassimage/139.jpg",
+"name": "Women High-Rise Light Fade Wide Leg Jeans",
+"brand": "FREAKINS",
+"price": "₹1819",
+"oldPrice": "₹5199",
+"discount": "65% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product90",
+"url": "https://tinyurl.com/35sbmdwu",
+"image": "hourglassimage/140.jpg",
+"name": "Women Clean Look Wide Leg Jeans",
+"brand": "LULU & SKY",
+"price": "₹3112",
+"oldPrice": "₹7781",
+"discount": "60% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product91",
+"url": "https://tinyurl.com/yc78mn58",
+"image": "hourglassimage/141.jpeg",
+"name": "Women Straight Fit Cargo Pants",
+"brand": "Rio for Trends Select",
+"price": "₹799",
+"oldPrice": "₹799",
+"discount": "No discount",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product92",
+"url": "https://tinyurl.com/y33sa9fe",
+"image": "hourglassimage/142.jpeg",
+"name": "Straight Fit High-Rise Stretchable Jeans",
+"brand": "Kotty",
+"price": "₹674",
+"oldPrice": "₹2,499",
+"discount": "73% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+      {
+"id": "product93",
+"url": "https://tinyurl.com/2j75et2u",
+"image": "hourglassimage/143.jpg",
+"name": "Stylish Blue High-Rise Straight Fit Jeans",
+"brand": "SASSAFRAS",
+"price": "₹965",
+"oldPrice": "₹2,299",
+"discount": "58% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product94",
+"url": "https://tinyurl.com/2r7aub2v",
+"image": "hourglassimage/144.jpeg",
+"name": "Mid-Rise Pull-On Cargo Pants",
+"brand": "GAP",
+"price": "₹2,000",
+"oldPrice": "₹3,999",
+"discount": "50% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product95",
+"url": "https://tinyurl.com/2nbekhw6",
+"image": "hourglassimage/145.jpg",
+"name": "Women Straight Fit High-Rise Stretchable Jeans",
+"brand": "Stylecast X Kotty",
+"price": "₹674",
+"oldPrice": "₹2,499",
+"discount": "73% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product96",
+"url": "https://tinyurl.com/2akkbehn",
+"image": "hourglassimage/146.jpg",
+"name": "Women Black Straight Fit High Rise Jeans",
+"brand": "Kotty",
+"price": "₹639",
+"oldPrice": "₹1,999",
+"discount": "68% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product97",
+"url": "https://tinyurl.com/8sx2jn6e",
+"image": "hourglassimage/147.jpeg",
+"name": "Straight Fit Cargo Pants",
+"brand": "Fithub",
+"price": "₹625",
+"oldPrice": "₹2,499",
+"discount": "75% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product98",
+"url": "https://tinyurl.com/5bekpt94",
+"image": "hourglassimage/148.jpg",
+"name": "Straight Fit High-Rise Stretchable Jeans",
+"brand": "Kotty",
+"price": "₹674",
+"oldPrice": "₹2,499",
+"discount": "73% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product99",
+"url": "https://tinyurl.com/39af429h",
+"image": "hourglassimage/149.jpg",
+"name": "Straight Fit High-Rise Heavy Fade Jeans",
+"brand": "AngelFab",
+"price": "₹599",
+"oldPrice": "₹2,999",
+"discount": "80% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product100",
+"url": "https://tinyurl.com/27rs6fnr",
+"image": "hourglassimage/150.jpeg",
+"name": "Pleated Straight Fit High-Rise Trousers",
+"brand": "Kotty",
+"price": "₹300",
+"oldPrice": "₹1,999",
+"discount": "85% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product101",
+"url": "https://tinyurl.com/5yn9pdk4",
+"image": "hourglassimage/151.jpg",
+"name": "Straight Fit High-Rise Heavy Fade Jeans",
+"brand": "M Moddy",
+"price": "₹799",
+"oldPrice": "₹1,999",
+"discount": "60% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product102",
+"url": "https://tinyurl.com/ydpsmhn7",
+"image": "hourglassimage/152.jpg",
+"name": "Women Black Jean Straight Fit High-Rise Stretchable",
+"brand": "Kotty",
+"price": "₹774",
+"oldPrice": "₹2,499",
+"discount": "69% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product103",
+"url": "https://tinyurl.com/hed6tvw7",
+"image": "hourglassimage/153.jpeg",
+"name": "Brown Wide Straight-Fit Cargo Pants",
+"brand": "H&M",
+"price": "₹1,129",
+"oldPrice": "₹1,499",
+"discount": "25% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product104",
+"url": "https://tinyurl.com/mvazwhud",
+"image": "hourglassimage/154.jpg",
+"name": "Heavy Fade High-Rise Jeans",
+"brand": "Freakins",
+"price": "₹1,959",
+"oldPrice": "₹4,899",
+"discount": "60% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product105",
+"url": "https://tinyurl.com/57b37bsf",
+"image": "hourglassimage/155.jpg",
+"name": "Wide-Leg High-Rise Cotton Jeans",
+"brand": "Street 9",
+"price": "₹647",
+"oldPrice": "₹2,699",
+"discount": "76% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+},
+{
+"id": "product106",
+"url": "https://tinyurl.com/yckdur4b",
+"image": "hourglassimage/156.jpeg",
+"name": "Black Mid-Rise Pull-On Cargo Pants",
+"brand": "GAP",
+"price": "₹2,000",
+"oldPrice": "₹3,999",
+"discount": "50% OFF",
+"logo": "logo/A.png",
+"category": "Jeans",
+},
+{
+"id": "product107",
+"url": "https://tinyurl.com/yb7xh35v",
+"image": "hourglassimage/157.jpg",
+"name": "Women Black Jean Straight Fit High-Rise Stretchable",
+"brand": "Kotty",
+"price": "₹639",
+"oldPrice": "₹1,999",
+"discount": "68% OFF",
+"logo": "logo/M.png",
+"category": "Jeans",
+}, 
+
+{
+    "id": "product122",
+    "url": "https://tinyurl.com/3zpdkhc4",
+    "image": "hourglassimage/158.jpg",
+    "name": "Ethnic Motifs Zari Woven Banarasi Saree",
+    "brand": "Aldwych",
+    "price": "₹1,199",
+    "oldPrice": "₹2,999",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Tradit,ional Saree"
+},
+{
+    "id": "product123",
+    "url": "https://tinyurl.com/5a63ybjv",
+    "image": "hourglassimage/159.jpg",
+    "name": "Navy Blue Ethnic Motifs Embroidered Saree",
+    "brand": "Sangria",
+    "price": "₹1,648",
+    "oldPrice": "₹4,995",
+    "discount": "67% OFF",
+    "logo": "logo/M.png",
+    "category": "Tradit,ional Saree"
+},
+{
+    "id": "product124",
+    "url": "https://tinyurl.com/mwtzb2a5",
+    "image": "hourglassimage/160.jpg",
+    "name": "Women Embellished Beads and Stones Net Saree",
+    "brand": "Subham",
+    "price": "₹1,039",
+    "oldPrice": "₹3,999",
+    "discount": "74% OFF",
+    "logo": "logo/M.png",
+    "category": "Tradit,ional Saree"
+},
+    {
+        "id": "product131",
+        "url": "https://tinyurl.com/pj6yud4h",
+        "image": "hourglassimage/161.jpg",
+        "name": "Floral Embroidered Net Saree",
+        "brand": "Sangria",
+        "price": "₹1,428",
+        "oldPrice": "₹4,330",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product132",
+        "url": "https://tinyurl.com/4hnry8kz",
+        "image": "hourglassimage/162.jpg",
+        "name": "Ethnic Motif Embellished Tissue Saree",
+        "brand": "Koskii",
+        "price": "₹3,391",
+        "oldPrice": "₹3,990",
+        "discount": "15% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product133",
+        "url": "https://tinyurl.com/5edk8472",
+        "image": "hourglassimage/163.jpg",
+        "name": "Party Wear Floral Embroidered Net Saree",
+        "brand": "Jaipur Kurti",
+        "price": "₹1,484",
+        "oldPrice": "₹4,499",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product134",
+        "url": "https://tinyurl.com/3f8h48md",
+        "image": "hourglassimage/164.jpg",
+        "name": "Pure Georgette Saree",
+        "brand": "Mitera",
+        "price": "₹1,374",
+        "oldPrice": "₹6,873",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product135",
+        "url": "https://tinyurl.com/55d27mpn",
+        "image": "hourglassimage/165.jpg",
+        "name": "Coffee Brown & Black Saree",
+        "brand": "Sangria",
+        "price": "₹929",
+        "oldPrice": "₹2,999",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+
+    {
+        "id": "product136",
+        "url": "https://tinyurl.com/mwsukuea",
+        "image": "hourglassimage/166.jpg",
+        "name": "Black Floral Net Saree",
+        "brand": "VAIRAGEE",
+        "price": "₹1,121",
+        "oldPrice": "₹6,595",
+        "discount": "83% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product137",
+        "url": "https://myntr.it/2lcAouA",
+        "image": "hourglassimage/167.jpg",
+        "name": "Floral Printed Satin Saree",
+        "brand": "Sanwariya Silk",
+        "price": "₹879",
+        "oldPrice": "₹3,999",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product138",
+        "url": "https://tinyurl.com/sb4fpf7p",
+        "image": "hourglassimage/168.jpg",
+        "name": "Sequinned Organza Saree",
+        "brand": "Tikhi Imli",
+        "price": "₹1,239",
+        "oldPrice": "₹3,997",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product139",
+        "url": "https://tinyurl.com/5a7w8spf",
+        "image": "hourglassimage/169.jpg",
+        "name": "Floral Sequins and Thread Embroidered Saree with Blouse Piece",
+        "brand": "Inddus",
+        "price": "₹2,837",
+        "oldPrice": "₹6,599",
+        "discount": "57% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product140",
+        "url": "https://tinyurl.com/4k2c7pek",
+        "image": "hourglassimage/170.jpg",
+        "name": "Floral Sequinned Poly Georgette Saree",
+        "brand": "HERE&NOW",
+        "price": "₹1,019",
+        "oldPrice": "₹2,999",
+        "discount": "66% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    
+    {
+        "id": "product141",
+        "url": "https://tinyurl.com/bdd3xp77",
+        "image": "hourglassimage/171.jpg",
+        "name": "Mirror Work Net Saree",
+        "brand": "Tikhi Imli",
+        "price": "₹1,471",
+        "oldPrice": "₹3,198",
+        "discount": "54% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product142",
+        "url": "https://tinyurl.com/5n7npbns",
+        "image": "hourglassimage/172.jpg",
+        "name": "Pink & Green Floral Zari Organza Kanjeevaram Saree",
+        "brand": "Mitera",
+        "price": "₹1,494",
+        "oldPrice": "₹6,795",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product143",
+        "url": "https://tinyurl.com/rv7bck24",
+        "image": "hourglassimage/173.jpg",
+        "name": "Sequinned Organza Saree",
+        "brand": "Kalista",
+        "price": "₹1,915",
+        "oldPrice": "₹9,576",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product144",
+        "url": "https://tinyurl.com/5596777n",
+        "image": "hourglassimage/174.jpg",
+        "name": "Mukaish Poly Chiffon Saree",
+        "brand": "Tikhi Imli",
+        "price": "₹999",
+        "oldPrice": "₹3,330",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product145",
+        "url": "https://tinyurl.com/ycabv98r",
+        "image": "hourglassimage/175.jpg",
+        "name": "Burgundy Embellished Sequinned Pure Georgette Saree",
+        "brand": "Sangria",
+        "price": "₹1,425",
+        "oldPrice": "₹4,599",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product146",
+        "url": "https://tinyurl.com/3ka5vhsk",
+        "image": "hourglassimage/176.jpg",
+        "name": "Embellished Sequinned Saree",
+        "brand": "Anouk",
+        "price": "₹1,399",
+        "oldPrice": "₹5,599",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product147",
+        "url": "https://tinyurl.com/f6d4ku3p",
+        "image": "hourglassimage/177.jpg",
+        "name": "Two Tone Satin Saree",
+        "brand": "Tikhi Imli",
+        "price": "₹1,279",
+        "oldPrice": "₹3,997",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product148",
+        "url": "https://tinyurl.com/438s38e9",
+        "image": "hourglassimage/178.jpg",
+        "name": "Shimmery Organza Saree",
+        "brand": "Mitera",
+        "price": "₹1,962",
+        "oldPrice": "₹9,812",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+    {
+        "id": "product149",
+        "url": "https://tinyurl.com/ye23459x",
+        "image": "hourglassimage/179.jpg",
+        "name": "Embroidered Beads and Stones Net Saree",
+        "brand": "Subham",
+        "price": "₹1,039",
+        "oldPrice": "₹3,999",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree"
+    },
+
+    {
+        id: "product835",
+        url: "https://tinyurl.com/2vunvxfz",
+        image: "hourglassimage/180.jpg",
+        name: "Cold-Shoulder Crop Top",
+        brand: "Stylecast X Slyck",
+        price: "₹319",
+        oldPrice: "₹999",
+        discount: "68% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product836",
+        url: "https://tinyurl.com/4tvdmxrz",
+        image: "hourglassimage/181.jpg",
+        name: "Solid Off-Shoulder Top",
+        brand: "Stylecast X Slyck",
+        price: "₹249",
+        oldPrice: "₹999",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product837",
+        url: "https://tinyurl.com/ynhbnpc9",
+        image: "hourglassimage/182.jpg",
+        name: "Floral Print Georgette Shirt Style Crop Top",
+        brand: "StyleCast",
+        price: "₹748",
+        oldPrice: "₹1649",
+        discount: "₹901 OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product838",
+        url: "https://tinyurl.com/5cxvwth4",
+        image: "hourglassimage/183.jpg",
+        name: "V-Neck Ribbed Tank Crop Top",
+        brand: "Stylecast X Slyck",
+        price: "₹251",
+        oldPrice: "₹899",
+        discount: "72% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product839",
+        url: "https://tinyurl.com/2k9xmvep",
+        image: "hourglassimage/184.jpg",
+        name: "Solid V-Neck Crop Top",
+        brand: "Rigo",
+        price: "₹491",
+        oldPrice: "₹1199",
+        discount: "59% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+
+    {
+        id: "product840",
+        url: "https://tinyurl.com/ctw92w3s",
+        image: "hourglassimage/185.jpg",
+        name: "Ribbed Cut Out Fitted Top",
+        brand: "SHOWOFF",
+        price: "₹740",
+        oldPrice: "₹1850",
+        discount: "60% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product841",
+        url: "https://tinyurl.com/yc82sweh",
+        image: "hourglassimage/186.jpg",
+        name: "Off-Shoulder Layered Peplum Top",
+        brand: "LULU & SKY",
+        price: "₹2125",
+        oldPrice: "₹5185",
+        discount: "59% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product842",
+        url: "https://tinyurl.com/72ykxssj",
+        image: "hourglassimage/187.jpg",
+        name: "Solid Off-Shoulder Top",
+        brand: "Stylecast X Slyck",
+        price: "₹323",
+        oldPrice: "₹1199",
+        discount: "73% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product843",
+        url: "https://tinyurl.com/32sz3nu9",
+        image: "hourglassimage/188.jpg",
+        name: "Solid Off-Shoulder Top",
+        brand: "Stylecast X Slyck",
+        price: "₹249",
+        oldPrice: "₹999",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product844",
+        url: "https://tinyurl.com/3bp735tf",
+        image: "hourglassimage/189.jpg",
+        name: "Edgy Ruched Ribbed Bardot Crop Top",
+        brand: "Glitchez",
+        price: "₹382",
+        oldPrice: "₹1399",
+        discount: "73% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product845",
+        url: "https://tinyurl.com/yxdukecs",
+        image: "hourglassimage/190.jpg",
+        name: "Print Off-Shoulder Chiffon Tube Crop Top",
+        brand: "STREET 9",
+        price: "₹467",
+        oldPrice: "₹1299",
+        discount: "64% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product846",
+        url: "https://tinyurl.com/ycy5w5kz",
+        image: "hourglassimage/191.jpg",
+        name: "Women Off-Shoulder Crop Top",
+        brand: "Womenster",
+        price: "₹499",
+        oldPrice: "₹999",
+        discount: "50% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product847",
+        url: "https://myntr.it/BNccd5X",
+        image: "hourglassimage/192.jpg",
+        name: "Flared Wrap Top",
+        brand: "DressBerry",
+        price: "₹664",
+        oldPrice: "₹1899",
+        discount: "65% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Tops",
+    },
+    {
+        id: "product848",
+        url: "https://tinyurl.com/5e4sk2p8",
+        image: "hourglassimage/193.jpg",
+        name: "V-Neck A-Line Midi Dress",
+        brand: "ADDYVERO",
+        price: "₹666",
+        oldPrice: "₹1999",
+        discount: "67% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product849",
+        url: "https://tinyurl.com/mr3x3793",
+        image: "hourglassimage/194.jpg",
+        name: "Women Shoulder Straps A-Line Dress",
+        brand: "DressBerry",
+        price: "₹825",
+        oldPrice: "₹3299",
+        discount: "75% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product850",
+        url: "https://tinyurl.com/ysesr5z6",
+        image: "hourglassimage/195.jpg",
+        name: "Bodycon Dress",
+        brand: "TANDUL",
+        price: "₹699",
+        oldPrice: "₹1499",
+        discount: "53% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product851",
+        url: "https://tinyurl.com/2vbybhjw",
+        image: "hourglassimage/196.jpg",
+        name: "Women Layered Sheath Dress",
+        brand: "StyleCast x Revolte",
+        price: "₹749",
+        oldPrice: "₹1799",
+        discount: "58% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product852",
+        url: "https://tinyurl.com/45d34s73",
+        image: "hourglassimage/197.jpg",
+        name: "Maroon Shoulder Straps Cotton Bodycon Dress",
+        brand: "StyleCast",
+        price: "₹900",
+        oldPrice: "₹2599",
+        discount: "65% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product853",
+        url: "https://tinyurl.com/5n89thup",
+        image: "hourglassimage/198.jpg",
+        name: "BodyCon Dress",
+        brand: "KASSUALLY",
+        price: "₹737",
+        oldPrice: "₹1799",
+        discount: "59% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product854",
+        url: "https://tinyurl.com/mwnd2xn4",
+        image: "hourglassimage/199.jpg",
+        name: "Halter Neck Cut-Outs Detail Cotton Bodycon Dress",
+        brand: "FREAKINS",
+        price: "₹1475",
+        oldPrice: "₹3599",
+        discount: "59% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product855",
+        url: "https://tinyurl.com/2vywds34",
+        image: "hourglassimage/200.jpg",
+        name: "Glitter Ruched Wrap Bodycon Dress",
+        brand: "ADDYVERO",
+        price: "₹633",
+        oldPrice: "₹1999",
+        discount: "68% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        id: "product856",
+        url: "https://tinyurl.com/58pvh8aj",
+        image: "hourglassimage/201.jpg",
+        name: "Blue Ribbed One Shoulder Ruched Bodycon Dress",
+        brand: "Tokyo Talkies",
+        price: "₹549",
+        oldPrice: "₹1249",
+        discount: "56% OFF",
+        logo: "logo/M.png", // Myntra logo
+        category: "Dress",
+    },
+    {
+        "id": "saree300",
+        "url": "https://tinyurl.com/3t55hnbj",
+        "image": "hourglassimage/202.jpg",
+        "brand": "S.K.C",
+        "price": "₹1329",
+        "oldPrice": "₹6999",
+        "discount": "81% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "2.5",
+        "ratingsCount": "6"
+    },
+    {
+        "id": "saree2",
+        "url": "https://tinyurl.com/4zmdbw6f",
+        "image": "hourglassimage/203.jpg",
+        "brand": "Mitera",
+        "price": "₹2379",
+        "oldPrice": "₹13999",
+        "discount": "83% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.1",
+        "ratingsCount": "1400"
+    },
+    {
+        "id": "saree3",
+        "url": "https://tinyurl.com/bdc9vafp",
+        "image": "hourglassimage/204.jpg",
+        "brand": "Kalini",
+        "price": "₹3999",
+        "oldPrice": "₹3999",
+        "discount": "No discount indicated",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "3.9",
+        "ratingsCount": "1400"
+    },
+    {
+        "id": "saree4",
+        "url": "https://tinyurl.com/nhzhfpee",
+        "image": "hourglassimage/205.jpg",
+        "brand": "Rajgranth",
+        "price": "₹1249",
+        "oldPrice": "₹6245",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "64"
+    },
+    {
+        "id": "saree5",
+        "url": "https://tinyurl.com/5dtw2xx8",
+        "image": "hourglassimage/206.jpg",
+        "brand": "Kalini",
+        "price": "₹727",
+        "oldPrice": "₹2799",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.2",
+        "ratingsCount": "170"
+    },
+    {
+        "id": "saree6",
+        "url": "https://tinyurl.com/bdzxw8bp",
+        "image": "hourglassimage/207.jpg",
+        "brand": "Sangria",
+        "price": "₹1498",
+        "oldPrice": "₹4995",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "139"
+    },
+    {
+        "id": "saree7",
+        "url": "https://tinyurl.com/mrxatptm",
+        "image": "hourglassimage/208.jpg",
+        "brand": "all about you",
+        "price": "₹1498",
+        "oldPrice": "₹4999",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "126"
+    },
+    {
+        "id": "saree8",
+        "url": "https://tinyurl.com/6yf597y9",
+        "image": "hourglassimage/209.jpg",
+        "brand": "Mitera",
+        "price": "₹1494",
+        "oldPrice": "₹6795",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.3",
+        "ratingsCount": "4400"
+    },
+    {
+        "id": "saree9",
+        "url": "https://tinyurl.com/bp6w4fr9",
+        "image": "hourglassimage/210.jpg",
+        "brand": "Mitera",
+        "price": "₹942",
+        "oldPrice": "₹4958",
+        "discount": "81% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "3.9",
+        "ratingsCount": "27"
+    },
+    {
+        "id": "saree10",
+        "url": "https://tinyurl.com/5en5ttdr",
+        "image": "hourglassimage/211.jpg",
+        "brand": "Anouk",
+        "price": "₹1499",
+        "oldPrice": "₹6999",
+        "discount": "79% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.5",
+        "ratingsCount": "16"
+    },
+    {
+        "id": "saree11",
+        "url": "https://tinyurl.com/ypvbfkb6",
+        "image": "hourglassimage/212.jpg",
+        "brand": "Mitera",
+        "price": "₹1002",
+        "oldPrice": "₹5899",
+        "discount": "83% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "297"
+    },
+    {
+        "id": "saree12",
+        "url": "https://tinyurl.com/y9jmk76z",
+        "image": "hourglassimage/213.jpg",
+        "brand": "Mitera",
+        "price": "₹804",
+        "oldPrice": "₹3497",
+        "discount": "77% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.1",
+        "ratingsCount": "131"
+    },
+    {
+        "id": "saree13",
+        "url": "https://tinyurl.com/24dvku9k",
+        "image": "hourglassimage/214.jpg",
+        "brand": "KAYOMMI",
+        "price": "₹1319",
+        "oldPrice": "₹5999",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "187"
+    },
+    {
+        "id": "saree14",
+        "url": "https://tinyurl.com/4j3d2rmy",
+        "image": "hourglassimage/215.jpg",
+        "brand": "Anouk",
+        "price": "₹1299",
+        "oldPrice": "₹4999",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.3",
+        "ratingsCount": "31"
+    },
+    {
+        "id": "saree15",
+        "url": "https://tinyurl.com/zjvpwjh7",
+        "image": "hourglassimage/216.jpg",
+        "brand": "Mitera",
+        "price": "₹1169",
+        "oldPrice": "₹5599",
+        "discount": "79% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "171"
+    },
+    {
+        "id": "saree22",
+        "url": "https://tinyurl.com/5n8t5ttx",
+        "image": "hourglassimage/217.jpg",
+        "brand": "Kasee",
+        "price": "₹1315",
+        "oldPrice": "₹3996",
+        "discount": "86% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.3",
+        "ratingsCount": "72"
+    },
+    {
+        "id": "saree23",
+        "url": "https://tinyurl.com/zk7sc2um",
+        "image": "hourglassimage/218.jpg",
+        "brand": "Kalini",
+        "price": "₹727",
+        "oldPrice": "₹2799",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.1",
+        "ratingsCount": "468"
+    },
+    {
+        "id": "saree24",
+        "url": "https://tinyurl.com/mrx6vh8x",
+        "image": "hourglassimage/219.jpg",
+        "brand": "Mirchi Fashion",
+        "price": "₹783",
+        "oldPrice": "₹2799",
+        "discount": "72% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4",
+        "ratingsCount": "111"
+    },
+    {
+        "id": "saree25",
+        "url": "https://tinyurl.com/8emkv6eb",
+        "image": "hourglassimage/220.jpg",
+        "brand": "Kalini",
+        "price": "₹727",
+        "oldPrice": "₹2799",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.1",
+        "ratingsCount": "791"
+    },
+    {
+        "id": "saree26",
+        "url": "https://tinyurl.com/3c7rmkrw",
+        "image": "hourglassimage/221.jpg",
+        "brand": "Kalini",
+        "price": "₹989",
+        "oldPrice": "₹2999",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "3.8",
+        "ratingsCount": "1500"
+    },
+    {
+        "id": "saree27",
+        "url": "https://tinyurl.com/bdhkb6ca",
+        "image": "hourglassimage/222.jpg",
+        "brand": "Tikki Imli",
+        "price": "₹1279",
+        "oldPrice": "₹3997",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.1",
+        "ratingsCount": "761"
+    },
+    {
+        "id": "saree28",
+        "url": "https://tinyurl.com/42yv7me8",
+        "image": "hourglassimage/223.jpg",
+        "brand": "Kalini",
+        "price": "₹989",
+        "oldPrice": "₹2999",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "3.8",
+        "ratingsCount": "1500"
+    },
+    {
+        "id": "saree29",
+        "url": "https://tinyurl.com/4xdtm7dt",
+        "image": "hourglassimage/224.jpg",
+        "brand": "Mitera",
+        "price": "₹959",
+        "oldPrice": "₹5999",
+        "discount": "84% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.4",
+        "ratingsCount": "1000"
+    },
+    {
+        "id": "saree30",
+        "url": "https://tinyurl.com/ya3zrrx8",
+        "image": "hourglassimage/225.jpg",
+        "brand": "Silk Land",
+        "price": "₹1152",
+        "oldPrice": "₹7200",
+        "discount": "84% OFF",
+        "logo": "logo/M.png",
+        "category": "Tradit,ional Saree",
+        "rating": "4.5",
+        "ratingsCount": "37"
+    },
+    {
+        "id": "modernSaree1",
+        "url": "https://tinyurl.com/8hfkcdfy",
+        "image": "hourglassimage/226.jpg",
+        "brand": "Tikki Imli",
+        "price": "₹1198",
+        "oldPrice": "₹3330",
+        "discount": "64% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.3",
+        "ratingsCount": "2000"
+    },
+    {
+        "id": "modernSaree2",
+        "url": "https://tinyurl.com/mtuuzxer",
+        "image": "hourglassimage/227.jpg",
+        "brand": "Sangria",
+        "price": "₹1299",
+        "oldPrice": "₹4330",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "2100"
+    },
+    {
+        "id": "modernSaree3",
+        "url": "https://tinyurl.com/bdfm6j64",
+        "image": "hourglassimage/228.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹1279",
+        "oldPrice": "₹3997",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "761"
+    },
+    {
+        "id": "modernSaree4",
+        "url": "https://tinyurl.com/kpnpnjz5",
+        "image": "hourglassimage/229.jpg",
+        "brand": "Sangria",
+        "price": "₹1539",
+        "oldPrice": "₹4399",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "42"
+    },
+    {
+        "id": "modernSaree5",
+        "url": "https://tinyurl.com/uvkjer7n",
+        "image": "hourglassimage/230.jpg",
+        "brand": "Panzora",
+        "price": "₹1079",
+        "oldPrice": "₹8999",
+        "discount": "88% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.7",
+        "ratingsCount": "10"
+    },
+    {
+        "id": "modernSaree6",
+        "url": "https://tinyurl.com/9nt543uh",
+        "image": "hourglassimage/231.jpg",
+        "brand": "Mitera",
+        "price": "₹1299",
+        "oldPrice": "₹4199",
+        "discount": "₹2900 OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.2",
+        "ratingsCount": "1300"
+    },
+    {
+        "id": "modernSaree7",
+        "url": "https://tinyurl.com/4ryhkj7y",
+        "image": "hourglassimage/232.jpg",
+        "brand": "Iris",
+        "price": "₹629",
+        "oldPrice": "₹3499",
+        "discount": "82% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "259"
+    },
+    {
+        "id": "modernSaree8",
+        "url": "https://tinyurl.com/5n7fw47d",
+        "image": "hourglassimage/233.jpg",
+        "brand": "Sangria",
+        "price": "₹1299",
+        "oldPrice": "₹4330",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "2100"
+    },
+    {
+        "id": "modernSaree9",
+        "url": "https://tinyurl.com/2t6rsyp6",
+        "image": "hourglassimage/234.jpg",
+        "brand": "Vamsee",
+        "price": "₹1416",
+        "oldPrice": "₹6102",
+        "discount": "77% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "Not displayed in the image",
+        "ratingsCount": "N/A"
+    },
+    {
+        "id": "modernSaree10",
+        "url": "https://tinyurl.com/3zuuks8r",
+        "image": "hourglassimage/235.jpg",
+        "brand": "Kalini",
+        "price": "₹1199",
+        "oldPrice": "₹3999",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "32"
+    },
+    {
+        "id": "modernSaree11",
+        "url": "https://tinyurl.com/y6tb95xp",
+        "image": "hourglassimage/236.jpg",
+        "brand": "All About You",
+        "price": "₹1253",
+        "oldPrice": "₹5699",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "33"
+    },
+    {
+        "id": "modernSaree12",
+        "url": "https://tinyurl.com/mpt5wan9",
+        "image": "hourglassimage/237.jpg",
+        "brand": "Inddus",
+        "price": "₹2398",
+        "oldPrice": "₹6199",
+        "discount": "61% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.2",
+        "ratingsCount": "2700"
+    },
+    {
+        "id": "modernSaree13",
+        "url": "https://tinyurl.com/2pcxusem",
+        "image": "hourglassimage/238.jpg",
+        "brand": "Anouk",
+        "price": "₹1499",
+        "oldPrice": "₹5999",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.6",
+        "ratingsCount": "245"
+    },
+    {
+        "id": "modernSaree14",
+        "url": "https://tinyurl.com/4xtvsa6c",
+        "image": "hourglassimage/239.jpg",
+        "brand": "SHANVIKA",
+        "price": "₹587",
+        "oldPrice": "₹4899",
+        "discount": "88% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.3",
+        "ratingsCount": "8"
+    },
+    {
+        "id": "modernSaree15",
+        "url": "https://tinyurl.com/y64nud5m",
+        "image": "hourglassimage/240.jpg",
+        "brand": "All About You",
+        "price": "₹1449",
+        "oldPrice": "₹5799",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.5",
+        "ratingsCount": "6200"
+    },
+    {
+        "id": "modernSaree16",
+        "url": "https://tinyurl.com/yrh6cpf3",
+        "image": "hourglassimage/241.jpg",
+        "brand": "Sangria",
+        "price": "₹1299",
+        "oldPrice": "₹6499",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.3",
+        "ratingsCount": "112"
+    },
+    {
+        "id": "modernSaree17",
+        "url": "https://tinyurl.com/5amh6hrm",
+        "image": "hourglassimage/242.jpg",
+        "brand": "Inddus",
+        "price": "₹2224",
+        "oldPrice": "₹6699",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "3000"
+    },
+    {
+        "id": "modernSaree18",
+        "url": "https://tinyurl.com/2udysjar",
+        "image": "hourglassimage/243.jpg",
+        "brand": "All About You",
+        "price": "₹1449",
+        "oldPrice": "₹5799",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.4",
+        "ratingsCount": "434"
+    },
+    {
+        "id": "modernSaree19",
+        "url": "https://tinyurl.com/2s49ppjt",
+        "image": "hourglassimage/244.jpg",
+        "brand": "Sangria",
+        "price": "₹1299",
+        "oldPrice": "₹4330",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "2100"
+    },
+    {
+        "id": "modernSaree20",
+        "url": "https://tinyurl.com/44akvmcu",
+        "image": "hourglassimage/245.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹1239",
+        "oldPrice": "₹3997",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.4",
+        "ratingsCount": "1400"
+    },
+    {
+        "id": "modernSaree21",
+        "url": "https://tinyurl.com/bd22a439",
+        "image": "hourglassimage/246.jpg",
+        "brand": "RACHNA",
+        "price": "₹539",
+        "oldPrice": "₹2999",
+        "discount": "82% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "2300"
+    },
+    {
+        "id": "modernSaree22",
+        "url": "https://tinyurl.com/37x6pdzu",
+        "image": "hourglassimage/247.jpg",
+        "brand": "KALINI",
+        "price": "₹727",
+        "oldPrice": "₹2799",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "458"
+    },
+    {
+        "id": "modernSaree23",
+        "url": "https://tinyurl.com/4ssv2j8b",
+        "image": "hourglassimage/248.jpg",
+        "brand": "HERE&NOW",
+        "price": "₹989",
+        "oldPrice": "₹2999",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "387"
+    },
+    {
+        "id": "modernSaree24",
+        "url": "https://tinyurl.com/ymhdp8fv",
+        "image": "hourglassimage/249.jpg",
+        "brand": "Mitera",
+        "price": "₹899",
+        "oldPrice": "₹4999",
+        "discount": "82% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "2200"
+    },
+    {
+        "id": "modernSaree25",
+        "url": "https://tinyurl.com/253ab6bb",
+        "image": "hourglassimage/250.jpg",
+        "brand": "HERE&NOW",
+        "price": "₹989",
+        "oldPrice": "₹2999",
+        "discount": "67% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "990"
+    },
+    {
+        "id": "modernSaree26",
+        "url": "https://tinyurl.com/mk4zk8zt",
+        "image": "hourglassimage/251.jpg",
+        "brand": "Vastrasky Global",
+        "price": "₹1356",
+        "oldPrice": "₹5899",
+        "discount": "77% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "N/A",
+        "ratingsCount": "N/A"
+    },
+    {
+        "id": "modernSaree27",
+        "url": "https://tinyurl.com/ytd88t4p",
+        "image": "hourglassimage/252.jpg",
+        "brand": "KALINI",
+        "price": "₹1198",
+        "oldPrice": "₹3330",
+        "discount": "64% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.2",
+        "ratingsCount": "262"
+    },
+    {
+        "id": "modernSaree28",
+        "url": "https://tinyurl.com/mryyf8fx",
+        "image": "hourglassimage/253.jpg",
+        "brand": "Sangria",
+        "price": "₹1449",
+        "oldPrice": "₹4830",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.7",
+        "ratingsCount": "93"
+    },
+    {
+        "id": "modernSaree29",
+        "url": "https://tinyurl.com/3z967vmz",
+        "image": "hourglassimage/254.jpg",
+        "brand": "Koskii",
+        "price": "₹3592",
+        "oldPrice": "₹4490",
+        "discount": "20% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.3",
+        "ratingsCount": "126"
+    },
+    {
+        "id": "modernSaree30",
+        "url": "https://tinyurl.com/2p9m4wvx",
+        "image": "hourglassimage/255.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹1198",
+        "oldPrice": "₹3330",
+        "discount": "64% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "216"
+    },
+    {
+        "id": "modernSaree31",
+        "url": "https://tinyurl.com/4tbasb3k",
+        "image": "hourglassimage/256.jpg",
+        "brand": "All About You",
+        "price": "₹1449",
+        "oldPrice": "₹5799",
+        "discount": "75% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.4",
+        "ratingsCount": "440"
+    },
+    {
+        "id": "modernSaree32",
+        "url": "https://tinyurl.com/bdzmcdcw",
+        "image": "hourglassimage/257.jpg",
+        "brand": "Sangria",
+        "price": "₹1434",
+        "oldPrice": "₹4099",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "64"
+    },
+    {
+        "id": "modernSaree33",
+        "url": "https://tinyurl.com/fh6yybjt",
+        "image": "hourglassimage/258.jpg",
+        "brand": "Satrani",
+        "price": "₹1540",
+        "oldPrice": "₹6419",
+        "discount": "76% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "157"
+    },
+    {
+        "id": "modernSaree34",
+        "url": "https://tinyurl.com/3nxxdb9d",
+        "image": "hourglassimage/259.jpg",
+        "brand": "Vairagee",
+        "price": "₹1199",
+        "oldPrice": "₹5995",
+        "discount": "80% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "25"
+    },
+    {
+        "id": "modernSaree36",
+        "url": "https://tinyurl.com/24csfe4m",
+        "image": "hourglassimage/260.jpg",
+        "brand": "All About You",
+        "price": "₹1399",
+        "oldPrice": "₹4999",
+        "discount": "72% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "30"
+    },
+    {
+        "id": "modernSaree37",
+        "url": "https://tinyurl.com/bdftpkbn",
+        "image": "hourglassimage/261.jpg",
+        "brand": "Vamsee",
+        "price": "₹1148",
+        "oldPrice": "₹4996",
+        "discount": "77% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "5"
+    },
+    {
+        "id": "modernSaree38",
+        "url": "https://tinyurl.com/mtp6j9fe",
+        "image": "hourglassimage/262.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹999",
+        "oldPrice": "₹3330",
+        "discount": "70% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "40"
+    },
+    {
+        "id": "modernSaree39",
+        "url": "https://tinyurl.com/2p9738a8",
+        "image": "hourglassimage/263.jpg",
+        "brand": "Divastri",
+        "price": "₹993",
+        "oldPrice": "₹7099",
+        "discount": "86% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.8",
+        "ratingsCount": "1k"
+    },
+    {
+        "id": "modernSaree40",
+        "url": "https://tinyurl.com/22v7z4xt",
+        "image": "hourglassimage/264.jpg",
+        "brand": "Mitera",
+        "price": "Not provided",
+        "oldPrice": "₹3599",
+        "discount": "Not provided",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.9",
+        "ratingsCount": "2.2k"
+    },
+    {
+        "id": "modernSaree41",
+        "url": "https://tinyurl.com/3zcdczcy",
+        "image": "hourglassimage/265.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹1279",
+        "oldPrice": "₹3997",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "759"
+    },
+    {
+        "id": "modernSaree42",
+        "url": "https://tinyurl.com/mry93t4j",
+        "image": "hourglassimage/266.jpg",
+        "brand": "Tikhi Imli",
+        "price": "₹1475",
+        "oldPrice": "₹3590",
+        "discount": "59% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4",
+        "ratingsCount": "107"
+    },
+    {
+        "id": "modernSaree43",
+        "url": "https://tinyurl.com/cjejs9vb",
+        "image": "hourglassimage/267.jpg",
+        "brand": "LeeliPeeri Designer",
+        "price": "₹929",
+        "oldPrice": "₹2999",
+        "discount": "69% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "Not available",
+        "ratingsCount": "Not available"
+    },
+    {
+        "id": "modernSaree44",
+        "url": "https://tinyurl.com/5n6s547k",
+        "image": "hourglassimage/268.jpg",
+        "brand": "Mitera",
+        "price": "₹1169",
+        "oldPrice": "₹8999",
+        "discount": "87% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "3.7",
+        "ratingsCount": "75"
+    },
+    {
+        "id": "modernSaree45",
+        "url": "https://tinyurl.com/2ks3tua4",
+        "image": "hourglassimage/269.jpg",
+        "brand": "All About You",
+        "price": "₹1407",
+        "oldPrice": "₹6399",
+        "discount": "78% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "3.1k"
+    },
+    {
+        "id": "modernSaree46",
+        "url": "https://tinyurl.com/2vubvj2s",
+        "image": "hourglassimage/270.jpg",
+        "brand": "Mitera",
+        "price": "₹1079",
+        "oldPrice": "₹8999",
+        "discount": "88% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "Not available",
+        "ratingsCount": "Not available"
+    },
+    {
+        "id": "modernSaree47",
+        "url": "https://tinyurl.com/yk6wpfpv",
+        "image": "hourglassimage/271.jpg",
+        "brand": "Panzora",
+        "price": "₹1079",
+        "oldPrice": "₹8999",
+        "discount": "88% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "Not available",
+        "ratingsCount": "Not available"
+    },
+    {
+        "id": "modernSaree48",
+        "url": "https://tinyurl.com/2n4vx8ys",
+        "image": "hourglassimage/272.jpg",
+        "brand": "All About You",
+        "price": "₹1448",
+        "oldPrice": "₹6899",
+        "discount": "79% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "3.1k"
+    },
+    {
+        "id": "modernSaree49",
+        "url": "https://tinyurl.com/4e5y5jdw",
+        "image": "hourglassimage/273.jpg",
+        "brand": "Vastrasky Global",
+        "price": "₹1126",
+        "oldPrice": "₹4899",
+        "discount": "77% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "55"
+    },
+    {
+        "id": "modernSaree50",
+        "url": "https://tinyurl.com/3mju55dd",
+        "image": "hourglassimage/274.jpg",
+        "brand": "Kalini",
+        "price": "₹671",
+        "oldPrice": "₹2799",
+        "discount": "76% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.1",
+        "ratingsCount": "473"
+    },
+    {
+        "id": "modernSaree51",
+        "url": "https://tinyurl.com/3va5xkx8",
+        "image": "hourglassimage/275.jpg",
+        "brand": "Kalini",
+        "price": "₹3144",
+        "oldPrice": "₹3144",
+        "discount": "No discount indicated",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.4",
+        "ratingsCount": "42"
+    },
+    {
+        "id": "modernSaree52",
+        "url": "https://tinyurl.com/46vp5xf5",
+        "image": "hourglassimage/276.jpg",
+        "brand": "Kalini",
+        "price": "₹727",
+        "oldPrice": "₹2799",
+        "discount": "74% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.2",
+        "ratingsCount": "92"
+    },
+    {
+        "id": "modernSaree53",
+        "url": "https://tinyurl.com/2mmnu4p3",
+        "image": "hourglassimage/277.jpg",
+        "brand": "Koskii",
+        "price": "₹3243",
+        "oldPrice": "₹4990",
+        "discount": "35% OFF",
+        "logo": "logo/M.png",
+        "category": "Modern, Saree",
+        "rating": "4.2",
+        "ratingsCount": "52"
+    },
+    
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+        const buttons = document.querySelectorAll(".filter-buttons button");
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+
+        function cleanPrice(price) {
+            if (!price || isNaN(price.replace(/₹|,|\s+/g, ""))) return Infinity;
+            return parseInt(price.replace(/₹|,|\s+/g, ""), 10);
+        }
+
+        function filterByCategory(products, category) {
+            if (category === "all") return products;
+            return products.filter(
+                (product) => product.category.toLowerCase() === category.toLowerCase()
+            );
+        }
+
+        function renderProducts(filteredProducts) {
+            catalog.innerHTML = "";
+
+            if (filteredProducts.length === 0) {
+                catalog.innerHTML = "<p>No products found!</p>";
+                return;
+            }
+
+            filteredProducts.forEach((product) => {
+                const productCard = `
+                    <div class="product">
+                        <a href="${product.url}" target="_blank">
+                            <img src="${product.image}" alt="${product.name}">
+                        </a>
+                        <img class="logo" src="${product.logo}" alt="Logo">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.brand}</p>
+                            <div class="price">
+                                ${product.price}
+                                ${
+                                    product.oldPrice
+                                        ? `<span class="old-price">${product.oldPrice}</span>`
+                                        : ""
+                                }
+                            </div>
+                            ${
+                                product.discount
+                                    ? `<div class="discount">${product.discount}</div>`
+                                    : ""
+                            }
+                        </div>
+                    </div>
+                `;
+                catalog.innerHTML += productCard;
+            });
+        }
+
+        priceRange.value = 5000;
+        priceValue.textContent = `₹${priceRange.value}`;
+
+        renderProducts(allProducts);
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const category = button.getAttribute("data-category").toLowerCase();
+                const maxPrice = parseInt(priceRange.value);
+
+                let filteredProducts = filterByCategory(allProducts, category);
+                filteredProducts = filteredProducts.filter(
+                    (product) => cleanPrice(product.price) <= maxPrice
+                );
+
+                renderProducts(filteredProducts);
+            });
+        });
+
+        priceRange.addEventListener("change", () => {
+            const maxPrice = parseInt(priceRange.value);
+            priceValue.textContent = `₹${maxPrice}`;
+
+            const activeButton = document.querySelector(".filter-buttons .active");
+            const category = activeButton ? activeButton.getAttribute("data-category").toLowerCase() : "all";
+
+            let filteredProducts = filterByCategory(allProducts, category);
+            filteredProducts = filteredProducts.filter(
+                (product) => cleanPrice(product.price) <= maxPrice
+            );
+
+            renderProducts(filteredProducts);
+        });
+    </script>
+</body>
+</html>
