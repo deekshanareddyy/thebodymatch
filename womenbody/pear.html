@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px; /* Space for the header */
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 15px auto;
+            max-width: 1200px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-buttons button {
+            padding: 8px 14px; /* Smaller padding for compactness */
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-buttons button.active {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .price-dropdown select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .price-dropdown select:hover {
+            border-color: #ff4081;
+        }
+
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div>
+
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="Tops">Tops</button>
+            <button data-category="Dress">Dress</button>
+            <button data-category="jeans">Jeans</button>
+            <button data-category="Traditional Saree">Traditional Saree</button>
+            <button data-category="Modern Saree">Modern Saree</button>
+        </div>
+
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="500">Up to ₹500</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000">Up to ₹3000</option>
+                <option value="5000" selected>Up to ₹5000</option> <!-- Default to ₹5000 -->
+            </select>
+            <span id="priceValue">₹5000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+        const allProducts = [         
+        
+        {
+        "id": "product12",
+        "url": "https://tinyurl.com/3v88tr6c",
+        "image": "pearimage/1.jpg",
+        "name": "Women Washed Flared Jeans",
+        "brand": "Nifty",
+        "price": "₹680",
+        "oldPrice": "₹1,999",
+        "discount": "66% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product13",
+        "url": "https://tinyurl.com/3dtefne7",
+        "image": "pearimage/2.jpg",
+        "name": "Women Washed Flared Jeans",
+        "brand": "Nifty",
+        "price": "₹680",
+        "oldPrice": "₹1,999",
+        "discount": "66% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product14",
+        "url": "https://tinyurl.com/59tfhmwv",
+        "image": "pearimage/3.jpg",
+        "name": "Women Flared High-Rise Stretchable Jeans",
+        "brand": "Kotty",
+        "price": "₹639",
+        "oldPrice": "₹1,999",
+        "discount": "68% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product15",
+        "url": "https://tinyurl.com/2av3azpy",
+        "image": "pearimage/4.jpg",
+        "name": "Women High-Rise Bootcut Shaping Jeans",
+        "brand": "Dolce Crudo",
+        "price": "₹1,136",
+        "oldPrice": "₹3,245",
+        "discount": "65% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product16",
+        "url": "https://tinyurl.com/26rhc236",
+        "image": "pearimage/5.jpg",
+        "name": "Women Flared Clean Look Denim Jeans",
+        "brand": "Tales & Stories",
+        "price": "₹804",
+        "oldPrice": "₹2,299",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product17",
+        "url": "https://tinyurl.com/3cp24vja",
+        "image": "pearimage/6.jpg",
+        "name": "Women High-Rise Bootcut Jeans",
+        "brand": "Miss Chase",
+        "price": "₹1,066",
+        "oldPrice": "₹4,099",
+        "discount": "74% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product18",
+        "url": "https://tinyurl.com/yc6mww64",
+        "image": "pearimage/7.jpg",
+        "name": "Women Low-Rise Flared Jeans",
+        "brand": "Lulu & Sky",
+        "price": "₹2,439",
+        "oldPrice": "₹6,253",
+        "discount": "61% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product19",
+        "url": "https://tinyurl.com/bdhxf59x",
+        "image": "pearimage/8.jpg",
+        "name": "High-Rise Bootcut Jeans",
+        "brand": "Kotty",
+        "price": "₹420",
+        "oldPrice": "₹1,999",
+        "discount": "79% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product20",
+        "url": "https://tinyurl.com/583rcz9m",
+        "image": "pearimage/9.jpg",
+        "name": "Women Flared Fit Light Fade Jeans",
+        "brand": "DressBerry",
+        "price": "₹688",
+        "oldPrice": "₹1,799",
+        "discount": "61% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product10",
+        "url": "https://tinyurl.com/yc6zbrrk",
+        "image": "pearimage/10.jpg",
+        "name": "High-Rise Bootcut Jeans",
+        "brand": "FREEHAND",
+        "price": "₹580",
+        "oldPrice": "₹2,149",
+        "discount": "73% OFF",
+        "logo": "logo/A.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product11",
+        "url": "https://tinyurl.com/2fs436cp",
+        "image": "pearimage/11.jpg",
+        "name": "Women Jean Flared High-Rise Cropped Jeans",
+        "brand": "AngelFab",
+        "price": "₹629",
+        "oldPrice": "₹2,999",
+        "discount": "79% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product12",
+        "url": "https://tinyurl.com/45e487bp",
+        "image": "pearimage/12.jpg",
+        "name": "The Life Co. Women Slim Flared Fit High-Rise Front Slit Stretchable Jeans",
+        "brand": "Roadster",
+        "price": "₹804",
+        "oldPrice": "₹2,299",
+        "discount": "65% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+    {
+        "id": "product13",
+        "url": "https://tinyurl.com/24va6me6",
+        "image": "pearimage/13.jpg",
+        "name": "Women Blue Flared Light Fade Stretchable Jeans",
+        "brand": "Harvard",
+        "price": "₹854",
+        "oldPrice": "₹1,898",
+        "discount": "55% OFF",
+        "logo": "logo/M.png",
+        "category": "Jeans"
+    },
+{
+    "id": "product35",
+    "url": "https://tinyurl.com/5ev8yfuf",
+    "image": "pearimage/14.jpg",
+    "name": "High-Rise Flared Jeans",
+    "brand": "Orchid Blues",
+    "price": "₹775",
+    "oldPrice": "₹3,099",
+    "discount": "75% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product36",
+    "url": "https://tinyurl.com/yz9d7p2n",
+    "image": "pearimage/15.jpg",
+    "name": "Slim Flared High-Rise Jeans",
+    "brand": "Roadster",
+    "price": "₹719",
+    "oldPrice": "₹2,399",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product37",
+    "url": "https://tinyurl.com/bdhv4625",
+    "image": "pearimage/16.jpg",
+    "name": "Lightly Washed Bootcut Jeans",
+    "brand": "Cosmic",
+    "price": "₹987",
+    "oldPrice": "₹1,899",
+    "discount": "48% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product38",
+    "url": "https://tinyurl.com/3453kjcu",
+    "image": "pearimage/17.jpg",
+    "name": "Women Flared High-Rise Jeans",
+    "brand": "Freehand by The Indian Garage Co",
+    "price": "₹808",
+    "oldPrice": "₹2,449",
+    "discount": "67% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product39",
+    "url": "https://tinyurl.com/2rmmx9ee",
+    "image": "pearimage/18.jpg",
+    "name": "High-Rise Flared Jeans with Slit",
+    "brand": "Miss Chase",
+    "price": "₹1,079",
+    "oldPrice": "₹3,595",
+    "discount": "70% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product40",
+    "url": "https://tinyurl.com/4awj3vah",
+    "image": "pearimage/19.jpg",
+    "name": "Women Blue Flared High-Rise Jeans",
+    "brand": "Tokyo Talkies",
+    "price": "₹779",
+    "oldPrice": "₹2,599",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product41",
+    "url": "https://tinyurl.com/354r7vr3",
+    "image": "pearimage/20.jpg",
+    "name": "Women Mid-Rise Bootcut Jeans",
+    "brand": "Foundry",
+    "price": "₹423",
+    "oldPrice": "₹1,690",
+    "discount": "75% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product42",
+    "url": "https://tinyurl.com/h29nf7xy",
+    "image": "pearimage/21.jpg",
+    "name": "Women Timeless Threads Palazzo Fit Jeans",
+    "brand": "Roadster",
+    "price": "₹617",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product43",
+    "url": "https://tinyurl.com/jwvhe658",
+    "image": "pearimage/22.jpg",
+    "name": "High-Rise Cargo Flared Jeans",
+    "brand": "Orchid Blues",
+    "price": "₹754",
+    "oldPrice": "₹2,899",
+    "discount": "74% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product44",
+    "url": "https://tinyurl.com/y3pbh29t",
+    "image": "pearimage/23.jpg",
+    "name": "Smart Flared High-Rise Jeans",
+    "brand": "COSMIC TRIO",
+    "price": "₹879",
+    "oldPrice": "₹1,599",
+    "discount": "45% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product45",
+    "url": "https://tinyurl.com/mtmdhzwr",
+    "image": "pearimage/24.jpg",
+    "name": "High-Rise Bootcut Jeans",
+    "brand": "Dolce Crudo",
+    "price": "₹1,006",
+    "oldPrice": "₹3,245",
+    "discount": "69% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product46",
+    "url": "https://tinyurl.com/dyau7b9u",
+    "image": "pearimage/25.jpg",
+    "name": "Women Blue Smart Flared High-Rise Jeans",
+    "brand": "Street 9 Basics",
+    "price": "₹782",
+    "oldPrice": "₹2,899",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product47",
+    "url": "https://tinyurl.com/hzcauhe8",
+    "image": "pearimage/26.jpg",
+    "name": "Women Lightly Washed High-Rise Flared Jeans",
+    "brand": "American Eagle",
+    "price": "₹2,999",
+    "oldPrice": "₹4,999",
+    "discount": "40% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product48",
+    "url": "https://tinyurl.com/mvuyb7tu",
+    "image": "pearimage/27.jpg",
+    "name": "Flared High-Rise Stretchable Jeans with Chains",
+    "brand": "DressBerry Basics",
+    "price": "₹719",
+    "oldPrice": "₹2,399",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product49",
+    "url": "https://tinyurl.com/mrx543j3",
+    "image": "pearimage/28.jpg",
+    "name": "Cotton Comfort Flared High-Rise Jeans with Low Distress",
+    "brand": "Sassafras",
+    "price": "₹1,124",
+    "oldPrice": "₹2,498",
+    "discount": "55% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product50",
+    "url": "https://tinyurl.com/bdz446dp",
+    "image": "pearimage/29.jpg",
+    "name": "Flared fit clean look cotton jeans",
+    "brand": "Ketch",
+    "price": "₹461",
+    "oldPrice": "₹2,099",
+    "discount": "78% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product51",
+    "url": "https://tinyurl.com/45tcc73t",
+    "image": "pearimage/30.jpg",
+    "name": "Blue flared high-rise clean look jeans",
+    "brand": "Basics By Tokyo Talkies",
+    "price": "₹699",
+    "oldPrice": "₹1,899",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product52",
+    "url": "https://tinyurl.com/4ccye996",
+    "image": "pearimage/32.jpg",
+    "name": "Blue flared mid-rise clean look jeans",
+    "brand": "Tokyo Talkies",
+    "price": "₹599",
+    "oldPrice": "₹1,899",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product53",
+    "url": "https://tinyurl.com/4uda98c5",
+    "image": "pearimage/33.jpg",
+    "name": "Cargo-style flared stretchable jeans",
+    "brand": "Mast & Harbour",
+    "price": "₹874",
+    "oldPrice": "₹2,499",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product54",
+    "url": "https://tinyurl.com/4vcwur42",
+    "image": "pearimage/34.jpg",
+    "name": "Flared high-rise light fade stretchable jeans",
+    "brand": "Mast & Harbour",
+    "price": "₹749",
+    "oldPrice": "₹2,499",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product55",
+    "url": "https://tinyurl.com/3wbdwr6f",
+    "image": "pearimage/35.jpg",
+    "name": "High-rise flared fit jeans with a distressed look.",
+    "brand": "Roadster",
+    "price": "₹624",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product56",
+    "url": "https://tinyurl.com/2xx5an2b",
+    "image": "pearimage/36.jpg",
+    "name": "Heavy-wash flared jeans",
+    "brand": "DNMX",
+    "price": "₹270",
+    "oldPrice": "₹899",
+    "discount": "70% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product57",
+    "url": "https://tinyurl.com/4uhrwa2w",
+    "image": "pearimage/37.jpg",
+    "name": "Black flared high-rise jeans with low distress",
+    "brand": "Kotty",
+    "price": "₹639",
+    "oldPrice": "₹1,999",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product58",
+    "url": "https://tinyurl.com/345b5hvt",
+    "image": "pearimage/38.jpg",
+    "name": "Lightly washed flared jeans",
+    "brand": "ONLY",
+    "price": "₹1,485",
+    "oldPrice": "₹3,299",
+    "discount": "55% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product59",
+    "url": "https://tinyurl.com/59xhcw7v",
+    "image": "pearimage/39.jpg",
+    "name": "Vintage vibes palazzo fit jeans.",
+    "brand": "Roadster",
+    "price": "₹617",
+    "oldPrice": "₹2,499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product60",
+    "url": "https://tinyurl.com/yeu82rsr",
+    "image": "pearimage/40.jpg",
+    "name": "Heavily washed distressed bootcut jeans.",
+    "brand": "American Eagle",
+    "price": "₹3,299",
+    "oldPrice": "₹5,499",
+    "discount": "40% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product61",
+    "url": "https://tinyurl.com/5xwjmh8k",
+    "image": "pearimage/41.jpg",
+    "name": "Boot cut fit, no fade, high-rise jeans.",
+    "brand": "Roadster",
+    "price": "₹1,183",
+    "oldPrice": "₹3,199",
+    "discount": "63% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product62",
+    "url": "https://tinyurl.com/42zvxf6u",
+    "image": "pearimage/42.jpg",
+    "name": "Mid-wash flared jeans.",
+    "brand": "Pepe Jeans",
+    "price": "₹1,750",
+    "oldPrice": "₹3,499",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product63",
+    "url": "https://tinyurl.com/yc6n8b4a",
+    "image": "pearimage/43.jpg",
+    "name": "Flared low-rise mildly distressed jeans.",
+    "brand": "Virgío",
+    "price": "₹2,590",
+    "oldPrice": "₹2,590",
+    "discount": "No discount",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product64",
+    "url": "https://tinyurl.com/9trunhct",
+    "image": "pearimage/44.jpg",
+    "name": "Flared high-rise light fade jeans.",
+    "brand": "StyleCast",
+    "price": "₹929",
+    "oldPrice": "₹2,949",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product65",
+    "url": "https://tinyurl.com/56apswa3",
+    "image": "pearimage/45.jpg",
+    "name": "Flared high-rise jeans in dark blue.",
+    "brand": "Wrangler",
+    "price": "₹2,250",
+    "oldPrice": "₹4,499",
+    "discount": "50% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product66",
+    "url": "https://tinyurl.com/ymxth3b8",
+    "image": "pearimage/46.jpg",
+    "name": "Tailored bootcut high-rise jeans.",
+    "brand": "Lee",
+    "price": "₹6,499",
+    "oldPrice": "₹12,999",
+    "discount": "50% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product67",
+    "url": "https://tinyurl.com/5dssw4k6",
+    "image": "pearimage/47.jpg",
+    "name": "Lightly washed distressed bootcut jeans.",
+    "brand": "Showoff",
+    "price": "₹1,393",
+    "oldPrice": "₹4,220",
+    "discount": "67% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product68",
+    "url": "https://tinyurl.com/4ryruzfj",
+    "image": "pearimage/48.jpg",
+    "name": "Bootcut high-rise cropped stretchable denim jeans.",
+    "brand": "Roadster",
+    "price": "₹1,371",
+    "oldPrice": "₹3,429",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product69",
+    "url": "https://tinyurl.com/yc4cj8tm",
+    "image": "pearimage/49.jpg",
+    "name": "High-rise flared jeans with distressed detailing.",
+    "brand": "Orchid Blues",
+    "price": "₹812",
+    "oldPrice": "₹2,799",
+    "discount": "71% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product70",
+    "url": "https://tinyurl.com/r7cehtuz",
+    "image": "pearimage/50.jpg",
+    "name": "Women flared stretchable jeans.",
+    "brand": "DressBerry",
+    "price": "₹644",
+    "oldPrice": "₹1,499",
+    "discount": "57% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product71",
+    "url": "https://tinyurl.com/4a3xa957",
+    "image": "pearimage/51.jpg",
+    "name": "Women flared jeans.",
+    "brand": "Lulu & Sky",
+    "price": "₹3,256",
+    "oldPrice": "₹8,140",
+    "discount": "60% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product72",
+    "url": "https://tinyurl.com/3apfs8yf",
+    "image": "pearimage/52.jpg",
+    "name": "Flared Fit High-Rise Stretchable Jeans.",
+    "brand": "Roadster",
+    "price": "₹1,217",
+    "oldPrice": "₹2,899",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product73",
+    "url": "https://tinyurl.com/msf2cpb9",
+    "image": "pearimage/58.jpg",
+    "name": "Women Lightly-Washed Flared Jeans.",
+    "brand": "Orchid Blues",
+    "price": "₹957",
+    "oldPrice": "₹2,899",
+    "discount": "67% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+          {
+    "id": "product74",
+    "url": "https://tinyurl.com/mcshewc",
+    "image": "pearimage/54.jpg",
+    "name": "Non-Stretch Flare Fit High Distress Jeans.",
+    "brand": "High Star",
+    "price": "₹999",
+    "oldPrice": "₹2,499",
+    "discount": "60% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product75",
+    "url": "https://tinyurl.com/36bhwnkr",
+    "image": "pearimage/55.jpg",
+    "name": "Lightly Washed Flared Jeans.",
+    "brand": "Orchid Blues",
+    "price": "₹812",
+    "oldPrice": "₹2,799",
+    "discount": "71% OFF",
+    "logo": "logo/A.png",
+    "category": "Jeans"
+},
+{
+    "id": "product76",
+    "url": "https://tinyurl.com/y9jxvj37",
+    "image": "pearimage/56.jpg",
+    "name": "Black Flared High-Rise Chain Slit Jeans.",
+    "brand": "Sassafras",
+    "price": "₹965",
+    "oldPrice": "₹2,299",
+    "discount": "58% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product77",
+    "url": "https://tinyurl.com/2s4unc59",
+    "image": "pearimage/57.jpg",
+    "name": "Women Flat-Front Flared High-Rise Jeans.",
+    "brand": "Turning Blue",
+    "price": "₹1,499",
+    "oldPrice": "₹3,899",
+    "discount": "61% OFF",
+    "logo": "logo/M.png",
+    "category": "Jeans"
+},
+{
+    "id": "product128",
+    "url": "https://tinyurl.com/p6eprs4d",
+    "image": "pearimage/1.jpg",
+    "name": "Floral Woven Design Brocade Banarasi Saree",
+    "brand": "Silk Land",
+    "price": "₹1,080",
+    "oldPrice": "₹7,200",
+    "discount": "85% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product129",
+    "url": "https://tinyurl.com/zj44azzw",
+    "image": "pearimage/2.jpg",
+    "name": "Floral Zari Brocade Mysore Silk Saree",
+    "brand": "Silk Land",
+    "price": "₹997",
+    "oldPrice": "₹3,690",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    "id": "product130",
+    "url": "https://tinyurl.com/4xzebsx5",
+    "image": "pearimage/3.jpg",
+    "name": "Floral Woven Design Zari Brocade Saree",
+    "brand": "Kedar Fab",
+    "price": "₹599",
+    "oldPrice": "₹3,999",
+    "discount": "Rs. 3,400 OFF",
+    "logo": "logo/M.png",
+    "category": "Traditional Saree"
+},
+{
+    id: "product801",
+    url: "https://tinyurl.com/y2bd6rtu",
+    image: "pearimage/4.jpg",
+    name: "White & Black Colourblocked Pure Cotton Peplum Top",
+    brand: "Athena",
+    price: "₹781",
+    oldPrice: "₹1,699",
+    discount: "54% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product802",
+    url: "https://tinyurl.com/4zbj54c6",
+    image: "pearimage/1.jpg",
+    name: "White Square Neck Peplum Crop Top",
+    brand: "Tokyo Talkies",
+    price: "₹371",
+    oldPrice: "₹1,199",
+    discount: "69% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product803",
+    url: "https://tinyurl.com/62fv7ha3",
+    image: "pearimage/2.jpg",
+    name: "Floral Printed Off-Shoulder Top",
+    brand: "Stylecast X Slyck",
+    price: "₹287",
+    oldPrice: "₹1,199",
+    discount: "76% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product804",
+    url: "https://tinyurl.com/3yp9pe3a",
+    image: "pearimage/3.jpg",
+    name: "Women Classy Beige Self-Design Smocked Top",
+    brand: "EVERYDAY by ANI",
+    price: "₹485",
+    oldPrice: "₹1,799",
+    discount: "73% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product805",
+    url: "https://tinyurl.com/526eh7xe",
+    image: "pearimage/5.jpg",
+    name: "Black Embellished Peplum Top",
+    brand: "STREET 9",
+    price: "₹417",
+    oldPrice: "₹1,899",
+    discount: "78% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product806",
+    url: "https://tinyurl.com/4597hze9",
+    image: "pearimage/6.jpg",
+    name: "Ethnic Motifs Print Cotton Peplum Top",
+    brand: "FERANOID",
+    price: "₹499",
+    oldPrice: "₹2,499",
+    discount: "80% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product807",
+    url: "https://tinyurl.com/43fb4ab7",
+    image: "pearimage/7.jpg",
+    name: "Women Cotton Embroidered Peplum Crop Top",
+    brand: "DressBerry",
+    price: "₹579",
+    oldPrice: "₹1,999",
+    discount: "71% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Tops",
+},
+{
+    id: "product808",
+    url: "https://tinyurl.com/48hu6757",
+    image: "pearimage/8.jpg",
+    name: "Floral Print A-Line Midi Dress",
+    brand: "Indibelle",
+    price: "₹779",
+    oldPrice: "₹2,599",
+    discount: "70% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product809",
+    url: "https://tinyurl.com/yh75kbuv",
+    image: "pearimage/9.jpg",
+    name: "Burgundy A-Line Cotton Midi Dress",
+    brand: "Azira",
+    price: "₹899",
+    oldPrice: "₹1,899",
+    discount: "₹1,000 OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product810",
+    url: "https://tinyurl.com/3u854856",
+    image: "pearimage/10.jpg",
+    name: "Women Printed A-Line Dress",
+    brand: "Anouk",
+    price: "₹839",
+    oldPrice: "₹2,399",
+    discount: "65% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product811",
+    url: "https://tinyurl.com/354u4e8y",
+    image: "pearimage/11.jpg",
+    name: "Women Green & Maroon Floral Printed Tiered Fit and Flare Dress",
+    brand: "Rain & Rainbow",
+    price: "₹1,397",
+    oldPrice: "₹2,795",
+    discount: "50% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product812",
+    url: "https://tinyurl.com/yrys9v76",
+    image: "pearimage/12.jpg",
+    name: "Striped Midi Fit and Flare Dresses",
+    brand: "AASK",
+    price: "₹729",
+    oldPrice: "₹2,939",
+    discount: "Rs. 2,210 OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product813",
+    url: "https://tinyurl.com/y3uc782y",
+    image: "pearimage/13.jpg",
+    name: "Women Olive Green Solid Fit and Flare Dress",
+    brand: "Aawari",
+    price: "₹795",
+    oldPrice: "₹1,500",
+    discount: "47% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    id: "product814",
+    url: "https://tinyurl.com/2yyumw3x",
+    image: "pearimage/14.jpg",
+    name: "Ethnic Motifs Fit & Flare Midi Dress",
+    brand: "Rain & Rainbow",
+    price: "₹1,437",
+    oldPrice: "₹2,875",
+    discount: "50% OFF",
+    logo: "logo/M.png", // Myntra logo
+    category: "Dress",
+},
+{
+    "id": "saree101",
+    "url": "https://tinyurl.com/9tkbfff2",
+    "image": "pearimage/5.jpg",
+    "name": "Saree Mall Navy Blue & Gold-Toned Woven Design Zari Silk Blend Banarasi Saree",
+    "brand": "Saree Mall",
+    "price": "₹1299",
+    "oldPrice": "₹3999",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "1900"
+},
+{
+    "id": "saree102",
+    "url": "https://tinyurl.com/46m684cm",
+    "image": "pearimage/6.jpg",
+    "name": "Saree Mall White & Golden Floral Muga Saree",
+    "brand": "Saree Mall",
+    "price": "₹1399",
+    "oldPrice": "₹5499",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.1",
+    "ratingsCount": "387"
+},
+{
+    "id": "saree103",
+    "url": "https://tinyurl.com/2t8u6pez",
+    "image": "pearimage/7.jpg",
+    "name": "Mitera Red & Silver Banarasi Saree",
+    "brand": "Mitera",
+    "price": "₹1455",
+    "oldPrice": "₹5199",
+    "discount": "72% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.2",
+    "ratingsCount": "9700"
+},
+{
+    "id": "saree104",
+    "url": "https://tinyurl.com/4bp89c2e",
+    "image": "pearimage/8.jpg",
+    "name": "Anouk Woven Design Banarasi Saree",
+    "brand": "Anouk",
+    "price": "₹1499",
+    "oldPrice": "₹4799",
+    "discount": "69% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "2600"
+},
+{
+    "id": "saree105",
+    "url": "https://tinyurl.com/mmkf3srj",
+    "image": "pearimage/9.jpg",
+    "name": "Mitera Pink & White Woven Saree",
+    "brand": "Mitera",
+    "price": "₹1631",
+    "oldPrice": "₹6799",
+    "discount": "76% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "2800"
+},
+{
+    "id": "saree106",
+    "url": "https://tinyurl.com/ywd244ef",
+    "image": "pearimage/10.jpg",
+    "name": "Mitera Woven Zari Silk Saree",
+    "brand": "Mitera",
+    "price": "₹1669",
+    "oldPrice": "₹5199",
+    "discount": "68% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.2",
+    "ratingsCount": "9700"
+},
+{
+    "id": "saree107",
+    "url": "https://tinyurl.com/2s39xwf9",
+    "image": "pearimage/11.jpg",
+    "name": "Mitera Floral Zari Banarasi Saree",
+    "brand": "Mitera",
+    "price": "₹1420",
+    "oldPrice": "₹4899",
+    "discount": "71% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "1300"
+},
+{
+    "id": "saree108",
+    "url": "https://tinyurl.com/y7smz29e",
+    "image": "pearimage/12.jpg",
+    "name": "Slagha Zari Silk Cotton Saree",
+    "brand": "Slagha",
+    "price": "₹1349",
+    "oldPrice": "₹4999",
+    "discount": "73% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.1",
+    "ratingsCount": "83"
+},
+{
+    "id": "saree201",
+    "url": "https://tinyurl.com/6srukmc3",
+    "image": "pearimage/1.jpg",
+    "name": "KALKI Fashion Embellished Mirror Work Saree",
+    "brand": "KALKI Fashion",
+    "price": "₹7995",
+    "oldPrice": "₹7995",
+    "discount": "0% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.2",
+    "ratingsCount": "5"
+},
+{
+    "id": "saree202",
+    "url": "https://tinyurl.com/yt969j3u",
+    "image": "pearimage/2.jpg",
+    "name": "HOUSE OF JAMOTI Tissue Shimmer Ruffle Saree",
+    "brand": "HOUSE OF JAMOTI",
+    "price": "₹3999",
+    "oldPrice": "₹4999",
+    "discount": "20% OFF",
+    "logo": "logo/M.png",
+    "rating": "Unrated",
+    "ratingsCount": "0"
+},
+{
+    "id": "saree203",
+    "url": "https://tinyurl.com/9arv6taf",
+    "image": "pearimage/3.jpg",
+    "name": "Mitera Embellished Belted Saree",
+    "brand": "Mitera",
+    "price": "₹1529",
+    "oldPrice": "₹8999",
+    "discount": "83% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "1300"
+},
+{
+    "id": "saree204",
+    "url": "https://tinyurl.com/4c8ju7sr",
+    "image": "pearimage/4.jpg",
+    "name": "Mitera Embellished Belted Saree",
+    "brand": "Mitera",
+    "price": "₹1529",
+    "oldPrice": "₹8999",
+    "discount": "83% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.3",
+    "ratingsCount": "1300"
+},
+{
+    "id": "saree205",
+    "url": "https://tinyurl.com/3ctnvwfa",
+    "image": "pearimage/5.jpg",
+    "name": "All About You Sequinned Embroidered Saree",
+    "brand": "All About You",
+    "price": "₹1187",
+    "oldPrice": "₹5399",
+    "discount": "78% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.0",
+    "ratingsCount": "7"
+},
+{
+    "id": "saree206",
+    "url": "https://tinyurl.com/z6teyb9z",
+    "image": "pearimage/6.jpg",
+    "name": "Odette Sequinned Net Saree",
+    "brand": "Odette",
+    "price": "₹1498",
+    "oldPrice": "₹5994",
+    "discount": "75% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.4",
+    "ratingsCount": "16"
+},
+{
+    "id": "saree207",
+    "url": "https://tinyurl.com/bdd4dtab",
+    "image": "pearimage/7.jpg",
+    "name": "Sangria Embroidered Detailed Net Saree",
+    "brand": "Sangria",
+    "price": "₹1504",
+    "oldPrice": "₹4299",
+    "discount": "65% OFF",
+    "logo": "logo/M.png",
+    "rating": "4.5",
+    "ratingsCount": "37"
+},
+
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+        const buttons = document.querySelectorAll(".filter-buttons button");
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+
+        function cleanPrice(price) {
+            if (!price || isNaN(price.replace(/₹|,|\s+/g, ""))) return Infinity;
+            return parseInt(price.replace(/₹|,|\s+/g, ""), 10);
+        }
+
+        function filterByCategory(products, category) {
+            if (category === "all") return products;
+            return products.filter(
+                (product) => product.category.toLowerCase() === category.toLowerCase()
+            );
+        }
+
+        function renderProducts(filteredProducts) {
+            catalog.innerHTML = "";
+
+            if (filteredProducts.length === 0) {
+                catalog.innerHTML = "<p>No products found!</p>";
+                return;
+            }
+
+            filteredProducts.forEach((product) => {
+                const productCard = `
+                    <div class="product">
+                        <a href="${product.url}" target="_blank">
+                            <img src="${product.image}" alt="${product.name}">
+                        </a>
+                        <img class="logo" src="${product.logo}" alt="Logo">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.brand}</p>
+                            <div class="price">
+                                ${product.price}
+                                ${
+                                    product.oldPrice
+                                        ? `<span class="old-price">${product.oldPrice}</span>`
+                                        : ""
+                                }
+                            </div>
+                            ${
+                                product.discount
+                                    ? `<div class="discount">${product.discount}</div>`
+                                    : ""
+                            }
+                        </div>
+                    </div>
+                `;
+                catalog.innerHTML += productCard;
+            });
+        }
+
+        priceRange.value = 5000;
+        priceValue.textContent = `₹${priceRange.value}`;
+
+        renderProducts(allProducts);
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const category = button.getAttribute("data-category").toLowerCase();
+                const maxPrice = parseInt(priceRange.value);
+
+                let filteredProducts = filterByCategory(allProducts, category);
+                filteredProducts = filteredProducts.filter(
+                    (product) => cleanPrice(product.price) <= maxPrice
+                );
+
+                renderProducts(filteredProducts);
+            });
+        });
+
+        priceRange.addEventListener("change", () => {
+            const maxPrice = parseInt(priceRange.value);
+            priceValue.textContent = `₹${maxPrice}`;
+
+            const activeButton = document.querySelector(".filter-buttons .active");
+            const category = activeButton ? activeButton.getAttribute("data-category").toLowerCase() : "all";
+
+            let filteredProducts = filterByCategory(allProducts, category);
+            filteredProducts = filteredProducts.filter(
+                (product) => cleanPrice(product.price) <= maxPrice
+            );
+
+            renderProducts(filteredProducts);
+        });
+    </script>
+</body>
+</html>
