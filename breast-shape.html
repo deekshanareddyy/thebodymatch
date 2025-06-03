@@ -184,29 +184,26 @@
 
   <script>
     function selectShape(shapeType) {
-      sessionStorage.setItem('selectedBreastShape', shapeType);
+  sessionStorage.setItem('selectedBreastShape', shapeType);
 
-      let path = '';
+  switch (shapeType) {
+    case 'saggy':
+      window.location.href = 'womenbreast/saggy.html';
+      break;
+    case 'round':
+      window.location.href = 'womenbreast/round.html';
+      break;
+    case 'east-west':
+      window.location.href = 'womenbreast/east&west.html';
+      break;
+    case 'asymmetrical':
+      window.location.href = 'womenbreast/oneup&down.html';
+      break;
+    default:
+      window.location.href = 'recommendations.html'; // fallback just in case
+  }
+}
 
-      switch (shapeType) {
-        case 'saggy':
-          window.location.href = 'womenbreast/saggy.html';
-          break;
-        case 'round':
-          window.location.href = 'womenbreast/round.html';
-          break;
-        case 'east-west':
-          window.location.href = 'womenbreast/east&west.html';
-          break;
-        case 'asymmetrical':
-          window.location.href = 'womenbreast/oneup&down.html';
-          break;
-        default:
-          window.location.href = 'recommendations.html'; // fallback just in case
-      }
-
-      window.location.href = path;
-    }
 
     document.querySelector('.help-button').addEventListener('click', () => {
       alert("We'll help you determine your breast shape!");
