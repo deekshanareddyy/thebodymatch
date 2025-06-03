@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        /* Styles remain unchanged from the original working code */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px;
+            /* Leave space for the header */
+        }
+
+        /* Filter Section Layout */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px auto;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-buttons button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-dropdown select {
+            font-size: 14px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Product Catalog Styles */
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 16px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        .rating {
+            position: absolute;
+            bottom: 200px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: #000;
+        }
+
+        .rating .star {
+            color: #FFD700;
+            font-size: 10px;
+        }
+
+        @media (max-width: 767px) {
+            .rating {
+                bottom: 200px;
+                padding: 2px 5px;
+                font-size: 9px;
+            }
+
+            .rating .star {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-space"></div>
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="Full Coverage">Full Coverage</button>
+            <button data-category="Balconetta Bra">Balconetta Bra</button>
+        </div>
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="250">Up to ₹250</option>
+                <option value="500">Up to ₹500</option>
+                <option value="750">Up to ₹750</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000" selected>Up to ₹3000</option>
+            </select>
+            <span id="priceValue">₹3000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+        const allProducts = [
+          
+        {
+                "id": "product1",
+                "url": "https://tinyurl.com/4jcv4whm",
+                "image": "saggyimage/1.jpg",
+                "name": "Black Solid Non-Wired Lightly Padded T-shirt Bra",
+                "brand": "DressBerry",
+                "price": "₹348",
+                "oldPrice": "₹849",
+                "discount": "59% OFF",
+                "logo": "logo/M.png",
+                "category": "Full Coverage",
+                rating: "4.4",
+                ratingsCount: "47.1k",
+            },
+
+{
+                "id": "product4",
+                "url": "https://tinyurl.com/3kx2tru6",
+                "image": "saggyimage/2.jpg",
+                "name": "Bamboo Cotton Full Support T-shirt Bra",
+                "brand": "Enamor",
+                "price": "₹996",
+                "oldPrice": "₹1049",
+                "discount": "5% OFF",
+                "logo": "logo/M.png",
+                "category": "Full Coverage",
+                rating: "4.5",
+                ratingsCount: "1.5k+",
+            },
+
+
+{
+                "id": "product8",
+                "url": "https://tinyurl.com/4ubcucbb",
+                "image": "saggyimage/3.jpg",
+                "name": "Super Combed Cotton Stretch Slip-On Bra",
+                "brand": "Jockey",
+                "price": "₹339",
+                "oldPrice": "₹339",
+                "discount": "0% OFF",
+                "logo": "logo/M.png",
+                "category": "Full Coverage",
+                rating: "4.2",
+                ratingsCount: "3.1k",
+            },
+
+{
+                id: "product12",
+                url: "https://tinyurl.com/4py5awmn",
+                image: "saggyimage/4.jpg",
+                name: "Medium Coverage Underwired Lightly Padded Bra",
+                brand: "Brachy",
+                price: "₹419",
+                oldPrice: "₹999",
+                discount: "58% OFF",
+                logo: "logo/M.png",
+                category: "Balconetta Bra",
+                rating: "4.1",
+                ratingsCount: "522",
+            },
+
+{
+                "id": "product16",
+                "url": "https://tinyurl.com/86drtzzx",
+                "image": "saggyimage/5.jpg",
+                "name": "Floral Underwired Bra",
+                "brand": "PrettyCat",
+                "price": "₹483",
+                "oldPrice": "₹1099",
+                "discount": "56% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.1",
+                "ratingsCount": "12"
+            },
+
+{
+                "id": "product19",
+                "url": "https://tinyurl.com/4tm8jr4y",
+                "image": "saggyimage/6.jpg",
+                "name": "Lightly Padded Bra",
+                "brand": "PrettyCat",
+                "price": "₹483",
+                "oldPrice": "₹1099",
+                "discount": "56% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.3",
+                "ratingsCount": "184"
+            },
+
+{
+                "id": "product23",
+                "url": "https://tinyurl.com/bd3hvfw9",
+                "image": "saggyimage/7.jpg",
+                "name": "Medium Coverage Bra",
+                "brand": "Susie",
+                "price": "₹602",
+                "oldPrice": "₹899",
+                "discount": "33% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.7",
+                "ratingsCount": "18"
+            },
+
+ {
+                "id": "product26",
+                "url": "https://tinyurl.com/3vcshvwe",
+                "image": "saggyimage/8.jpg",
+                "name": "Padded Strapless Bra",
+                "brand": "Inner Sense",
+                "price": "₹934",
+                "oldPrice": "₹1099",
+                "discount": "15% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4",
+                "ratingsCount": "445"
+            },
+
+ {
+                "id": "product29",
+                "url": "https://tinyurl.com/5n72b9ku",
+                "image": "saggyimage/9.jpg",
+                "name": "Wired Balconette Bra",
+                "brand": "Quttos",
+                "price": "₹475",
+                "oldPrice": "₹699",
+                "discount": "32% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.1",
+                "ratingsCount": "2.3k"
+            },
+
+{
+                "id": "product32",
+                "url": "https://tinyurl.com/3u2psw7a",
+                "image": "saggyimage/10.jpg",
+                "name": "Lightly Padded Bra",
+                "brand": "Brachy",
+                "price": "₹419",
+                "oldPrice": "₹999",
+                "discount": "58% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.1",
+                "ratingsCount": "31"
+            },
+
+{
+                "id": "product35",
+                "url": "https://tinyurl.com/2wdcr4zh",
+                "image": "saggyimage/11.jpg",
+                "name": "Wired Strapless Bra",
+                "brand": "Enamor XO",
+                "price": "₹509",
+                "oldPrice": "₹849",
+                "discount": "40% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.4",
+                "ratingsCount": "264"
+            },
+
+ {
+                "id": "product38",
+                "url": "https://tinyurl.com/32mthnp9",
+                "image": "saggyimage/12.jpg",
+                "name": "Floral Lightly Padded Bra",
+                "brand": "Clovia",
+                "price": "₹493",
+                "oldPrice": "₹1299",
+                "discount": "62% OFF",
+                "logo": "logo/M.png",
+                "category": "Balconetta Bra",
+                "rating": "4.3",
+                "ratingsCount": "132"
+            },
+
+
+
+        ];
+        const filteredProducts = allProducts.filter(product => product.logo.includes("M.png"));
+
+        // Clear the original products array
+        allProducts.length = 0;
+
+        // Add the filtered products back to the original array
+        allProducts.push(...filteredProducts);
+
+        // Now, allProducts will only contain the products with the "M" logo
+        console.log(allProducts);
+
+        // Filter products by category and price range
+        function filterProducts(category, maxPrice) {
+            return allProducts.filter(
+                (product) =>
+                    (category === "all" || product.category?.toLowerCase() === category) &&
+                    cleanPrice(product.price) <= maxPrice
+            );
+        }
+
+        // Clean the price value for filtering
+        function cleanPrice(price) {
+            return parseInt(price.replace(/₹|,/g, ""), 10) || Infinity;
+        }
+
+        // Render products in the catalog
+        function renderProducts(products) {
+            const catalog = document.querySelector(".product-catalog");
+            if (!catalog) {
+                console.error("Product catalog container not found");
+                return;
+            }
+
+            if (!products || products.length === 0) {
+                catalog.innerHTML = `<p>No products found!</p>`;
+                return;
+            }
+
+            catalog.innerHTML = products
+                .map((product) => {
+                    const targetAttribute = isMobileDevice() ? "" : 'target="_blank"';
+                    const ratingHTML = product.rating && product.ratingsCount
+                        ? `<div class="rating">
+                         <span class="star">★</span> ${product.rating} <span>(${product.ratingsCount})</span>
+                       </div>`
+                        : "";
+
+                    return `
+                    <div class="product">
+                        <a href="${product.url}" ${targetAttribute}>
+                            <img src="${product.image}" alt="${product.name}">
+                        </a>
+                        <img class="logo" src="${product.logo}" alt="Logo">
+                        ${ratingHTML}
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.brand}</p>
+                            <div class="price">
+                                ${product.price}
+                                ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>` : ""}
+                            </div>
+                            ${product.discount ? `<div class="discount">${product.discount}</div>` : ""}
+                        </div>
+                    </div>`;
+                })
+                .join("");
+        }
+
+        // Check if the user is on a mobile device
+        function isMobileDevice() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        // Initialize event listeners and render products
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedPosition = localStorage.getItem("scrollPosition");
+            if (savedPosition) {
+                window.scrollTo(0, parseInt(savedPosition, 10));
+            }
+
+            const buttons = document.querySelectorAll(".filter-buttons button");
+            const priceDropdown = document.getElementById("priceRange");
+            const priceValue = document.getElementById("priceValue");
+
+            // Initial render of all products
+            renderProducts(allProducts);
+
+            // Add click event listeners to category buttons
+            buttons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    buttons.forEach((btn) => btn.classList.remove("active"));
+                    button.classList.add("active");
+
+                    const category = button.dataset.category.toLowerCase();
+                    const maxPrice = parseInt(priceDropdown.value, 10);
+
+                    const filteredProducts = filterProducts(category, maxPrice);
+                    renderProducts(filteredProducts);
+                });
+            });
+
+            // Add change event listener to price dropdown
+            priceDropdown.addEventListener("change", () => {
+                priceValue.textContent = `₹${priceDropdown.value}`;
+                const activeCategory = document.querySelector(".filter-buttons .active").dataset.category.toLowerCase();
+                const maxPrice = parseInt(priceDropdown.value, 10);
+
+                const filteredProducts = filterProducts(activeCategory, maxPrice);
+                renderProducts(filteredProducts);
+            });
+        });
+
+        // Save scroll position on page leave
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("scrollPosition", window.scrollY);
+        });
+    </script>
+</body>
+
+</html>
