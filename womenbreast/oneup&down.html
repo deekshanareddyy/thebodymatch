@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        /* Styles remain unchanged from the original working code */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header-space {
+            height: 80px; /* Leave space for the header */
+        }
+
+        /* Filter Section Layout */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px auto;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-buttons button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        .price-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-dropdown select {
+            font-size: 14px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Product Catalog Styles */
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-catalog {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .product-catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            font-size: 16px;
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: auto;
+            z-index: 1;
+        }
+
+        .rating {
+            position: absolute;
+            bottom: 200px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: #000;
+        }
+
+        .rating .star {
+            color: #FFD700;
+            font-size: 10px;
+        }
+
+        @media (max-width: 767px) {
+            .rating {
+                bottom: 200px;
+                padding: 2px 5px;
+                font-size: 9px;
+            }
+
+            .rating .star {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div>
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-category="all" class="active">All</button>
+            <button data-category="Balconetta Bra">Balconetta Bra</button>
+            <button data-category="Tshirt Bra">Tshirt Bra</button>
+        </div>
+        <div class="price-dropdown">
+            <label for="priceRange">Price Range:</label>
+            <select id="priceRange">
+                <option value="250">Up to ₹250</option>
+                <option value="500">Up to ₹500</option>
+                <option value="750">Up to ₹750</option>
+                <option value="1000">Up to ₹1000</option>
+                <option value="2000">Up to ₹2000</option>
+                <option value="3000" selected>Up to ₹3000</option>
+            </select>
+            <span id="priceValue">₹3000</span>
+        </div>
+    </div>
+
+    <div class="product-catalog"></div>
+
+    <script>
+    const allProducts = [
+        {
+            id: "product12",
+            url: "https://tinyurl.com/4py5awmn",
+            image: "oneupanddownimage/1.jpg",
+            name: "Medium Coverage Underwired Lightly Padded Bra",
+            brand: "Brachy",
+            price: "₹419",
+            oldPrice: "₹999",
+            discount: "58% OFF",
+            logo: "logo/M.png",
+            category: "Balconetta Bra",
+            rating: "4.1",
+            ratingsCount: "522",
+        },
+        
+        {
+            id: "product12",
+            url: "https://tinyurl.com/4py5awmn",
+            image: "oneupanddownimage/2.jpg",
+            name: "Medium Coverage Underwired Lightly Padded Bra",
+            brand: "Brachy",
+            price: "₹419",
+            oldPrice: "₹999",
+            discount: "58% OFF",
+            logo: "logo/M.png",
+            category: "Balconetta Bra",
+            rating: "4.1",
+            ratingsCount: "522",
+        },
+       
+        {
+            "id": "product95",
+            "url": "https://tinyurl.com/yfjtv6y9",
+            "image": "oneup&downimage/3.jpg",
+            "name": "Beige Solid Underwired Balconette Bra",
+            "brand": "Zivame",
+            "price": "₹388",
+            "oldPrice": "₹1295",
+            "discount": "70% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4.3",
+            "ratingsCount": "16.9k",
+        },
+        
+        {
+            "id": "product113",
+            "url": "https://tinyurl.com/3cnk86vc",
+            "image": "oneup&downimage/4.jpg",
+            "name": "Plush Back Flexi Wire Bra",
+            "brand": "Van Heusen",
+            "price": "₹1249",
+            "oldPrice": "₹1249",
+            "discount": "0% OFF",
+            "logo": "logo/M.png?content-type=image%2Fpng",
+            "category": "Balconetta Bra",
+            "rating": "4.6",
+            "ratingsCount": "384",
+        },
+        
+    {
+        "id": "product16",
+        "url": "https://tinyurl.com/86drtzzx",
+        "image": "oneup&downimage/5.jpg",
+        "name": "Floral Underwired Bra",
+        "brand": "PrettyCat",
+        "price": "₹483",
+        "oldPrice": "₹1099",
+        "discount": "56% OFF",
+        "logo": "logo/M.png",
+        "category": "Balconetta Bra",
+        "rating": "4.1",
+        "ratingsCount": "12",
+    },
+   
+
+    
+    {
+        "id": "product20",
+        "url": "https://bitli.in/LG8C8pB",
+        "image": "oneup&downimage/6.png",
+        "name": "Demi Cup Bra",
+        "brand": "Clovia",
+        "price": "₹470",
+        "oldPrice": "₹1299",
+        "discount": "63% OFF",
+
+        "category": "Balconetta Bra",
+        "rating": "4.5",
+        "ratingsCount": "231",
+    },
+    
+    {
+        "id": "product23",
+        "url": "https://tinyurl.com/bd3hvfw9",
+        "image": "oneup&downimage/7.jpg",
+        "name": "Medium Coverage Bra",
+        "brand": "Susie",
+        "price": "₹602",
+        "oldPrice": "₹899",
+        "discount": "33% OFF",
+        "logo": "logo/M.png",
+        "category": "Balconetta Bra",
+        "rating": "4.7",
+        "ratingsCount": "18",
+    },
+    
+        {
+            "id": "product26",
+            "url": "https://tinyurl.com/3vcshvwe",
+            "image": "oneup&downimage/18.jpg",
+            "name": "Padded Strapless Bra",
+            "brand": "Inner Sense",
+            "price": "₹934",
+            "oldPrice": "₹1099",
+            "discount": "15% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4",
+            "ratingsCount": "445",
+        },
+        
+        {
+            "id": "product29",
+            "url": "https://tinyurl.com/5n72b9ku",
+            "image": "oneup&downimage/19.jpg",
+            "name": "Wired Balconette Bra",
+            "brand": "Quttos",
+            "price": "₹475",
+            "oldPrice": "₹699",
+            "discount": "32% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4.1",
+            "ratingsCount": "2.3k",
+        },
+        
+        {
+            "id": "product32",
+            "url": "https://tinyurl.com/3u2psw7a",
+            "image": "oneup&downimage/20.jpg",
+            "name": "Lightly Padded Bra",
+            "brand": "Brachy",
+            "price": "₹419",
+            "oldPrice": "₹999",
+            "discount": "58% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4.1",
+            "ratingsCount": "31",
+        },
+        
+        {
+            "id": "product35",
+            "url": "https://tinyurl.com/2wdcr4zh",
+            "image": "oneup&downimage/21.jpg",
+            "name": "Wired Strapless Bra",
+            "brand": "Enamor XO",
+            "price": "₹509",
+            "oldPrice": "₹849",
+            "discount": "40% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4.4",
+            "ratingsCount": "264",
+        },
+        
+        {
+            "id": "product38",
+            "url": "https://tinyurl.com/32mthnp9",
+            "image": "oneup&downimage/22.jpg",
+            "name": "Floral Lightly Padded Bra",
+            "brand": "Clovia",
+            "price": "₹493",
+            "oldPrice": "₹1299",
+            "discount": "62% OFF",
+            "logo": "logo/M.png",
+            "category": "Balconetta Bra",
+            "rating": "4.3",
+            "ratingsCount": "132",
+        },
+        {
+            "id": "product2",
+            "url": "https://tinyurl.com/365maanv",
+            "image": "oneup&downimage/23.jpg",
+            "name": "Jockey Plus Size T-Shirt Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No offer",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20.3k",
+        },
+        {
+            "id": "product7",
+            "url": "https://tinyurl.com/2fcxkxt9",
+            "image": "oneup&downimage/24.jpg",
+            "name": "Jockey Cotton Medium Coverage T-shirt Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No offer",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20.2k",
+        },
+        {
+            "id": "product10",
+            "url": "https://tinyurl.com/yrz6xj27",
+            "image": "oneup&downimage/25.jpg",
+            "name": "Jockey Lace Styling T-Shirt Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20.2k",
+        },
+        {
+            "id": "product14",
+            "url": "https://tinyurl.com/ynpwa47p",
+            "image": "oneup&downimage/26.jpg",
+            "name": "Jockey Wirefree Cotton Tshirt Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20.2k",
+        },
+    
+        {
+            "id": "product17",
+            "url": "https://tinyurl.com/mj7vk3yh",
+            "image": "oneup&downimage/27.jpg",
+            "name": "Enamor Beige Solid Underwired Bra",
+            "brand": "Enamor",
+            "price": "₹1499",
+            "oldPrice": "₹1499",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.4",
+            "ratingsCount": "938",
+        },
+        
+        {
+            "id": "product19",
+            "url": "https://tinyurl.com/2hnyf7ut",
+            "image": "oneup&downimage/28.jpg",
+            "name": "Jockey Wirefree Padded Plus Size Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20.2k",
+        },
+        
+        {
+            "id": "product21",
+            "url": "https://tinyurl.com/2a5872zy",
+            "image": "oneup&downimage/29.jpg",
+            "name": "Jockey Wirefree Padded Cotton Medium Coverage Bra",
+            "brand": "Jockey",
+            "price": "₹849",
+            "oldPrice": "₹849",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.5",
+            "ratingsCount": "2600",
+        },
+    
+        {
+            "id": "product27",
+            "url": "https://tinyurl.com/4wtk7h8y",
+            "image": "oneup&downimage/30.jpg",
+            "name": "Jockey Wirefree Padded Plus Size Cotton Medium Coverage Bra",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20200",
+        },
+        {
+            "id": "product29",
+            "url": "https://tinyurl.com/bdeynkz5",
+            "image": "oneup&downimage/31.jpg",
+            "name": "Maroon Non Padded Full Coverage Seamless Bra",
+            "brand": "Maroon",
+            "price": "₹384",
+            "oldPrice": "₹499",
+            "discount": "23% OFF",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.0",
+            "ratingsCount": "47",
+        },
+        {
+            "id": "product31",
+            "url": "https://tinyurl.com/mfd98wes",
+            "image": "oneup&downimage/32.jpg",
+            "name": "Jockey Wirefree Padded Plus Size Cotton Medium Coverage Bra with Lace Styling",
+            "brand": "Jockey",
+            "price": "₹799",
+            "oldPrice": "₹799",
+            "discount": "No discount",
+            "logo": "logo/M.png",
+            "category": "Tshirt Bra",
+            "rating": "4.6",
+            "ratingsCount": "20200",
+        }, 
+
+    ];
+      const filteredProducts = allProducts.filter(product => product.logo.includes("M.png"));
+
+// Clear the original products array
+allProducts.length = 0;
+
+// Add the filtered products back to the original array
+allProducts.push(...filteredProducts);
+
+// Now, allProducts will only contain the products with the "M" logo
+console.log(allProducts);
+
+    // Filter products by category and price range
+    function filterProducts(category, maxPrice) {
+        return allProducts.filter(
+            (product) =>
+                (category === "all" || product.category?.toLowerCase() === category) &&
+                cleanPrice(product.price) <= maxPrice
+        );
+    }
+
+    // Clean the price value for filtering
+    function cleanPrice(price) {
+        return parseInt(price.replace(/₹|,/g, ""), 10) || Infinity;
+    }
+
+    // Render products in the catalog
+    function renderProducts(products) {
+        const catalog = document.querySelector(".product-catalog");
+        if (!catalog) {
+            console.error("Product catalog container not found");
+            return;
+        }
+
+        if (!products || products.length === 0) {
+            catalog.innerHTML = `<p>No products found!</p>`;
+            return;
+        }
+
+        catalog.innerHTML = products
+            .map((product) => {
+                const targetAttribute = isMobileDevice() ? "" : 'target="_blank"';
+                const ratingHTML = product.rating && product.ratingsCount
+                    ? `<div class="rating">
+                         <span class="star">★</span> ${product.rating} <span>(${product.ratingsCount})</span>
+                       </div>`
+                    : "";
+
+                return `
+                    <div class="product">
+                        <a href="${product.url}" ${targetAttribute}>
+                            <img src="${product.image}" alt="${product.name}">
+                        </a>
+                        <img class="logo" src="${product.logo}" alt="Logo">
+                        ${ratingHTML}
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.brand}</p>
+                            <div class="price">
+                                ${product.price}
+                                ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span>` : ""}
+                            </div>
+                            ${product.discount ? `<div class="discount">${product.discount}</div>` : ""}
+                        </div>
+                    </div>`;
+            })
+            .join("");
+    }
+
+    // Check if the user is on a mobile device
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    // Initialize event listeners and render products
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedPosition = localStorage.getItem("scrollPosition");
+        if (savedPosition) {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+        }
+
+        const buttons = document.querySelectorAll(".filter-buttons button");
+        const priceDropdown = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+
+        // Initial render of all products
+        renderProducts(allProducts);
+
+        // Add click event listeners to category buttons
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const category = button.dataset.category.toLowerCase();
+                const maxPrice = parseInt(priceDropdown.value, 10);
+
+                const filteredProducts = filterProducts(category, maxPrice);
+                renderProducts(filteredProducts);
+            });
+        });
+
+        // Add change event listener to price dropdown
+        priceDropdown.addEventListener("change", () => {
+            priceValue.textContent = `₹${priceDropdown.value}`;
+            const activeCategory = document.querySelector(".filter-buttons .active").dataset.category.toLowerCase();
+            const maxPrice = parseInt(priceDropdown.value, 10);
+
+            const filteredProducts = filterProducts(activeCategory, maxPrice);
+            renderProducts(filteredProducts);
+        });
+    });
+
+    // Save scroll position on page leave
+    window.addEventListener("beforeunload", () => {
+        localStorage.setItem("scrollPosition", window.scrollY);
+    });
+    </script>
+</body>
+</html>
