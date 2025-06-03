@@ -18,7 +18,6 @@
       min-height: 100vh;
     }
 
-    /* Video player container */
     .video-player {
       width: 100%;
       max-width: 1200px;
@@ -29,7 +28,7 @@
     .video-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      padding-bottom: 56.25%;
       background: #000;
       margin-bottom: 30px;
     }
@@ -186,7 +185,27 @@
   <script>
     function selectShape(shapeType) {
       sessionStorage.setItem('selectedBreastShape', shapeType);
-      window.location.href = 'recommendations.html';
+
+      let path = '';
+
+      switch (shapeType) {
+        case 'saggy':
+          path = 'womenbreast/saggy.html';
+          break;
+        case 'round':
+          path = 'womenbreast/round.html';
+          break;
+        case 'east-west':
+          path = 'womenbreast/east&west.html';
+          break;
+        case 'asymmetrical':
+          path = 'womenbreast/oneup&down.html';
+          break;
+        default:
+          path = 'recommendations.html'; // fallback just in case
+      }
+
+      window.location.href = path;
     }
 
     document.querySelector('.help-button').addEventListener('click', () => {
