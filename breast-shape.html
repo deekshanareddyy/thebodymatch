@@ -190,19 +190,19 @@
 
       switch (shapeType) {
         case 'saggy':
-          path = 'womenbreast/saggy.html';
+          window.location.href = 'womenbreast/saggy.html';
           break;
         case 'round':
-          path = 'womenbreast/round.html';
+          window.location.href = 'womenbreast/round.html';
           break;
         case 'east-west':
-          path = 'womenbreast/east&west.html';
+          window.location.href = 'womenbreast/east&west.html';
           break;
         case 'asymmetrical':
-          path = 'womenbreast/oneup&down.html';
+          window.location.href = 'womenbreast/oneup&down.html';
           break;
         default:
-          path = 'recommendations.html'; // fallback just in case
+          window.location.href = 'recommendations.html'; // fallback just in case
       }
 
       window.location.href = path;
