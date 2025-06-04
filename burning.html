@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfume Catalog</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header-space {
+      height: 80px;
+    }
+
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 15px auto;
+      max-width: 1200px;
+      padding: 0 10px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-buttons button {
+      padding: 8px 14px;
+      border: none;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: #333;
+    }
+
+    .filter-buttons button:hover,
+    .filter-buttons button.active {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-buttons button.active {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    .product-catalog {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 10px;
+    }
+
+    .product-catalog p {
+      font-size: 14px;
+      color: #666;
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-space"></div>
+
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button data-category="all" class="active">All</button>
+      <button data-category="Men Perfume">Men Perfume</button>
+      <button data-category="Women Perfume">Women Perfume</button>
+    </div>
+  </div>
+
+  <div class="product-catalog">
+    <p>No products to display.</p>
+  </div>
+
+  <script>
+    const allProducts = []; // No products yet
+    const catalog = document.querySelector(".product-catalog");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+
+    function renderProducts(products) {
+      catalog.innerHTML = "";
+
+      if (products.length === 0) {
+        catalog.innerHTML = "<p>No products to display.</p>";
+        return;
+      }
+
+      // If you add products later, you'll handle them here
+    }
+
+    // Initial render (empty)
+    renderProducts(allProducts);
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const category = button.getAttribute("data-category");
+        const filteredProducts = category === "all"
+          ? allProducts
+          : allProducts.filter(p => p.category === category);
+
+        renderProducts(filteredProducts);
+      });
+    });
+  </script>
+</body>
+</html>
