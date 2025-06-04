@@ -108,7 +108,7 @@
   <div class="video-player">
     <div class="video-container">
       <video autoplay muted playsinline controls>
-        <source src="rectanglebodyshape.mp4" type="video/mp4" />
+        <source src="rectanglebody.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
@@ -120,7 +120,12 @@
     <p>Select your next step</p>
 
     <div class="options-container">
-      <button class="option-button" aria-label="Style suggestions for rectangle body" onclick="logClick('style-now')">🎨 STYLE NOW</button>
+      <!-- Razorpay Payment Button -->
+      <form>
+        <script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Qd5zjFEGzkWMw0" async></script>
+      </form>
+
+      <!-- Shop Now Button -->
       <button class="option-button" aria-label="Shop for rectangle body type" onclick="logClick('shop-now'); window.location.href='womenbody/rectangle.html'">🛍️ SHOP NOW</button>
     </div>
 
