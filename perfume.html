@@ -130,3 +130,88 @@
     }
   </style>
 </head>
+<body>
+
+  <!-- Video player for perfume -->
+  <div class="video-player">
+    <div class="video-container">
+      <video controls autoplay>
+        <source src="perfume.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Body smell selection -->
+  <div class="content-container">
+    <h1>Please Select Your Body Smell</h1>
+
+    <div class="shapes-grid">
+      <!-- Flower -->
+      <div class="shape-card" onclick="selectSmell('flower')" title="Sweet Floral Scent">
+        <img src="flower.jpg" alt="Flower Scent" class="shape-image" />
+        <div class="shape-title">SWEET</div>
+        <div class="shape-desc">(Flower Smell)</div>
+      </div>
+
+      <!-- Egg -->
+      <div class="shape-card" onclick="selectSmell('egg')" title="Pungent Smell">
+        <img src="egg.jpg" alt="Egg Smell" class="shape-image" />
+        <div class="shape-title">PUNGENT</div>
+        <div class="shape-desc">(Egg Smell)</div>
+      </div>
+
+      <!-- Matchstick -->
+      <div class="shape-card" onclick="selectSmell('matchstick')" title="Burnt Match Smell">
+        <img src="matchstick.jpg" alt="Matchstick Smell" class="shape-image" />
+        <div class="shape-title">BURNING</div>
+        <div class="shape-desc">(Matchstick Smell)</div>
+      </div>
+
+      <!-- Gunpowder -->
+      <div class="shape-card" onclick="selectSmell('gunpowder')" title="Metallic Gunpowder Smell">
+        <img src="gunpowder.jpg" alt="Gunpowder Smell" class="shape-image" />
+        <div class="shape-title">METALLIC</div>
+        <div class="shape-desc">(Gunpowder Smell)</div>
+      </div>
+    </div>
+
+    <div class="navigation">
+      <button class="help-button nav-button">HELP ME DECIDE</button>
+      <button class="back-button nav-button" onclick="window.location.href='welcome.html'">BACK</button>
+    </div>
+  </div>
+
+  <script>
+    function selectSmell(smellType) {
+      sessionStorage.setItem('selectedBodySmell', smellType);
+
+      switch (smellType) {
+        case 'flower':
+          window.location.href = 'flowersmell.html';
+          break;
+        case 'egg':
+          window.location.href = 'eggsmell.html';
+          break;
+        case 'matchstick':
+          window.location.href = 'matchsticksmell.html';
+          break;
+        case 'gunpowder':
+          window.location.href = 'gunpowdersmell.html';
+          break;
+        default:
+          alert('Unknown smell selected!');
+      }
+    }
+
+    document.querySelector('.help-button').addEventListener('click', () => {
+      alert("We'll help you figure out your natural body scent.");
+    });
+
+    document.querySelector('video').play().catch(e => {
+      console.log("Autoplay with sound was prevented:", e);
+      document.querySelector('video').controls = true;
+    });
+  </script>
+</body>
+</html>
