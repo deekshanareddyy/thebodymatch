@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfume Catalog</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header-space {
+      height: 80px;
+    }
+
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 15px auto;
+      max-width: 1200px;
+      padding: 0 10px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-buttons button {
+      padding: 8px 14px;
+      border: none;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: #333;
+    }
+
+    .filter-buttons button:hover,
+    .filter-buttons button.active {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-buttons button.active {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    .product-catalog {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 10px;
+    }
+
+    @media (max-width: 1024px) {
+      .product-catalog {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .product-catalog {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .product {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+    }
+
+    .product img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .product-info {
+      padding: 12px;
+      text-align: left;
+    }
+
+    .product-info h3 {
+      font-size: 14px;
+      margin: 5px 0;
+      color: #333;
+    }
+
+    .product-info p {
+      font-size: 12px;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #999;
+      margin-left: 5px;
+    }
+
+    .discount {
+      color: #d32f2f;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 50px;
+      height: auto;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-space"></div>
+
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button data-category="all" class="active">All</button>
+      <button data-category="Men Perfume">Men Perfume</button>
+      <button data-category="Women Perfume">Women Perfume</button>
+    </div>
+  </div>
+
+  <div class="product-catalog"></div>
+
+  <script>
+    const allProducts = [
+      {
+        id: "perfume1",
+        url: "https://example.com/men-perfume",
+        image: "https://via.placeholder.com/300x400?text=Men+Perfume",
+        name: "Fresh Intense Eau de Parfum",
+        brand: "AXE",
+        price: "₹899",
+        oldPrice: "₹1,499",
+        discount: "40% OFF",
+        logo: "https://via.placeholder.com/40x40?text=A",
+        category: "Men Perfume"
+      },
+      {
+        id: "perfume2",
+        url: "https://example.com/women-perfume",
+        image: "https://via.placeholder.com/300x400?text=Women+Perfume",
+        name: "Floral Bliss Fragrance",
+        brand: "Bella",
+        price: "₹1,299",
+        oldPrice: "₹2,000",
+        discount: "35% OFF",
+        logo: "https://via.placeholder.com/40x40?text=B",
+        category: "Women Perfume"
+      }
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+
+    function cleanPrice(price) {
+      return parseInt(price.replace(/₹|,|\s+/g, ""), 10);
+    }
+
+    function filterByCategory(products, category) {
+      if (category === "all") return products;
+      return products.filter(
+        (product) => product.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    function renderProducts(filteredProducts) {
+      catalog.innerHTML = "";
+
+      if (filteredProducts.length === 0) {
+        catalog.innerHTML = "<p>No products found!</p>";
+        return;
+      }
+
+      filteredProducts.forEach((product) => {
+        const productCard = `
+          <div class="product">
+            <a href="${product.url}" target="_blank">
+              <img src="${product.image}" alt="${product.name}">
+            </a>
+            <img class="logo" src="${product.logo}" alt="Logo">
+            <div class="product-info">
+              <h3>${product.name}</h3>
+              <p>${product.brand}</p>
+              <div class="price">
+                ${product.price}
+                ${
+                  product.oldPrice
+                    ? `<span class="old-price">${product.oldPrice}</span>`
+                    : ""
+                }
+              </div>
+              ${
+                product.discount
+                  ? `<div class="discount">${product.discount}</div>`
+                  : ""
+              }
+            </div>
+          </div>
+        `;
+        catalog.innerHTML += productCard;
+      });
+    }
+
+    renderProducts(allProducts);
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const category = button.getAttribute("data-category");
+        const filteredProducts = filterByCategory(allProducts, category);
+        renderProducts(filteredProducts);
+      });
+    });
+  </script>
+</body>
+</html>
