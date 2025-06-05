@@ -1,21 +1,13 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Match</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: white;
-      color: black;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', sans-serif; background-color: white; color: black; }
 
     .video-container {
       width: 100%;
@@ -66,50 +58,47 @@
       border: 1px solid black;
     }
 
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: 100px auto;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
     input {
       padding: 10px;
       margin: 10px 0;
       width: 100%;
-      max-width: 300px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
     }
 
-    @media (max-width: 768px) {
-      .content h2 {
-        font-size: 2rem;
-      }
-
-      .content p {
-        font-size: 1rem;
-      }
-
-      .button {
-        padding: 0.6rem 1.5rem;
-        font-size: 0.95rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .content h2 {
-        font-size: 1.7rem;
-      }
-
-      .content p {
-        font-size: 0.95rem;
-      }
-
-      .button {
-        padding: 0.5rem 1.2rem;
-        font-size: 0.9rem;
-      }
+    #recaptcha-container {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Video Banner -->
+  <!-- Video -->
   <div class="video-container">
     <video autoplay muted loop playsinline>
       <source src="video.mp4" type="video/mp4" />
@@ -117,96 +106,111 @@
     </video>
   </div>
 
-  <!-- Content and OTP Auth -->
+  <!-- Main Content -->
   <div class="content">
     <h2>Let's Body Match</h2>
+    <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
+    <a href="#" id="loginBtn" class="button">Login</a>
+  </div>
 
-    <div id="auth-container">
-      <!-- Step 1: Phone input -->
-      <div id="phone-auth">
-        <p>Enter your phone number to start:</p>
-        <input type="tel" id="phone" placeholder="+1 123-456-7890">
-        <button id="send-otp" class="button">Send OTP</button>
+  <!-- Modal Popup -->
+  <div id="otpModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Login with Phone</h3>
+      <input type="tel" id="phone" placeholder="Enter phone number" />
+      <button id="sendOtp" class="button">Send OTP</button>
+
+      <div id="otpSection" style="display:none;">
+        <input type="text" id="otp" placeholder="Enter 6-digit OTP" maxlength="6" />
+        <button id="verifyOtp" class="button">Verify OTP</button>
       </div>
 
-      <!-- Step 2: OTP verification -->
-      <div id="otp-verify" style="display: none;">
-        <p>Enter the 6-digit OTP sent to your phone:</p>
-        <input type="text" id="otp" placeholder="123456" maxlength="6">
-        <button id="verify-otp" class="button">Verify</button>
-      </div>
-
-      <!-- reCAPTCHA -->
       <div id="recaptcha-container"></div>
     </div>
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase + intl-tel-input -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"></script>
 
   <script>
-    // Firebase config
+    // Your Firebase Config
     const firebaseConfig = {
-      apiKey: "ATzab9/DTfFa1iWda9_-w-bg6-8Mz30aarutn3cU",
-      authDomain: "baby-3458e.firebaseapp.com",
-      projectId: "baby-3458e",
-      storageBucket: "baby-3458e.appspot.com",
-      messagingSenderId: "370657403700",
-      appId: "1:370657403700:web:16984d6f676da6362afb61"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
-    // Init Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    let confirmationResult;
 
-    // Elements
-    const phoneInput = document.getElementById('phone');
-    const sendOtpBtn = document.getElementById('send-otp');
-    const otpInput = document.getElementById('otp');
-    const verifyOtpBtn = document.getElementById('verify-otp');
+    // Modal Logic
+    const modal = document.getElementById("otpModal");
+    const openBtn = document.getElementById("loginBtn");
+    const closeBtn = document.getElementById("closeModal");
+    const otpSection = document.getElementById("otpSection");
 
-    // Step 1: Send OTP
-    sendOtpBtn.addEventListener('click', async () => {
-      const phoneNumber = phoneInput.value.trim();
+    openBtn.onclick = () => modal.style.display = "block";
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; }
 
-      if (!phoneNumber.startsWith('+')) {
-        alert("Please enter a valid phone number with country code (e.g. +1234567890)");
+    // intl-tel-input
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "IN",
+      separateDialCode: true,
+      preferredCountries: ["in"],
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
+    });
+
+    // reCAPTCHA
+    const recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible'
+    });
+
+    // Send OTP
+    document.getElementById("sendOtp").onclick = () => {
+      const number = iti.getNumber();
+
+      if (!iti.isValidNumber()) {
+        alert("Please enter a valid phone number.");
         return;
       }
 
-      // Set up reCAPTCHA
-      const recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'invisible'
-      });
+      auth.signInWithPhoneNumber(number, recaptcha)
+        .then((result) => {
+          window.confirmationResult = result;
+          otpSection.style.display = "block";
+          alert("OTP sent!");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Failed to send OTP.");
+        });
+    };
 
-      try {
-        confirmationResult = await auth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
-        document.getElementById('phone-auth').style.display = 'none';
-        document.getElementById('otp-verify').style.display = 'block';
-      } catch (error) {
-        alert(`Error: ${error.message}`);
-        recaptchaVerifier.clear();
-      }
-    });
-
-    // Step 2: Verify OTP
-    verifyOtpBtn.addEventListener('click', async () => {
-      const otp = otpInput.value.trim();
-
-      if (otp.length !== 6) {
-        alert("Please enter the 6-digit code you received.");
+    // Verify OTP
+    document.getElementById("verifyOtp").onclick = () => {
+      const code = document.getElementById("otp").value;
+      if (!code || code.length !== 6) {
+        alert("Enter a valid 6-digit OTP");
         return;
       }
 
-      try {
-        await confirmationResult.confirm(otp);
-        window.location.href = 'welcome.html';
-      } catch (error) {
-        alert(`Invalid OTP: ${error.message}`);
-      }
-    });
+      window.confirmationResult.confirm(code)
+        .then(() => {
+          window.location.href = "welcome.html";
+        })
+        .catch((error) => {
+          alert("Invalid OTP. Try again.");
+        });
+    };
   </script>
 
 </body>
