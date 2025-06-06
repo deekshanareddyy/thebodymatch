@@ -32,19 +32,32 @@
     display: block;
   }
   .content {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    text-align: center;
-  }
-  .content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  .content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-  }
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.content h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.content p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 500px;
+  color: #444;
+  margin: 0;
+}
+
   .button {
     display: inline-block;
     text-decoration: none;
