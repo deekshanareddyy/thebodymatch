@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfume Catalog</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header-space {
+      height: 80px;
+    }
+
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 15px auto;
+      max-width: 1200px;
+      padding: 0 10px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-buttons button {
+      padding: 8px 14px;
+      border: none;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: #333;
+    }
+
+    .filter-buttons button:hover,
+    .filter-buttons button.active {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-buttons button.active {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    .product-catalog {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 10px;
+    }
+
+    .product-catalog p {
+      font-size: 14px;
+      color: #666;
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    /* Basic styling for product cards (optional) */
+    .product-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .product-price {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-space"></div>
+
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button data-category="all" class="active">All</button>
+      <button data-category="Men Perfume">Men Perfume</button>
+      <button data-category="Women Perfume">Women Perfume</button>
+    </div>
+  </div>
+
+  <div class="product-catalog">
+    <p>No products to display.</p>
+  </div>
+
+  <script>
+    // Add products here
+    const allProducts = [
+       {
+    id: "product684",
+    url: "https://myntr.it/eu0exL9",
+    image: "sweet/1f",
+    name: "All Of Me Eau De Parfum",
+    brand: "Narciso Rodriguez",
+    price: "₹7,120",
+    oldPrice: "₹8,900",
+    discount: "20% OFF",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+  },
+  {
+    id: "product685",
+    url: "https://myntr.it/k3q7jFS",
+    image: "sweet/2f",
+    name: "Euphoria Women Gift Set",
+    brand: "Carlton London",
+    price: "₹747",
+    oldPrice: "₹2,490",
+    discount: "70% OFF",
+    rating: "4.5 (7.4k)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+  },
+  {
+    id: "product686",
+    url: "https://myntr.it/h5DITId",
+    image: "sweet/3f",
+    name: "Libre Eau De Parfum",
+    brand: "Yves Saint Laurent",
+    price: "₹7,000",
+    oldPrice: "₹7,000",
+    discount: "0% OFF",
+    rating: "5 (14)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+  },
+  {
+    id: "product687",
+    url: "https://myntr.it/jyJovlj",
+    image: "sweet/4f",
+    name: "Veronica Eau de Parfum",
+    brand: "Carlton London",
+    price: "₹342",
+    oldPrice: "₹1,490",
+    discount: "77% OFF",
+    rating: "4.2 (16.2k)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+  },
+  {
+    id: "product688",
+    url: "https://myntr.it/LFllgd0",
+    image: "sweet/5m",
+    name: "CEO MAN Eau de Parfum",
+    brand: "Bella Vita Organic",
+    price: "₹467",
+    oldPrice: "₹899",
+    discount: "48% OFF",
+    rating: "4.4 (13k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+  }
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+
+    function renderProducts(products) {
+      catalog.innerHTML = "";
+
+      if (products.length === 0) {
+        catalog.innerHTML = "<p>No products to display.</p>";
+        return;
+      }
+
+      products.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        card.innerHTML = `
+          <a href="${product.url}" target="_blank" rel="noopener noreferrer">
+            <img src="${product.image}" alt="${product.name}" />
+            <div class="product-name">${product.name}</div>
+          </a>
+          <div>${product.brand}</div>
+          <div class="product-price">${product.price} <span style="text-decoration:line-through; color:#999; font-weight:normal;">${product.oldPrice}</span></div>
+          <div>${product.discount}</div>
+          <div>Rating: ${product.rating || "N/A"}</div>
+        `;
+
+        catalog.appendChild(card);
+      });
+    }
+
+    // Initial render with all products
+    renderProducts(allProducts);
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const category = button.getAttribute("data-category");
+        const filteredProducts = category === "all"
+          ? allProducts
+          : allProducts.filter(p => p.category === category);
+
+        renderProducts(filteredProducts);
+      });
+    });
+  </script>
+</body>
+</html>
