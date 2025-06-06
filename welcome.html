@@ -4,17 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome - Body Match</title>
-
-  <!-- Space Grotesk font -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background-color: #000;
       color: #fff;
@@ -31,7 +24,7 @@
     .video-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 */
+      padding-bottom: 56.25%;
       background: #000;
     }
 
@@ -103,36 +96,34 @@
 </head>
 <body>
 
-  <!-- Video Section -->
-  <div class="video-player">
-    <div class="video-container">
-      <video autoplay muted playsinline controls>
-        <source src="welcome.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
+<div class="video-player">
+  <div class="video-container">
+    <video autoplay muted playsinline controls>
+      <source src="welcome.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+<div class="content">
+  <h2>Welcome to<br>TheBodyMatch.com</h2>
+  <p>What are you shopping for?</p>
+
+  <div class="options-container">
+    <button class="option-button" onclick="logClick('clothes'); window.location.href='body-shapes.html'">🧥 CLOTHES</button>
+    <button class="option-button" onclick="logClick('bra'); window.location.href='breast-shape.html'">👙 BRA</button>
+    <button class="option-button" onclick="logClick('perfume'); window.location.href='perfume.html'">🌸 PERFUME</button>
   </div>
 
-  <!-- Content Section -->
-  <div class="content">
-    <h2>Welcome to<br>TheBodyMatch.com</h2>
-    <p>What are you shopping for?</p>
+  <button class="option-button back-button" onclick="logClick('back'); window.location.href='index.html'">⬅ BACK</button>
+</div>
 
-    <div class="options-container">
-      <button class="option-button" onclick="logClick('clothes'); window.location.href='body-shapes.html'">🧥 CLOTHES</button>
-      <button class="option-button" onclick="logClick('bra'); window.location.href='breast-shape.html'">👙 BRA</button>
-      <button class="option-button" onclick="logClick('perfume'); window.location.href='perfume.html'">🌸 PERFUME</button>
-    </div>
-
-    <button class="option-button back-button" onclick="logClick('back'); window.location.href='index.html'">⬅ BACK</button>
-  </div>
-
-  <script>
-    function logClick(option) {
-      console.log("User clicked:", option);
-      // You can connect this to analytics if needed
-    }
-  </script>
+<script>
+  function logClick(option) {
+    console.log("User clicked:", option);
+    // Add tracking if needed
+  }
+</script>
 
 </body>
 </html>
