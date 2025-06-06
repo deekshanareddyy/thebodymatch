@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfume Catalog</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header-space {
+      height: 80px;
+    }
+
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 15px auto;
+      max-width: 1200px;
+      padding: 0 10px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-buttons button {
+      padding: 8px 14px;
+      border: none;
+      background-color: #f2f2f2;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: #333;
+    }
+
+    .filter-buttons button:hover,
+    .filter-buttons button.active {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-buttons button.active {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    .product-catalog {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 10px;
+    }
+
+    .product-catalog p {
+      font-size: 14px;
+      color: #666;
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    /* Basic styling for product cards (optional) */
+    .product-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .product-price {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-space"></div>
+
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button data-category="all" class="active">All</button>
+      <button data-category="Men Perfume">Men Perfume</button>
+      <button data-category="Women Perfume">Women Perfume</button>
+    </div>
+  </div>
+
+  <div class="product-catalog">
+    <p>No products to display.</p>
+  </div>
+
+  <script>
+    // Add products here
+    const allProducts = [
+      {
+    id: "product689",
+    url: "https://myntr.it/PV7us2k",
+    image: "pungent/1f",
+    name: "Celeste Fragrance",
+    brand: "SKINN by Titan",
+    price: "₹1,556",
+    oldPrice: "₹1,995",
+    discount: "22% OFF",
+    rating: "4.6 (16.3k)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product690",
+    url: "https://myntr.it/c3BBm0t",
+    image: "pungent/2fm",
+    name: "Impressions 3In1 EDP Gift Box",
+    brand: "Pilgrim",
+    price: "₹279",
+    oldPrice: "₹799",
+    discount: "65% OFF",
+    rating: "4.3 (2.3k)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product691",
+    url: "https://myntr.it/c3BBm0t",
+    image: "pungent/2fm",
+    name: "Impressions 3In1 EDP Gift Box",
+    brand: "Pilgrim",
+    price: "₹279",
+    oldPrice: "₹799",
+    discount: "65% OFF",
+    rating: "4.3 (2.3k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product692",
+    url: "https://myntr.it/8Up1UFC",
+    image: "pungent/3m",
+    name: "Edge Eau de Parfum",
+    brand: "Wild Stone",
+    price: "₹384",
+    oldPrice: "₹699",
+    discount: "45% OFF",
+    rating: "4.4 (27.6k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product693",
+    url: "https://myntr.it/fXLv2bB",
+    image: "pungent/4f",
+    name: "Hot Mess Luxury Collection",
+    brand: "Bella Vita Organic",
+    price: "₹835",
+    oldPrice: "₹1,099",
+    discount: "24% OFF",
+    rating: "4.5 (562)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product694",
+    url: "https://myntr.it/VUPbs3E",
+    image: "pungent/5f",
+    name: "Summer Eau De Parfum",
+    brand: "TNW the natural wash",
+    price: "₹244",
+    oldPrice: "₹499",
+    discount: "51% OFF",
+    rating: "4.4 (24)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product695",
+    url: "https://myntr.it/i9NzquF",
+    image: "pungent/6mf",
+    name: "Something Something Green Eau De Parfum",
+    brand: "VIWA",
+    price: "₹297",
+    oldPrice: "₹297",
+    discount: "0% OFF",
+    rating: "4.8 (6)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product696",
+    url: "https://myntr.it/i9NzquF",
+    image: "pungent/6mf",
+    name: "Something Something Green Eau De Parfum",
+    brand: "VIWA",
+    price: "₹297",
+    oldPrice: "₹297",
+    discount: "0% OFF",
+    rating: "4.8 (6)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product697",
+    url: "https://myntr.it/IixkYMM",
+    image: "pungent/7m",
+    name: "Black Eau De Toilette",
+    brand: "THE MAN COMPANY",
+    price: "₹499",
+    oldPrice: "₹2,499",
+    discount: "80% OFF",
+    rating: "4.2 (2.7k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product698",
+    url: "https://myntr.it/57A1ASQ",
+    image: "pungent/8f",
+    name: "United Dreams Live Free Eau de Toilette",
+    brand: "United Colors of Benetton",
+    price: "₹2,295",
+    oldPrice: "₹2,700",
+    discount: "15% OFF",
+    rating: "4.9 (19)",
+    logo: "logo/M.png",
+    category: "Women Perfume",
+},
+{
+    id: "product699",
+    url: "https://myntr.it/1znrtGP",
+    image: "pungent/9m",
+    name: "Men Aqua Eau De Parfum",
+    brand: "Mast & Harbour",
+    price: "₹347",
+    oldPrice: "₹1,199",
+    discount: "71% OFF",
+    rating: "4.1 (2.8k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product700",
+    url: "https://myntr.it/1vGwmp6",
+    image: "pungent/10m",
+    name: "Infinite Aqua Eau De Parfum",
+    brand: "DAVID BECKHAM",
+    price: "₹2,880",
+    oldPrice: "₹4,800",
+    discount: "40% OFF",
+    rating: "4.4 (82)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+{
+    id: "product701",
+    url: "https://myntr.it/kmhysIx",
+    image: "pungent/11m",
+    name: "Men Hydra Eau De Parfum",
+    brand: "VILLAIN",
+    price: "₹375",
+    oldPrice: "₹799",
+    discount: "53% OFF",
+    rating: "4.3 (5.7k)",
+    logo: "logo/M.png",
+    category: "Men Perfume",
+},
+    ];
+
+    const catalog = document.querySelector(".product-catalog");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+
+    function renderProducts(products) {
+      catalog.innerHTML = "";
+
+      if (products.length === 0) {
+        catalog.innerHTML = "<p>No products to display.</p>";
+        return;
+      }
+
+      products.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        card.innerHTML = `
+          <a href="${product.url}" target="_blank" rel="noopener noreferrer">
+            <img src="${product.image}" alt="${product.name}" />
+            <div class="product-name">${product.name}</div>
+          </a>
+          <div>${product.brand}</div>
+          <div class="product-price">${product.price} <span style="text-decoration:line-through; color:#999; font-weight:normal;">${product.oldPrice}</span></div>
+          <div>${product.discount}</div>
+          <div>Rating: ${product.rating || "N/A"}</div>
+        `;
+
+        catalog.appendChild(card);
+      });
+    }
+
+    // Initial render with all products
+    renderProducts(allProducts);
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const category = button.getAttribute("data-category");
+        const filteredProducts = category === "all"
+          ? allProducts
+          : allProducts.filter(p => p.category === category);
+
+        renderProducts(filteredProducts);
+      });
+    });
+  </script>
+</body>
+</html>
