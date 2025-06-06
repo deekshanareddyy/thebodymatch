@@ -4,35 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Body Shapes - Body Match</title>
+
+  <!-- Space Grotesk font -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
     }
 
     body {
       background-color: #000;
       color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
       min-height: 100vh;
     }
 
-    /* YouTube-style long form video box for vertical video */
     .video-player {
       width: 100%;
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 20px 20px 10px;
     }
 
     .video-container {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* 16:9 aspect ratio container */
+      padding-top: 56.25%;
       background: #000;
-      overflow: hidden;
       border-radius: 12px;
+      overflow: hidden;
     }
 
     .video-container video {
@@ -48,27 +51,28 @@
     .content-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 10px 20px 40px;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin: 3rem 0 2rem;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin: 2.5rem 0 1.5rem;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 600;
     }
 
     .shapes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
+      gap: 25px;
+      margin-top: 20px;
     }
 
     .shape-card {
-      background: #222;
-      border-radius: 10px;
+      background: #111;
+      border-radius: 12px;
       padding: 20px;
       transition: all 0.3s ease;
       cursor: pointer;
@@ -76,7 +80,7 @@
 
     .shape-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 18px rgba(255, 255, 255, 0.1);
     }
 
     .shape-image {
@@ -88,29 +92,32 @@
     }
 
     .shape-title {
-      font-size: 1.3rem;
-      margin-bottom: 5px;
-      font-weight: bold;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
     .shape-desc {
+      font-size: 0.85rem;
       color: #aaa;
-      font-size: 0.9rem;
     }
 
     .navigation {
-      margin: 50px 0;
+      margin: 40px 0 10px;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 20px;
     }
 
     .nav-button {
-      padding: 12px 30px;
+      padding: 12px 28px;
       border-radius: 30px;
       font-size: 1rem;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
+      font-family: 'Space Grotesk', sans-serif;
     }
 
     .help-button {
@@ -126,116 +133,96 @@
     }
 
     .nav-button:hover {
-      opacity: 0.9;
       transform: scale(1.05);
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
 
-  <!-- YouTube-style video player with vertical video -->
+  <!-- Video Section -->
   <div class="video-player">
     <div class="video-container">
-      <video controls autoplay>
+      <video controls autoplay muted playsinline>
         <source src="body-shape.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
   </div>
 
-  <!-- Body shape selection content -->
+  <!-- Body Shape Grid -->
   <div class="content-container">
-    <h1>Please Select Your Body Shape</h1>
+    <h1>Select Your Body Shape</h1>
 
     <div class="shapes-grid">
       <!-- Rectangle Shape -->
-      <div class="shape-card" onclick="selectShape('rectangle')" title="Rectangle - Skinny Body Type">
-        <img src="rectangle.png" alt="Rectangle Body Shape" class="shape-image" />
+      <div class="shape-card" onclick="selectShape('rectangle')">
+        <img src="rectangle.png" alt="Rectangle Shape" class="shape-image" />
         <div class="shape-title">SKINNY</div>
         <div class="shape-desc">(Rectangle Shape)</div>
       </div>
 
       <!-- Oval Shape -->
-      <div class="shape-card" onclick="selectShape('oval')" title="Oval - Skinny with Belly">
-        <img src="apple.png" alt="Oval Body Shape" class="shape-image" />
+      <div class="shape-card" onclick="selectShape('oval')">
+        <img src="apple.png" alt="Oval Shape" class="shape-image" />
         <div class="shape-title">SKINNY WITH A BELLY</div>
         <div class="shape-desc">(Oval Shape)</div>
       </div>
 
       <!-- Inverted Triangle -->
-      <div class="shape-card" onclick="selectShape('inverted-triangle')" title="Inverted Triangle - Big Breast">
-        <img src="inverted-triangle.png" alt="Inverted Triangle Body Shape" class="shape-image" />
+      <div class="shape-card" onclick="selectShape('inverted-triangle')">
+        <img src="inverted-triangle.png" alt="Inverted Triangle" class="shape-image" />
         <div class="shape-title">BIG BREAST</div>
         <div class="shape-desc">(Inverted Triangle)</div>
       </div>
 
       <!-- Pear Shape -->
-      <div class="shape-card" onclick="selectShape('pear')" title="Pear - Big Bum or Thick Thigh">
-        <img src="pear.png" alt="Pear Body Shape" class="shape-image" />
-        <div class="shape-title">BIG BUM OR THICK THIGH</div>
+      <div class="shape-card" onclick="selectShape('pear')">
+        <img src="pear.png" alt="Pear Shape" class="shape-image" />
+        <div class="shape-title">BIG BUM OR THIGH</div>
         <div class="shape-desc">(Pear Shape)</div>
       </div>
 
       <!-- Hourglass -->
-      <div class="shape-card" onclick="selectShape('hourglass')" title="Hourglass - Small Waist">
-        <img src="hourglass.png" alt="Hourglass Body Shape" class="shape-image" />
+      <div class="shape-card" onclick="selectShape('hourglass')">
+        <img src="hourglass.png" alt="Hourglass Shape" class="shape-image" />
         <div class="shape-title">SMALL WAIST</div>
         <div class="shape-desc">(Hourglass Shape)</div>
       </div>
 
       <!-- Plus Size -->
-      <div class="shape-card" onclick="selectShape('plus-size')" title="Plus Size">
-        <img src="plus size.png" alt="Plus Size Body Shape" class="shape-image" />
+      <div class="shape-card" onclick="selectShape('plus-size')">
+        <img src="plus size.png" alt="Plus Size" class="shape-image" />
         <div class="shape-title">PLUS SIZE</div>
-        <div class="shape-desc">(Plus Size Shape)</div>
+        <div class="shape-desc">(Plus Size)</div>
       </div>
     </div>
 
     <div class="navigation">
-      <button class="help-button nav-button">HELP ME DECIDE</button>
-      <button class="back-button nav-button" onclick="window.location.href='welcome.html'">BACK</button>
+      <button class="nav-button help-button" onclick="alert('We’ll help you determine your body shape!')">HELP ME DECIDE</button>
+      <button class="nav-button back-button" onclick="window.location.href='welcome.html'">⬅ BACK</button>
     </div>
   </div>
 
   <script>
-  function selectShape(shapeType) {
-    // Optional: Store selected shape in sessionStorage
-    sessionStorage.setItem('selectedBodyShape', shapeType);
+    function selectShape(shapeType) {
+      sessionStorage.setItem('selectedBodyShape', shapeType);
 
-    // Redirect to specific shape page
-    switch (shapeType) {
-  case 'rectangle':
-    window.location.href = 'rectanglebodyshape.html';
-    break;
-  case 'oval':
-    window.location.href = 'ovalbodyshape.html';
-    break;
-  case 'inverted-triangle':
-    window.location.href = 'invertedtrianglebodyshape.html';
-    break;
-  case 'pear':
-    window.location.href = 'pearbodyshape.html';
-    break;
-  case 'hourglass':
-    window.location.href = 'hourglassbodyshape.html';
-    break;
-  case 'plus-size':
-    window.location.href = 'plussizebodyshape.html';
-    break;
-  default:
-    alert('Unknown shape selected!');
-}
-  }
+      const pages = {
+        'rectangle': 'rectanglebodyshape.html',
+        'oval': 'ovalbodyshape.html',
+        'inverted-triangle': 'invertedtrianglebodyshape.html',
+        'pear': 'pearbodyshape.html',
+        'hourglass': 'hourglassbodyshape.html',
+        'plus-size': 'plussizebodyshape.html'
+      };
 
-  document.querySelector('.help-button').addEventListener('click', () => {
-    alert("We'll help you determine your body shape!");
-  });
-
-  // Auto-play video with sound (may be restricted by browser)
-  document.querySelector('video').play().catch(e => {
-    console.log("Autoplay with sound was prevented:", e);
-    document.querySelector('video').controls = true;
-  });
-</script>
+      if (pages[shapeType]) {
+        window.location.href = pages[shapeType];
+      } else {
+        alert('Unknown shape selected!');
+      }
+    }
+  </script>
 </body>
 </html>
