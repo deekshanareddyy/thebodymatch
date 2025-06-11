@@ -262,11 +262,15 @@
 <body>
 
 <div class="video-container">
-  <video autoplay muted loop playsinline>
-    <source src="video.mp4" type="video/mp4" />
+  <video id="heroVideo" autoplay muted loop playsinline>
+    <source src="video.mp4" type="video/mp4" id="videoSource" />
     Your browser does not support the video tag.
   </video>
 </div>
+
+
+
+
 
 <div class="content">
   <h2>Lets Bodymatch</h2>
@@ -491,6 +495,23 @@
     }
   });
 </script>
+<script>
+  const video = document.getElementById('heroVideo');
+  const source = document.getElementById('videoSource');
 
+  function setVideoSource() {
+    const isMobile = window.innerWidth <= 1024; // mobile and tablets
+    const newSrc = isMobile ? 'videoo.mp4' : 'video.mp4';
+    
+    if (source.getAttribute('src') !== newSrc) {
+      source.setAttribute('src', newSrc);
+      video.load(); // reloads video with new source
+    }
+  }
+
+  // Set video on page load and on window resize
+  setVideoSource();
+  window.addEventListener('resize', setVideoSource);
+</script>
 </body>
 </html>
