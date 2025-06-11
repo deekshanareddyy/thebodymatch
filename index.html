@@ -15,12 +15,15 @@
     }
 
     .video-container {
-      width: 100%;
-      aspect-ratio: 1280 / 388;
-      overflow: hidden;
-      background-color: black;
-      margin-bottom: 0;
-    }
+  width: 100%;
+  max-width: 400px; /* Prevents video from getting too big on desktop */
+  aspect-ratio: 9 / 16; /* Keeps vertical video ratio */
+  margin: 0 auto 20px;
+  background-color: black;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
 
     .video-container video {
       width: 100%;
