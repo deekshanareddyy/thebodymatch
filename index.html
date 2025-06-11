@@ -32,7 +32,7 @@
     .content {
       max-width: 600px;
       margin: 0 auto;
-      padding: 20px 20px 40px;
+      padding: 20px 20px 0;
       text-align: center;
     }
 
@@ -60,11 +60,108 @@
       transition: all 0.3s ease;
       border: 1px solid black;
       cursor: pointer;
+      margin-bottom: 30px;
+      display: inline-block;
     }
 
     .button:hover {
       background-color: white;
       color: black;
+    }
+
+    /* Video Library Styles */
+    .video-library {
+      background-color: black;
+      color: white;
+      padding: 40px 20px;
+      margin-top: 20px;
+    }
+
+    .library-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .library-header h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .library-header p {
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .category-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .category {
+      margin-bottom: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #111;
+    }
+
+    .category-header {
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+
+    .category-header:hover {
+      background-color: #222;
+    }
+
+    .category-header::after {
+      content: '+';
+      font-size: 1.3rem;
+      transition: transform 0.3s;
+    }
+
+    .category-header.active::after {
+      content: '-';
+    }
+
+    .videos-container {
+      display: none;
+      padding: 10px 20px;
+      background-color: #1a1a1a;
+    }
+
+    .video-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .video-item:last-child {
+      border-bottom: none;
+    }
+
+    .video-link {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .video-link:hover {
+      color: #45a049;
+    }
+
+    .video-link::before {
+      content: '▶';
+      margin-right: 10px;
+      color: #45a049;
+      font-size: 0.7rem;
     }
 
     @media (max-width: 600px) {
@@ -79,6 +176,10 @@
       .button {
         font-size: 0.95rem;
         padding: 10px 20px;
+      }
+
+      .library-header h3 {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -95,8 +196,198 @@
 <div class="content">
   <h2>Lets Bodymatch</h2>
   <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
-  <button class="button" onclick="window.location.href='welcome.html'">Start</button>
+  <a href="welcome.html" class="button">Start</a>
 </div>
+
+<!-- Video Library Section -->
+<div class="video-library">
+  <div class="library-header">
+    <h3>Fashion Video Library</h3>
+    <p>Browse our collection of style guides and tips</p>
+  </div>
+
+  <div class="category-container">
+    <!-- Fashion Basics -->
+    <div class="category">
+      <div class="category-header">Fashion Basics</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="Howtobuyyourdresscolour.mp4" class="video-link">How to buy your dress color</a>
+        </div>
+        <div class="video-item">
+          <a href="farewelldress.mp4" class="video-link">Farewell dress</a>
+        </div>
+        <div class="video-item">
+          <a href="purpleshirttheory.mp4" class="video-link">Purple shirt theory</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fashion Tips -->
+    <div class="category">
+      <div class="category-header">Fashion Tips</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="fashionmistakes.mp4" class="video-link">Fashion mistakes</a>
+        </div>
+        <div class="video-item">
+          <a href="foldyourclothesin2seconds.mp4" class="video-link">Fold your clothes in 2 seconds</a>
+        </div>
+        <div class="video-item">
+          <a href="pantorskirt.mp4" class="video-link">Pants or skirt</a>
+        </div>
+        <div class="video-item">
+          <a href="safetypinhack.mp4" class="video-link">Safety pin hack</a>
+        </div>
+        <div class="video-item">
+          <a href="Sleevesforsleevelessdress.mp4" class="video-link">Sleeves for sleeveless dress</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body & Fit Guides -->
+    <div class="category">
+      <div class="category-header">Body & Fit Guides</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="findmybodyshapewithouttape.mp4" class="video-link">Find my body shape without tape</a>
+        </div>
+        <div class="video-item">
+          <a href="findmybodyshapewithtape.mp4" class="video-link">Find my body shape with tape</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtodetermineyourfaceshape.mp4" class="video-link">How to determine your face shape</a>
+        </div>
+        <div class="video-item">
+          <a href="bigbusttops.mp4" class="video-link">Big bust tops</a>
+        </div>
+        <div class="video-item">
+          <a href="shorts.mp4" class="video-link">Shorts for pear shape</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clothing Deep Dives -->
+    <div class="category">
+      <div class="category-header">Clothing Deep Dives</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="Bestjeans.mp4" class="video-link">Best jeans</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtochoosejeans.mp4" class="video-link">How to choose jeans</a>
+        </div>
+        <div class="video-item">
+          <a href="bestkurti.mp4" class="video-link">Best kurti</a>
+        </div>
+        <div class="video-item">
+          <a href="Kurtiwithjeans.mp4" class="video-link">Kurti with jeans</a>
+        </div>
+        <div class="video-item">
+          <a href="blacklegging.mp4" class="video-link">Black legging</a>
+        </div>
+        <div class="video-item">
+          <a href="howtobuylegging.mp4" class="video-link">How to buy legging</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtolookthinandtallinasaree.mp4" class="video-link">How to look thin and tall in a saree</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grooming & Accessories -->
+    <div class="category">
+      <div class="category-header">Grooming & Accessories</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="Howtoputperfumeonproperly.mp4" class="video-link">How to put perfume on properly</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtoremovesmellfrommouth.mp4" class="video-link">How to remove smell from mouth</a>
+        </div>
+        <div class="video-item">
+          <a href="glass.mp4" class="video-link">Glass eyewear</a>
+        </div>
+        <div class="video-item">
+          <a href="Lipstick.mp4" class="video-link">Lipstick</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtobuyshoe.mp4" class="video-link">How to buy shoe</a>
+        </div>
+        <div class="video-item">
+          <a href="Shoelacehack.mp4" class="video-link">Shoelace hack</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Special Occasions -->
+    <div class="category">
+      <div class="category-header">Special Occasions</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="Jobinterviewdress.mp4" class="video-link">Job interview dress</a>
+        </div>
+        <div class="video-item">
+          <a href="weddingdress.mp4" class="video-link">Wedding dress</a>
+        </div>
+        <div class="video-item">
+          <a href="weddingflower.mp4" class="video-link">Wedding flower</a>
+        </div>
+        <div class="video-item">
+          <a href="trendingkurtis.mp4" class="video-link">Trending kurtis</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Niche Solutions -->
+    <div class="category">
+      <div class="category-header">Niche Solutions</div>
+      <div class="videos-container">
+        <div class="video-item">
+          <a href="braforyourblouse.mp4" class="video-link">Bra for your blouse</a>
+        </div>
+        <div class="video-item">
+          <a href="findtherightbrasize.mp4" class="video-link">Find the right bra size</a>
+        </div>
+        <div class="video-item">
+          <a href="Typesofbra1.mp4" class="video-link">Types of bra part 1</a>
+        </div>
+        <div class="video-item">
+          <a href="Typesofbra2.mp4" class="video-link">Types of bra part 2</a>
+        </div>
+        <div class="video-item">
+          <a href="Howtogetridofunderarmsmell.mp4" class="video-link">How to get rid of underarm smell</a>
+        </div>
+        <div class="video-item">
+          <a href="summerfashion.mp4" class="video-link">Summer fashion</a>
+        </div>
+        <div class="video-item">
+          <a href="sweatingfashion.mp4" class="video-link">Sweating fashion</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle category expansion
+  document.querySelectorAll('.category-header').forEach(header => {
+    header.addEventListener('click', () => {
+      header.classList.toggle('active');
+      const videos = header.nextElementSibling;
+      if (videos.style.display === 'block') {
+        videos.style.display = 'none';
+      } else {
+        videos.style.display = 'block';
+      }
+    });
+  });
+
+  function logClick(videoName) {
+    console.log("Video selected:", videoName);
+    // Add analytics tracking here
+  }
+</script>
 
 </body>
 </html>
