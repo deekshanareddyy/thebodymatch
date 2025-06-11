@@ -196,7 +196,7 @@
 <div class="content">
   <h2>Lets Bodymatch</h2>
   <p>With the right products, you don't just look good, you feel confident and unstoppable.</p>
-  <a href="fashion/welcome.html" class="button">Start</a>
+  <a href="welcome.html" class="button">Start</a>
 </div>
 
 <!-- Video Library Section -->
@@ -247,9 +247,6 @@
         </div>
         <div class="video-item">
           <a href="fashion/kurti/Kurtiwithjeans.mp4" class="video-link">Kurti with jeans</a>
-        </div>
-        <div class="video-item">
-          <a href="fashion/Trending Fashion/trendingkurtis.mp4" class="video-link">Trending kurtis</a>
         </div>
         <div class="video-item">
           <a href="fashion/legging/blacklegging.mp4" class="video-link">Black legging</a>
@@ -323,6 +320,9 @@
         <div class="video-item">
           <a href="fashion/wedding/weddingflower.mp4" class="video-link">Wedding flower</a>
         </div>
+        <div class="video-item">
+          <a href="fashion/Trending Fashion/trendingkurtis.mp4" class="video-link">Trending kurtis</a>
+        </div>
       </div>
     </div>
 
@@ -356,13 +356,13 @@
       <div class="category-header">Niche Solutions</div>
       <div class="videos-container">
         <div class="video-item">
-          <a href="fashion/sweatypersonfashion/Howtogetridofunderarmsmell.mp4" class="video-link">How to get rid of underarm smell</a>
+          <a href="fashion/swestypersonfashion/Howtogetridofunderarmsmell.mp4" class="video-link">How to get rid of underarm smell</a>
         </div>
         <div class="video-item">
-          <a href="fashion/sweatypersonfashion/summerfashion.mp4" class="video-link">Summer fashion</a>
+          <a href="fashion/swestypersonfashion/summerfashion.mp4" class="video-link">Summer fashion</a>
         </div>
         <div class="video-item">
-          <a href="fashion/sweatypersonfashion/sweatingfashion.mp4" class="video-link">Sweating fashion</a>
+          <a href="fashion/swestypersonfashion/sweatingfashion.mp4" class="video-link">Sweating fashion</a>
         </div>
       </div>
     </div>
@@ -383,10 +383,23 @@
     });
   });
 
-  function logClick(videoName) {
-    console.log("Video selected:", videoName);
-    // Add analytics tracking here
-  }
+  // Add error handling for video links
+  document.querySelectorAll('.video-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Check if file exists
+      fetch(this.href, { method: 'HEAD' })
+        .then(res => {
+          if (!res.ok) {
+            e.preventDefault();
+            alert('Video not found at: ' + this.href + '\nPlease check the file path.');
+          }
+        })
+        .catch(() => {
+          e.preventDefault();
+          alert('Error accessing: ' + this.href + '\nPlease check the file path.');
+        });
+    });
+  });
 </script>
 
 </body>
