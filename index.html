@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Body Match - Start</title>
+  <title>Body Match - Video Library</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -172,6 +172,7 @@
       font-size: 0.7rem;
     }
 
+    /* Popup styles */
     .video-popup {
       position: fixed;
       top: 0;
@@ -281,11 +282,11 @@
   </div>
 
   <div class="category-container">
-    <!-- Categories copied exactly as you had -->
+
     <div class="category">
       <div class="category-header">Body & Fit Guides</div>
       <div class="videos-container">
-         <div class="video-item">
+        <div class="video-item">
           <a class="video-link" data-video="s2iwSwl48Ho">Find my body shape without tape</a>
         </div>
         <div class="video-item">
@@ -340,184 +341,77 @@
           <a class="video-link" data-video="LOBesOxl93w">How to put perfume on properly</a>
         </div>
         <div class="video-item">
-          <a class="video-link" data-video="Y9V1zIPgx7o">How to remove smell from mouth</a>
+          <a class="video-link" data-video="TXXxAOo5NKg">How to wear watch properly</a>
         </div>
         <div class="video-item">
-          <a class="video-link" data-video="vAgUil-9ndY">Glass eyewear</a>
+          <a class="video-link" data-video="9ClRbz-3HTk">How to do beard grooming</a>
         </div>
         <div class="video-item">
-          <a class="video-link" data-video="6yntKgLvAsE">Lipstick</a>
+          <a class="video-link" data-video="3D_0oBlJ33I">How to wear rings on fingers</a>
         </div>
         <div class="video-item">
-          <a class="video-link" data-video="APxEnmZZST4">How to buy shoe</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="DHWbwqhcCdM">Shoelace hack</a>
+          <a class="video-link" data-video="qwDQ7OMv70s">How to wear bangles</a>
         </div>
       </div>
     </div>
 
-    <div class="category">
-      <div class="category-header">Undergarments</div>
-      <div class="videos-container">
-        <div class="video-item">
-          <a class="video-link" data-video="WaZ302S2-Hs">Bra for your blouse</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="8eCEwrsbsrw">Find the right bra size</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="UPLT6hJfAbs">Types of bra part 1</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="VElwWwETi4I">Types of bra part 2</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header">Special Occasions</div>
-      <div class="videos-container">
-        <div class="video-item">
-          <a class="video-link" data-video="GZaf8Lapg0k">Farewell dress</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="_TOCl4mgcSw">Job interview dress</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="3I-o3N2z5vU">Wedding dress</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="h8SEEDlE0KA">Wedding flower</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header">Fashion Tips</div>
-      <div class="videos-container">
-        <div class="video-item">
-          <a class="video-link" data-video="_E3CyAscBRk">Purple shirt theory</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="lo7urAdbyI4">Fashion mistakes</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="0w9AdN7LvBs">Fold your clothes in 2 seconds</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="czLe6WgmXDU">Pants or skirt</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="lJBhdK3XPtc">Safety pin hack</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="1oLargVHMF4">Sleeves for sleeveless dress</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="category">
-      <div class="category-header">Niche Solutions</div>
-      <div class="videos-container">
-        <div class="video-item">
-          <a class="video-link" data-video="WfR-dkyzXBQ">How to get rid of underarm smell</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="SjQRij-5JEg">Summer fashion</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="Stthwom9vdY">Sweating fashion</a>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
 <!-- Video Popup -->
-<div class="video-popup" id="video-popup" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+<div class="video-popup" id="videoPopup">
   <div class="video-popup-content">
-    <iframe
-      id="popup-video"
-      width="100%"
-      height="100%"
-      frameborder="0"
-      allowfullscreen
-      allow="autoplay; encrypted-media"
-    ></iframe>
-    <button class="back-button" id="back-button">Back</button>
+    <iframe id="youtubeIframe" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <button class="back-button" id="closePopupBtn">Back</button>
   </div>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const categories = document.querySelectorAll('.category-header');
-    const videoLinks = document.querySelectorAll('.video-link');
-    const popup = document.getElementById('video-popup');
-    const popupVideo = document.getElementById('popup-video');
-    const backButton = document.getElementById('back-button');
+  // Accordion functionality for categories
+  document.querySelectorAll('.category-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const active = header.classList.contains('active');
+      // Close all categories
+      document.querySelectorAll('.category-header').forEach(h => h.classList.remove('active'));
+      document.querySelectorAll('.videos-container').forEach(vc => vc.classList.remove('active'));
 
-    // Toggle category accordion
-    categories.forEach(categoryHeader => {
-      categoryHeader.addEventListener('click', () => {
-        const videosContainer = categoryHeader.nextElementSibling;
-        const isActive = videosContainer.classList.contains('active');
-
-        document.querySelectorAll('.videos-container.active').forEach(container => {
-          container.classList.remove('active');
-          container.previousElementSibling.classList.remove('active');
-        });
-
-        if (!isActive) {
-          videosContainer.classList.add('active');
-          categoryHeader.classList.add('active');
-        }
-      });
+      if (!active) {
+        header.classList.add('active');
+        header.nextElementSibling.classList.add('active');
+      }
     });
+  });
 
-    // Open popup with embedded YouTube video
-    videoLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const videoId = link.getAttribute('data-video');
-        if (!videoId) return;
+  // Video popup handling
+  const videoLinks = document.querySelectorAll('.video-link');
+  const popup = document.getElementById('videoPopup');
+  const iframe = document.getElementById('youtubeIframe');
+  const closeBtn = document.getElementById('closePopupBtn');
 
-        popupVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1`;
-        popup.classList.add('active');
-        history.pushState({ popupOpen: true }, '', '#video');
-        popup.focus();
-      });
+  videoLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const videoId = link.getAttribute('data-video');
+      // Set the iframe src to the YouTube embed URL with autoplay enabled
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+      popup.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
     });
+  });
 
-    // Close popup
-    function closePopup() {
-      if (!popup.classList.contains('active')) return;
+  closeBtn.addEventListener('click', () => {
+    iframe.src = '';
+    popup.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scroll
+  });
+
+  // Close popup if user clicks outside video content
+  popup.addEventListener('click', (e) => {
+    if (e.target === popup) {
+      iframe.src = '';
       popup.classList.remove('active');
-      popupVideo.src = '';
-      if (location.hash === '#video') {
-        history.back();
-      }
+      document.body.style.overflow = '';
     }
-
-    backButton.addEventListener('click', closePopup);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && popup.classList.contains('active')) {
-        closePopup();
-      }
-    });
-
-    window.addEventListener('popstate', () => {
-      if (popup.classList.contains('active')) {
-        closePopup();
-      }
-    });
-
-    popup.addEventListener('click', (e) => {
-      if (e.target === popup) {
-        closePopup();
-      }
-    });
   });
 </script>
 
