@@ -128,13 +128,20 @@
       content: '-';
     }
 
-    .videos-container {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 20px;
-      background-color: #1a1a1a;
-    }
+    .video-container {
+  width: 100%;
+  aspect-ratio: 1280 / 388; /* default for desktop */
+  overflow: hidden;
+  background-color: black;
+  margin-bottom: 0;
+}
+
+/* For mobile and tablets: use square aspect ratio */
+@media (max-width: 1024px) {
+  .video-container {
+    aspect-ratio: 1 / 1;
+  }
+}
 
     .videos-container.active {
       max-height: 1000px;
