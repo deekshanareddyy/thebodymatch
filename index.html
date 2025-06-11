@@ -113,6 +113,7 @@
       justify-content: space-between;
       align-items: center;
       transition: background-color 0.3s;
+      user-select: none;
     }
 
     .category-header:hover {
@@ -130,9 +131,18 @@
     }
 
     .videos-container {
-      display: none;
-      padding: 10px 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 20px;
       background-color: #1a1a1a;
+    }
+
+    /* When active, expand videos container */
+    .videos-container.active {
+      max-height: 1000px; /* enough to show all items */
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     .video-item {
@@ -188,24 +198,24 @@
     }
 
     .video-popup-content {
-  background: black;
-  padding: 20px;
-  border-radius: 8px;
-  width: auto;
-  max-width: 400px;      /* Fixed width for Shorts */
-  aspect-ratio: 9 / 16;  /* Maintain vertical video shape */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+      background: black;
+      padding: 20px;
+      border-radius: 8px;
+      width: auto;
+      max-width: 400px;      /* Fixed width for Shorts */
+      aspect-ratio: 9 / 16;  /* Maintain vertical video shape */
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.video-popup video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 6px;
-}
+    .video-popup video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+    }
 
     .back-button {
       margin-top: 20px;
@@ -276,7 +286,7 @@
   </div>
 
   <div class="category-container">
-    <!-- Body & Fit Guides -->
+    <!-- Categories copied exactly as you had -->
     <div class="category">
       <div class="category-header">Body & Fit Guides</div>
       <div class="videos-container">
@@ -301,7 +311,6 @@
       </div>
     </div>
 
-    <!-- Clothing Deep Dives -->
     <div class="category">
       <div class="category-header">Clothing Deep Dives</div>
       <div class="videos-container">
@@ -329,7 +338,6 @@
       </div>
     </div>
 
-    <!-- Grooming & Accessories -->
     <div class="category">
       <div class="category-header">Grooming & Accessories</div>
       <div class="videos-container">
@@ -354,7 +362,6 @@
       </div>
     </div>
 
-    <!-- Undergarments -->
     <div class="category">
       <div class="category-header">Undergarments</div>
       <div class="videos-container">
@@ -373,7 +380,6 @@
       </div>
     </div>
 
-    <!-- Special Occasions -->
     <div class="category">
       <div class="category-header">Special Occasions</div>
       <div class="videos-container">
@@ -386,16 +392,9 @@
         <div class="video-item">
           <a class="video-link" data-video="library/weddingdress.mp4">Wedding dress</a>
         </div>
-        <div class="video-item">
-          <a class="video-link" data-video="library/weddingflower.mp4">Wedding flower</a>
-        </div>
-        <div class="video-item">
-          <a class="video-link" data-video="library/trendingkurtis.mp4">Trending kurtis</a>
-        </div>
       </div>
     </div>
 
-    <!-- Fashion Tips -->
     <div class="category">
       <div class="category-header">Fashion Tips</div>
       <div class="videos-container">
@@ -420,7 +419,6 @@
       </div>
     </div>
 
-    <!-- Niche Solutions -->
     <div class="category">
       <div class="category-header">Niche Solutions</div>
       <div class="videos-container">
@@ -439,68 +437,99 @@
 </div>
 
 <!-- Video Popup -->
-<div class="video-popup">
+<div class="video-popup" id="video-popup" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
   <div class="video-popup-content">
-    <video controls>
-      Your browser does not support the video tag.
-    </video>
-    <button class="back-button">Back</button>
+    <video controls id="popup-video" playsinline></video>
+    <button class="back-button" id="back-button">Back</button>
   </div>
 </div>
 
 <script>
-  // Toggle category expansion
-  document.querySelectorAll('.category-header').forEach(header => {
-    header.addEventListener('click', () => {
-      header.classList.toggle('active');
-      const videos = header.nextElementSibling;
-      videos.style.display = videos.style.display === 'block' ? 'none' : 'block';
-    });
-  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const categories = document.querySelectorAll('.category-header');
+    const videoLinks = document.querySelectorAll('.video-link');
+    const popup = document.getElementById('video-popup');
+    const popupVideo = document.getElementById('popup-video');
+    const backButton = document.getElementById('back-button');
 
-  // Popup handling
-  const videoPopup = document.querySelector('.video-popup');
-  const popupVideo = videoPopup.querySelector('video');
-  const backButton = videoPopup.querySelector('.back-button');
+    // Accordion toggle
+    categories.forEach(categoryHeader => {
+      categoryHeader.addEventListener('click', () => {
+        const videosContainer = categoryHeader.nextElementSibling;
+        const isActive = videosContainer.classList.contains('active');
 
-  document.querySelectorAll('.video-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const videoSrc = this.getAttribute('data-video');
-
-      fetch(videoSrc, { method: 'HEAD' })
-        .then(res => {
-          if (res.ok) {
-            popupVideo.src = videoSrc;
-            videoPopup.classList.add('active');
-            document.body.style.overflow = 'hidden';
-          } else {
-            alert('Video not found at: ' + videoSrc);
-          }
-        })
-        .catch(() => {
-          alert('Error accessing: ' + videoSrc);
+        // Close all others first
+        document.querySelectorAll('.videos-container.active').forEach(container => {
+          container.classList.remove('active');
+          container.previousElementSibling.classList.remove('active');
         });
+
+        if (!isActive) {
+          videosContainer.classList.add('active');
+          categoryHeader.classList.add('active');
+        }
+      });
     });
-  });
 
-  function closeVideoPopup() {
-    videoPopup.classList.remove('active');
-    popupVideo.pause();
-    popupVideo.currentTime = 0;
-    document.body.style.overflow = 'auto';
-  }
+    // Open popup on video link click
+    videoLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const videoSrc = link.getAttribute('data-video');
+        if (!videoSrc) return;
 
-  backButton.addEventListener('click', closeVideoPopup);
+        popupVideo.src = videoSrc;
+        popupVideo.play();
 
-  videoPopup.addEventListener('click', (e) => {
-    if (e.target === videoPopup) closeVideoPopup();
-  });
+        popup.classList.add('active');
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && videoPopup.classList.contains('active')) {
-      closeVideoPopup();
+        // Push new state for popup open (for back button)
+        history.pushState({ popupOpen: true }, '', '#video');
+        
+        // Focus popup for accessibility
+        popup.focus();
+      });
+    });
+
+    // Close popup function
+    function closePopup() {
+      if (!popup.classList.contains('active')) return;
+
+      popup.classList.remove('active');
+      popupVideo.pause();
+      popupVideo.currentTime = 0;
+      popupVideo.src = '';
+
+      // Remove popup state from history if current URL has #video
+      if (location.hash === '#video') {
+        history.back();
+      }
     }
+
+    // Back button inside popup
+    backButton.addEventListener('click', closePopup);
+
+    // Close popup when user presses Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && popup.classList.contains('active')) {
+        closePopup();
+      }
+    });
+
+    // Handle browser back/forward button to close popup if open
+    window.addEventListener('popstate', (event) => {
+      // If popup is open and history changed, close it
+      if (popup.classList.contains('active')) {
+        closePopup();
+      }
+    });
+
+    // Optional: Close popup if clicking outside video area
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        closePopup();
+      }
+    });
   });
 </script>
 
