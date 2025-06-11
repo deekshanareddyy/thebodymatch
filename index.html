@@ -515,7 +515,8 @@
 <!-- Video Popup -->
 <div class="video-popup" id="videoPopup">
   <div class="video-popup-content">
-    <iframe id="youtubeIframe" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+
     <button class="back-button" id="closePopupBtn">Back</button>
   </div>
 </div>
