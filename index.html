@@ -515,11 +515,11 @@
 <!-- Video Popup -->
 <div class="video-popup" id="videoPopup">
   <div class="video-popup-content">
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-
+    <iframe id="youtubeIframe" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
     <button class="back-button" id="closePopupBtn">Back</button>
   </div>
 </div>
+
 
 <script>
   // Accordion functionality for categories
@@ -548,7 +548,7 @@
       e.preventDefault();
       const videoId = link.getAttribute('data-video');
       // Set the iframe src to the YouTube embed URL with autoplay enabled
-      iframe.src = https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0;
+iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
       popup.classList.add('active');
       document.body.style.overflow = 'hidden'; // Prevent background scroll
     });
