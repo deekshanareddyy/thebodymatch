@@ -71,7 +71,7 @@
       color: black;
     }
 
-    /* Book Now Section - FIXED */
+    /* Book Now Section */
     .book-now-section {
       background-color: black;
       color: white;
@@ -112,7 +112,7 @@
       color: white;
     }
 
-    /* News Section - COMPLETELY REDESIGNED */
+    /* News Section - Updated for logo-only design */
     .news-section {
       background-color: #f8f8f8;
       padding: 50px 20px;
@@ -152,53 +152,37 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
       flex-shrink: 0;
+      cursor: pointer;
     }
 
     .news-item:hover {
       transform: translateY(-5px);
     }
 
+    .news-item-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+    }
+
     .news-header {
-      padding: 20px 20px 10px;
+      padding: 40px 20px;
       display: flex;
       align-items: center;
-      min-height: 60px;
+      justify-content: center;
+      min-height: 120px;
     }
 
     .news-logo {
-      height: 24px;
-      max-width: 120px;
+      max-height: 60px;
+      max-width: 200px;
       object-fit: contain;
+      transition: transform 0.3s ease;
     }
 
-    .news-content {
-      padding: 0 20px 20px;
-      text-align: left;
-    }
-
-    .news-item h3 {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 12px;
-      line-height: 1.4;
-      color: #333;
-    }
-
-    .news-date {
-      color: #666;
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-    }
-
-    .news-link {
-      color: #45a049;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    .news-link:hover {
-      text-decoration: underline;
+    .news-item:hover .news-logo {
+      transform: scale(1.05);
     }
 
     /* Navigation Arrows */
@@ -270,6 +254,11 @@
       
       .nav-arrow.next {
         right: -20px;
+      }
+
+      .news-logo {
+        max-height: 50px;
+        max-width: 160px;
       }
     }
 
@@ -409,10 +398,6 @@
 
       .news-section h2 {
         font-size: 1.8rem;
-      }
-      
-      .news-item h3 {
-        font-size: 0.95rem;
       }
     }
 
@@ -592,7 +577,7 @@
   <a href="welcome.html" class="button">Start</a>
 </div>
 
-<!-- Book Now Section - FIXED -->
+<!-- Book Now Section -->
 <div class="book-now-section">
   <div class="book-now-container">
     <p class="book-now-description">
@@ -602,7 +587,7 @@
   </div>
 </div>
 
-<!-- News Section - COMPLETELY REDESIGNED -->
+<!-- News Section - Updated with logo-only design -->
 <div class="news-section">
   <div class="news-container">
     <h2>THEBODYMATCH IN NEWS</h2>
@@ -613,47 +598,35 @@
       
       <div class="news-track" id="newsTrack">
         <div class="news-item">
-          <div class="news-header">
-            <img src="https://yourstory.com/wp-content/themes/yourstory-2017/assets/images/ys_logo_black.png" alt="YourStory" class="news-logo">
-          </div>
-          <div class="news-content">
-            <div class="news-date">Apr, 2025</div>
-            <h3>Chennai Startup Reducing Apparel Return Rate With AI - The Body Match</h3>
-            <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" class="news-link">Read more →</a>
-          </div>
+          <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" class="news-item-link">
+            <div class="news-header">
+              <img src="yourstory.png" alt="YourStory" class="news-logo">
+            </div>
+          </a>
         </div>
         
         <div class="news-item">
-          <div class="news-header">
-            <img src="https://www.news18.com/images/news18/logo.png" alt="News18" class="news-logo">
-          </div>
-          <div class="news-content">
-            <div class="news-date">May, 2025</div>
-            <h3>Try This 5-Second Hack to Help Find Your Signature Scent</h3>
-            <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" class="news-link">Read more →</a>
-          </div>
+          <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" class="news-item-link">
+            <div class="news-header">
+              <img src="news18.png" alt="News18" class="news-logo">
+            </div>
+          </a>
         </div>
         
         <div class="news-item">
-          <div class="news-header">
-            <img src="https://indianexpress.com/wp-content/themes/indianexpress/images/indian-express-logo-n.svg" alt="The Indian Express" class="news-logo">
-          </div>
-          <div class="news-content">
-            <div class="news-date">May, 2025</div>
-            <h3>Quick Perfume Hack: Help Find Signature Scent</h3>
-            <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" class="news-link">Read more →</a>
-          </div>
+          <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" class="news-item-link">
+            <div class="news-header">
+              <img src="indianexpress.png" alt="The Indian Express" class="news-logo">
+            </div>
+          </a>
         </div>
         
         <div class="news-item">
-          <div class="news-header">
-            <img src="https://www.hindustantimes.com/res/images/ht-logo.svg" alt="Hindustan Times" class="news-logo">
-          </div>
-          <div class="news-content">
-            <div class="news-date">May, 2025</div>
-            <h3>Perfume Hack: This Quick 5-Second Trick Will Help You Find Your Signature Scent</h3>
-            <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" class="news-link">Read more →</a>
-          </div>
+          <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" class="news-item-link">
+            <div class="news-header">
+              <img src="hindustantimes.png" alt="Hindustan Times" class="news-logo">
+            </div>
+          </a>
         </div>
       </div>
     </div>
