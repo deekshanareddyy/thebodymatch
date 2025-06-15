@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,11 +71,11 @@
       color: black;
     }
 
-    /* Book Now Section */
+    /* Book Now Section - FIXED */
     .book-now-section {
       background-color: black;
       color: white;
-      padding: 30px 20px;
+      padding: 40px 20px;
       text-align: center;
       margin-top: 20px;
     }
@@ -84,92 +85,192 @@
       margin: 0 auto;
     }
 
+    .book-now-description {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
     .book-now-button {
       display: inline-block;
       text-decoration: none;
-      background-color: #45a049;
-      color: white;
-      padding: 12px 30px;
+      background-color: white;
+      color: black;
+      padding: 15px 35px;
       font-size: 1.1rem;
       border-radius: 4px;
       transition: all 0.3s ease;
-      border: 1px solid #45a049;
+      border: 2px solid white;
       cursor: pointer;
-      margin-bottom: 15px;
       font-weight: 500;
     }
 
     .book-now-button:hover {
       background-color: transparent;
-      color: #45a049;
+      color: white;
     }
 
-    .book-now-description {
-      font-size: 1rem;
-      color: #ccc;
-      margin-bottom: 0;
-      line-height: 1.5;
-    }
-
-    /* News Section */
+    /* News Section - COMPLETELY REDESIGNED */
     .news-section {
       background-color: #f8f8f8;
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
+      overflow: hidden;
     }
 
     .news-container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
+      position: relative;
     }
 
     .news-section h2 {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       color: #333;
     }
 
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
+    .news-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .news-track {
+      display: flex;
+      transition: transform 0.3s ease;
+      gap: 20px;
     }
 
     .news-item {
+      min-width: 300px;
       background-color: white;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
-      text-align: left;
+      flex-shrink: 0;
     }
 
     .news-item:hover {
       transform: translateY(-5px);
     }
 
+    .news-header {
+      padding: 20px 20px 10px;
+      display: flex;
+      align-items: center;
+      min-height: 60px;
+    }
+
     .news-logo {
-      height: 30px;
-      margin: 15px;
+      height: 24px;
+      max-width: 120px;
       object-fit: contain;
     }
 
     .news-content {
       padding: 0 20px 20px;
+      text-align: left;
     }
 
     .news-item h3 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       line-height: 1.4;
+      color: #333;
     }
 
     .news-date {
       color: #666;
       font-size: 0.85rem;
-      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .news-link {
+      color: #45a049;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .news-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .nav-arrow:hover {
+      background-color: rgba(0,0,0,0.9);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow.prev {
+      left: -25px;
+    }
+
+    .nav-arrow.next {
+      right: -25px;
+    }
+
+    /* Dots indicator */
+    .news-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 30px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #45a049;
+    }
+
+    /* Mobile news layout */
+    @media (max-width: 768px) {
+      .news-item {
+        min-width: 280px;
+      }
+      
+      .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      .nav-arrow.prev {
+        left: -20px;
+      }
+      
+      .nav-arrow.next {
+        right: -20px;
+      }
     }
 
     /* Video Library Section */
@@ -299,11 +400,11 @@
 
       .book-now-button {
         font-size: 1rem;
-        padding: 10px 20px;
+        padding: 12px 25px;
       }
 
       .book-now-description {
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
       .news-section h2 {
@@ -311,11 +412,65 @@
       }
       
       .news-item h3 {
-        font-size: 1rem;
+        font-size: 0.95rem;
       }
     }
 
-    /* Footer styles remain unchanged */
+    /* Video Popup Styles */
+    .video-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .video-popup.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .video-popup-content {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      aspect-ratio: 16/9;
+    }
+
+    .video-popup iframe {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+    }
+
+    .back-button {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      background-color: #45a049;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #3d8b40;
+    }
+
+    /* Footer styles */
     .footer {
       background-color: #111;
       color: #fff;
@@ -323,11 +478,23 @@
       text-align: center;
       margin-top: 50px;
       font-family: 'Space Grotesk', sans-serif;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .footer.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .footer-content {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .footer-text {
@@ -354,15 +521,46 @@
       margin-top: 10px;
     }
 
-    .social-links a img {
+    .icon {
       width: 24px;
       height: 24px;
-      filter: invert(1);
       transition: transform 0.3s ease;
+    }
+
+    .instagram {
+      filter: invert(30%) sepia(76%) saturate(750%) hue-rotate(310deg) brightness(90%) contrast(105%);
+    }
+
+    .linkedin {
+      filter: invert(34%) sepia(64%) saturate(1797%) hue-rotate(182deg) brightness(90%) contrast(95%);
+    }
+
+    .youtube {
+      filter: invert(18%) sepia(99%) saturate(6400%) hue-rotate(359deg) brightness(95%) contrast(95%);
     }
 
     .social-links a:hover img {
       transform: scale(1.2);
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        padding: 0 20px;
+      }
+      .footer-text, .footer-name {
+        margin: 0;
+      }
+      .footer-name {
+        margin-left: 12px;
+        font-size: 1.1rem;
+      }
+      .social-links {
+        margin-top: 0;
+      }
     }
 
     @media (max-width: 600px) {
@@ -372,7 +570,7 @@
       .social-links {
         gap: 16px;
       }
-      .social-links a img {
+      .icon {
         width: 22px;
         height: 22px;
       }
@@ -394,57 +592,77 @@
   <a href="welcome.html" class="button">Start</a>
 </div>
 
-<!-- Book Now Section -->
+<!-- Book Now Section - FIXED -->
 <div class="book-now-section">
   <div class="book-now-container">
-    <a href="https://rzp.io/rzp/wg4ekUjl" class="book-now-button">Book Now</a>
     <p class="book-now-description">
       Virtual styling or closet organization session with fashion designer Deekshana Reddy
     </p>
+    <a href="https://rzp.io/rzp/wg4ekUjl" class="book-now-button">Book Now</a>
   </div>
 </div>
 
-<!-- News Section -->
+<!-- News Section - COMPLETELY REDESIGNED -->
 <div class="news-section">
   <div class="news-container">
     <h2>THEBODYMATCH IN NEWS</h2>
     
-    <div class="news-grid">
-      <div class="news-item">
-        <img src="https://yourstory.com/wp-content/themes/yourstory-2017/assets/images/ys_logo_black.png" alt="YourStory" class="news-logo">
-        <div class="news-content">
-          <h3>Chennai Startup Reducing Apparel Return Rate With AI - The Body Match</h3>
-          <p class="news-date">Apr, 2025</p>
-          <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" style="color: #45a049; text-decoration: none; font-size: 0.9rem;">Read more →</a>
-        </div>
-      </div>
+    <div class="news-slider">
+      <button class="nav-arrow prev" id="prevBtn">‹</button>
+      <button class="nav-arrow next" id="nextBtn">›</button>
       
-      <div class="news-item">
-        <img src="https://www.news18.com/images/news18/logo.png" alt="News18" class="news-logo">
-        <div class="news-content">
-          <h3>Try This 5-Second Hack to Help Find Your Signature Scent</h3>
-          <p class="news-date">May, 2025</p>
-          <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" style="color: #45a049; text-decoration: none; font-size: 0.9rem;">Read more →</a>
+      <div class="news-track" id="newsTrack">
+        <div class="news-item">
+          <div class="news-header">
+            <img src="https://yourstory.com/wp-content/themes/yourstory-2017/assets/images/ys_logo_black.png" alt="YourStory" class="news-logo">
+          </div>
+          <div class="news-content">
+            <div class="news-date">Apr, 2025</div>
+            <h3>Chennai Startup Reducing Apparel Return Rate With AI - The Body Match</h3>
+            <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" class="news-link">Read more →</a>
+          </div>
+        </div>
+        
+        <div class="news-item">
+          <div class="news-header">
+            <img src="https://www.news18.com/images/news18/logo.png" alt="News18" class="news-logo">
+          </div>
+          <div class="news-content">
+            <div class="news-date">May, 2025</div>
+            <h3>Try This 5-Second Hack to Help Find Your Signature Scent</h3>
+            <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" class="news-link">Read more →</a>
+          </div>
+        </div>
+        
+        <div class="news-item">
+          <div class="news-header">
+            <img src="https://indianexpress.com/wp-content/themes/indianexpress/images/indian-express-logo-n.svg" alt="The Indian Express" class="news-logo">
+          </div>
+          <div class="news-content">
+            <div class="news-date">May, 2025</div>
+            <h3>Quick Perfume Hack: Help Find Signature Scent</h3>
+            <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" class="news-link">Read more →</a>
+          </div>
+        </div>
+        
+        <div class="news-item">
+          <div class="news-header">
+            <img src="https://www.hindustantimes.com/res/images/ht-logo.svg" alt="Hindustan Times" class="news-logo">
+          </div>
+          <div class="news-content">
+            <div class="news-date">May, 2025</div>
+            <h3>Perfume Hack: This Quick 5-Second Trick Will Help You Find Your Signature Scent</h3>
+            <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" class="news-link">Read more →</a>
+          </div>
         </div>
       </div>
-      
-      <div class="news-item">
-        <img src="https://indianexpress.com/wp-content/themes/indianexpress/images/indian-express-logo-n.svg" alt="The Indian Express" class="news-logo">
-        <div class="news-content">
-          <h3>Quick Perfume Hack: Help Find Signature Scent</h3>
-          <p class="news-date">May, 2025</p>
-          <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" style="color: #45a049; text-decoration: none; font-size: 0.9rem;">Read more →</a>
-        </div>
-      </div>
-      
-      <div class="news-item">
-        <img src="https://www.hindustantimes.com/res/images/ht-logo.svg" alt="Hindustan Times" class="news-logo">
-        <div class="news-content">
-          <h3>Perfume Hack: This Quick 5-Second Trick Will Help You Find Your Signature Scent</h3>
-          <p class="news-date">May, 2025</p>
-          <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" style="color: #45a049; text-decoration: none; font-size: 0.9rem;">Read more →</a>
-        </div>
-      </div>
+    </div>
+    
+    <div class="news-dots" id="newsDots">
+      <span class="dot active" data-slide="0"></span>
+      <span class="dot" data-slide="1"></span>
+      <span class="dot" data-slide="2"></span>
+      <span class="dot" data-slide="3"></span>
     </div>
   </div>
 </div>
