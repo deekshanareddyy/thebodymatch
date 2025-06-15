@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,18 +111,16 @@
       color: white;
     }
 
-    /* News Section - Updated for logo-only design */
+    /* News Section - Simplified clean layout */
     .news-section {
       background-color: #f8f8f8;
       padding: 50px 20px;
       text-align: center;
-      overflow: hidden;
     }
 
     .news-container {
       max-width: 1200px;
       margin: 0 auto;
-      position: relative;
     }
 
     .news-section h2 {
@@ -133,30 +130,26 @@
       color: #333;
     }
 
-    .news-slider {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .news-track {
-      display: flex;
-      transition: transform 0.3s ease;
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     .news-item {
-      min-width: 300px;
       background-color: white;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-      flex-shrink: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .news-item:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
 
     .news-item-link {
@@ -185,80 +178,61 @@
       transform: scale(1.05);
     }
 
-    /* Navigation Arrows */
-    .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0,0,0,0.7);
-      color: white;
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 18px;
-      z-index: 10;
-      transition: all 0.3s ease;
-    }
-
-    .nav-arrow:hover {
-      background-color: rgba(0,0,0,0.9);
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .nav-arrow.prev {
-      left: -25px;
-    }
-
-    .nav-arrow.next {
-      right: -25px;
-    }
-
-    /* Dots indicator */
-    .news-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 30px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #ccc;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .dot.active {
-      background-color: #45a049;
-    }
-
-    /* Mobile news layout */
+    /* Mobile optimizations */
     @media (max-width: 768px) {
+      .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        max-width: 500px;
+      }
+
       .news-item {
-        min-width: 280px;
+        border-radius: 8px;
       }
-      
-      .nav-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-      }
-      
-      .nav-arrow.prev {
-        left: -20px;
-      }
-      
-      .nav-arrow.next {
-        right: -20px;
+
+      .news-header {
+        padding: 30px 15px;
+        min-height: 100px;
       }
 
       .news-logo {
-        max-height: 50px;
-        max-width: 160px;
+        max-height: 45px;
+        max-width: 140px;
+      }
+
+      .news-section h2 {
+        font-size: 1.6rem;
+        margin-bottom: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .news-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        gap: 12px;
+      }
+
+      .news-header {
+        padding: 25px 15px;
+        min-height: 80px;
+      }
+
+      .news-logo {
+        max-height: 40px;
+        max-width: 120px;
+      }
+
+      .news-section {
+        padding: 40px 15px;
+      }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .video-container {
+        aspect-ratio: 1 / 1;
+        margin-bottom: 50px;
       }
     }
 
@@ -320,14 +294,6 @@
 
     .category-header.active::after {
       content: '-';
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 1024px) {
-      .video-container {
-        aspect-ratio: 1 / 1;
-        margin-bottom: 50px;
-      }
     }
 
     .videos-container.active {
@@ -394,10 +360,6 @@
 
       .book-now-description {
         font-size: 1rem;
-      }
-
-      .news-section h2 {
-        font-size: 1.8rem;
       }
     }
 
@@ -587,55 +549,43 @@
   </div>
 </div>
 
-<!-- News Section - Updated with logo-only design -->
+<!-- News Section - Clean simplified layout -->
 <div class="news-section">
   <div class="news-container">
     <h2>THEBODYMATCH IN NEWS</h2>
     
-    <div class="news-slider">
-      <button class="nav-arrow prev" id="prevBtn">‹</button>
-      <button class="nav-arrow next" id="nextBtn">›</button>
-      
-      <div class="news-track" id="newsTrack">
-        <div class="news-item">
-          <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" class="news-item-link">
-            <div class="news-header">
-              <img src="yourstory.png" alt="YourStory" class="news-logo">
-            </div>
-          </a>
-        </div>
-        
-        <div class="news-item">
-          <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" class="news-item-link">
-            <div class="news-header">
-              <img src="news18.png" alt="News18" class="news-logo">
-            </div>
-          </a>
-        </div>
-        
-        <div class="news-item">
-          <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" class="news-item-link">
-            <div class="news-header">
-              <img src="indianexpress.png" alt="The Indian Express" class="news-logo">
-            </div>
-          </a>
-        </div>
-        
-        <div class="news-item">
-          <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" class="news-item-link">
-            <div class="news-header">
-              <img src="hindustantimes.png" alt="Hindustan Times" class="news-logo">
-            </div>
-          </a>
-        </div>
+    <div class="news-grid">
+      <div class="news-item">
+        <a href="https://yourstory.com/2025/04/chennai-startup-recuding-apparel-return-rate-with-ai-the-body-match" target="_blank" class="news-item-link">
+          <div class="news-header">
+            <img src="yourstory.png" alt="YourStory" class="news-logo">
+          </div>
+        </a>
       </div>
-    </div>
-    
-    <div class="news-dots" id="newsDots">
-      <span class="dot active" data-slide="0"></span>
-      <span class="dot" data-slide="1"></span>
-      <span class="dot" data-slide="2"></span>
-      <span class="dot" data-slide="3"></span>
+      
+      <div class="news-item">
+        <a href="https://www.news18.com/lifestyle/try-this-5-second-hack-to-help-find-your-signature-scent-9159534.html" target="_blank" class="news-item-link">
+          <div class="news-header">
+            <img src="news18.png" alt="News18" class="news-logo">
+          </div>
+        </a>
+      </div>
+      
+      <div class="news-item">
+        <a href="https://indianexpress.com/article/lifestyle/life-style/quick-perfume-hack-help-find-signature-scent-9709716/" target="_blank" class="news-item-link">
+          <div class="news-header">
+            <img src="indianexpress.png" alt="The Indian Express" class="news-logo">
+          </div>
+        </a>
+      </div>
+      
+      <div class="news-item">
+        <a href="https://www.hindustantimes.com/htcity/htcity-showstoppers/perfume-hack-signature-scent-woes-this-quick-5-second-trick-will-help-you-zero-in-on-your-best-fit-for-perfumes-101734346569786.html" target="_blank" class="news-item-link">
+          <div class="news-header">
+            <img src="hindustantimes.png" alt="Hindustan Times" class="news-logo">
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>
