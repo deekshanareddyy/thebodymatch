@@ -99,6 +99,53 @@
       color: #fff;
       border: 1px solid #fff;
     }
+
+    .glowy-button {
+      background-color: #ff69b4;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      max-width: 300px;
+      margin: 0 auto;
+      animation: rainbow 3s infinite alternate;
+    }
+
+    @keyframes rainbow {
+      0% {
+        background-color: #ff69b4;
+      }
+      14% {
+        background-color: #ff1493;
+      }
+      28% {
+        background-color: #db7093;
+      }
+      42% {
+        background-color: #ff69b4;
+      }
+      100% {
+        background-color: #ff1493;
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 5px #ff69b4;
+      }
+      50% {
+        box-shadow: 0 0 10px #ff69b4;
+      }
+
+      100% {
+        box-shadow: 0 0 20px #ff69b4;
+      }
+    }
   </style>
 </head>
 <body>
@@ -120,6 +167,7 @@
       <button class="option-button" onclick="logClick('clothes'); window.location.href='body-shapes.html'">CLOTHES</button>
       <button class="option-button" onclick="logClick('bra'); window.location.href='breast-shape.html'">BRA</button>
       <button class="option-button" onclick="logClick('perfume'); window.location.href='perfume.html'">PERFUME</button>
+      <button class="option-button glowy-button" onclick="logClick('perfume'); window.location.href='https://shop.thebodymatch.com/'">THRIFT SHOP</button>
     </div>
 
     <button class="option-button back-button" onclick="logClick('back'); window.location.href='index.html'">⬅ BACK</button>
