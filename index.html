@@ -208,23 +208,25 @@
 
     @media (max-width: 480px) {
       .news-grid {
-        grid-template-columns: 1fr;
-        max-width: 300px;
-        gap: 12px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        max-width: 95vw;
+        gap: 4px;
       }
 
       .news-header {
-        padding: 25px 15px;
+        padding: 0px;
         min-height: 80px;
       }
 
       .news-logo {
-        max-height: 40px;
-        max-width: 120px;
+        height: 80%;
+        max-width: 80%;
+        max-height: 80%;
+        width: auto;
       }
 
       .news-section {
-        padding: 40px 15px;
+        padding: 40px 0px;
       }
     }
 
@@ -954,6 +956,14 @@ iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 
 <script>
 window.addEventListener('DOMContentLoaded', () => {
+  const video = document.getElementById('heroVideo');
+  if(video) {
+    video.play().then(() => {
+      console.log('Video is playing');
+    }).catch(err => {
+      console.log('Video play was prevented:', err);
+    });
+  }
   const footer = document.querySelector('.footer');
   const observer = new IntersectionObserver(
     ([entry]) => {
