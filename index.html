@@ -70,6 +70,94 @@
       color: black;
     }
 
+    /* Black Background Sections */
+    .black-section {
+      background-color: black;
+      color: white;
+      padding: 60px 20px;
+    }
+
+    .black-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .black-section h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: white;
+    }
+
+    .black-section p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature-box {
+      background-color: #111;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-box h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .feature-box p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #ccc;
+    }
+
+    /* Benefits Grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .benefit-box {
+      background-color: #111;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .benefit-box h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .benefit-box p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #ccc;
+    }
+
     /* News Section - Simplified clean layout */
     .news-section {
       background-color: #f8f8f8;
@@ -135,162 +223,6 @@
 
     .news-item:hover .news-logo {
       transform: scale(1.05);
-    }
-
-    /* Product Description Section */
-    .product-description {
-      padding: 60px 20px;
-      text-align: center;
-      background-color: white;
-    }
-
-    .product-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .product-description h2 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 30px;
-      color: #333;
-    }
-
-    .product-description p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #444;
-      margin-bottom: 30px;
-    }
-
-    /* Features Section */
-    .features-section {
-      padding: 60px 20px;
-      background-color: #f8f8f8;
-    }
-
-    .features-container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .features-section h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 50px;
-      color: #333;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .feature-box {
-      background-color: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .feature-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-
-    .feature-box h3 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #333;
-    }
-
-    .feature-box p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #555;
-    }
-
-    /* Waitlist Benefits Section */
-    .benefits-section {
-      padding: 60px 20px;
-      background-color: white;
-    }
-
-    .benefits-container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .benefits-section h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 50px;
-      color: #333;
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-bottom: 50px;
-    }
-
-    .benefit-box {
-      background-color: #f8f8f8;
-      border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-    }
-
-    .benefit-box h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #333;
-    }
-
-    .benefit-box p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #555;
-    }
-
-    .why-join {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .why-join h3 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    .why-join p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #444;
-      margin-bottom: 20px;
-    }
-
-    .why-join ul {
-      text-align: left;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-
-    .why-join li {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #444;
-      margin-bottom: 10px;
     }
 
     /* FAQ Section */
@@ -441,10 +373,7 @@
         font-size: 2rem;
       }
 
-      .product-description h2,
-      .features-section h2,
-      .benefits-section h2,
-      .final-cta h2 {
+      .black-section h2 {
         font-size: 1.8rem;
       }
 
@@ -624,6 +553,16 @@
   <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E?mode=ac_t" class="button">Join the Waitlist</a>
 </div>
 
+<!-- Product Description Section with Black Background -->
+<div class="black-section">
+  <div class="black-container">
+    <h2>The World's First Adaptive Fragrance Experience</h2>
+    <p>The world's first adaptive fragrance experience is finally available to you.</p>
+    <p>Have you ever bought a perfume that smelled completely different on your skin? If so, you're not alone. It's frustrating to find a scent that doesn't match your body chemistry. The perfume you love in the bottle doesn't last, fades too quickly, or just doesn't suit you.</p>
+    <p>Bodymatch is the first perfume that adapts to your body's unique chemistry. You deserve a fragrance that lasts longer, smells uniquely yours, and evolves with your skin.</p>
+  </div>
+</div>
+
 <!-- News Section - Clean simplified layout -->
 <div class="news-section">
   <div class="news-container">
@@ -657,19 +596,9 @@
   </div>
 </div>
 
-<!-- Product Description Section -->
-<div class="product-description">
-  <div class="product-container">
-    <h2>The World's First Adaptive Fragrance Experience</h2>
-    <p>The world's first adaptive fragrance experience is finally available to you.</p>
-    <p>Have you ever bought a perfume that smelled completely different on your skin? If so, you're not alone. It's frustrating to find a scent that doesn't match your body chemistry. The perfume you love in the bottle doesn't last, fades too quickly, or just doesn't suit you.</p>
-    <p>Bodymatch is the first perfume that adapts to your body's unique chemistry. You deserve a fragrance that lasts longer, smells uniquely yours, and evolves with your skin.</p>
-  </div>
-</div>
-
-<!-- Features Section -->
-<div class="features-section">
-  <div class="features-container">
+<!-- Features Section with Black Background -->
+<div class="black-section">
+  <div class="black-container">
     <h2>What's Different About Bodymatch?</h2>
     <div class="features-grid">
       <div class="feature-box">
@@ -689,24 +618,25 @@
         <p>Designed by experts, crafted with care, and developed to suit your individual needs.</p>
       </div>
     </div>
-    <p style="text-align: center; margin-top: 30px; font-size: 1.1rem; color: #555;">
+    <p style="margin-top: 40px; font-size: 1.1rem; color: #ccc;">
       We're in limited beta right now. Join our waitlist to get early access to the Bodymatch experience.
     </p>
   </div>
 </div>
 
-<!-- Waitlist Benefits Section -->
-<div class="benefits-section">
-  <div class="benefits-container">
+<!-- Waitlist Explanation Section -->
+<div class="black-section">
+  <div class="black-container">
     <h2>Why the Waitlist?</h2>
-    <p style="text-align: center; max-width: 800px; margin: 0 auto 40px; font-size: 1.1rem; line-height: 1.6; color: #444;">
-      We're not creating a "fake" sense of scarcity. The waitlist exists because we're growing fast, but we can't onboard customers unless we scale our supply carefully. We want to deliver the best possible experience for each and every one of our customers, which is why we're taking a slow and careful approach.
-    </p>
-    
+    <p>We're not creating a "fake" sense of scarcity. The waitlist exists because we're growing fast, but we can't onboard customers unless we scale our supply carefully. We want to deliver the best possible experience for each and every one of our customers, which is why we're taking a slow and careful approach.</p>
+  </div>
+</div>
+
+<!-- Waitlist Benefits Section with Black Background -->
+<div class="black-section">
+  <div class="black-container">
     <h2>Waitlist Benefits</h2>
-    <p style="text-align: center; max-width: 800px; margin: 0 auto 40px; font-size: 1.1rem; line-height: 1.6; color: #444;">
-      When you join our waitlist, you're not just signing up for a product, you're joining a community. As a Founding Member, you'll get:
-    </p>
+    <p>When you join our waitlist, you're not just signing up for a product, you're joining a community. As a Founding Member, you'll get:</p>
     
     <div class="benefits-grid">
       <div class="benefit-box">
@@ -725,17 +655,6 @@
         <h3>VIP Support</h3>
         <p>Access our elite support team to help you find your perfect scent.</p>
       </div>
-    </div>
-    
-    <div class="why-join">
-      <h3>Why Should You Join the Waitlist?</h3>
-      <p>Bodymatch is for anyone who wants a unique fragrance experience. Whether you've struggled to find the perfect scent or want a perfume that lasts all day, Bodymatch is here to solve your problems.</p>
-      <p>Here's why you should sign up:</p>
-      <ul>
-        <li><strong>Personalized to You:</strong> Bodymatch adapts to your unique body chemistry. There's nothing else like it.</li>
-        <li><strong>Long-Lasting Fragrance:</strong> Say goodbye to fading perfumes. Bodymatch is designed to stay with you all day long.</li>
-        <li><strong>Be the First to Experience It:</strong> Bodymatch is available exclusively to waitlist members first. Don't miss out on becoming one of our Founding Members!</li>
-      </ul>
     </div>
   </div>
 </div>
