@@ -33,21 +33,21 @@
     .content {
       max-width: 600px;
       margin: 0 auto;
-      padding: 40px 20px 20px;
+      padding: 60px 20px 40px;
       text-align: center;
     }
 
     .content h2 {
       font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
     }
 
     .content p {
       font-size: 1.1rem;
       font-weight: 400;
       color: #444;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       line-height: 1.4;
     }
 
@@ -55,14 +55,15 @@
       text-decoration: none;
       background-color: black;
       color: white;
-      padding: 10px 24px;
-      font-size: 1rem;
+      padding: 12px 30px;
+      font-size: 1.1rem;
       border-radius: 4px;
       transition: all 0.3s ease;
       border: 1px solid black;
       cursor: pointer;
       margin-bottom: 10px;
       display: inline-block;
+      font-weight: 500;
     }
 
     .button:hover {
@@ -72,9 +73,9 @@
 
     /* Black Background Sections */
     .black-section {
-      background-color: black;
+      background-color: #000000 !important;
       color: white;
-      padding: 60px 20px;
+      padding: 80px 20px;
     }
 
     .black-container {
@@ -93,7 +94,7 @@
     .black-section p {
       font-size: 1.2rem;
       line-height: 1.6;
-      color: #ccc;
+      color: #cccccc;
       margin-bottom: 20px;
     }
 
@@ -106,11 +107,12 @@
     }
 
     .feature-box {
-      background-color: #111;
+      background-color: #111111;
       border-radius: 12px;
       padding: 30px;
       text-align: center;
       transition: transform 0.3s ease;
+      border: 1px solid #333;
     }
 
     .feature-box:hover {
@@ -127,7 +129,7 @@
     .feature-box p {
       font-size: 1rem;
       line-height: 1.5;
-      color: #ccc;
+      color: #cccccc;
     }
 
     /* Benefits Grid */
@@ -139,10 +141,11 @@
     }
 
     .benefit-box {
-      background-color: #111;
+      background-color: #111111;
       border-radius: 12px;
       padding: 25px;
       text-align: center;
+      border: 1px solid #333;
     }
 
     .benefit-box h3 {
@@ -155,13 +158,13 @@
     .benefit-box p {
       font-size: 1rem;
       line-height: 1.5;
-      color: #ccc;
+      color: #cccccc;
     }
 
     /* News Section - Simplified clean layout */
     .news-section {
       background-color: #f8f8f8;
-      padding: 50px 20px;
+      padding: 80px 20px;
       text-align: center;
     }
 
@@ -227,9 +230,9 @@
 
     /* FAQ Section */
     .faq-section {
-      background-color: black;
+      background-color: #000000;
       color: white;
-      padding: 40px 20px;
+      padding: 80px 20px;
     }
 
     .faq-header {
@@ -306,7 +309,7 @@
 
     /* Final CTA Section */
     .final-cta {
-      padding: 60px 20px;
+      padding: 80px 20px;
       text-align: center;
       background-color: #f8f8f8;
     }
@@ -381,6 +384,17 @@
       .benefits-grid {
         grid-template-columns: 1fr;
       }
+
+      .content {
+        padding: 40px 20px 30px;
+      }
+
+      .black-section,
+      .news-section,
+      .faq-section,
+      .final-cta {
+        padding: 60px 20px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -420,6 +434,10 @@
       .feature-box,
       .benefit-box {
         padding: 20px;
+      }
+
+      .content {
+        padding: 30px 20px 20px;
       }
     }
 
