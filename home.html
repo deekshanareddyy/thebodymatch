@@ -278,12 +278,11 @@
   </div>
 
   <script>
-    // Play once only: when video ends, stop and reset
+    // Play once only: when video ends, stop and stay on the last frame
     const video = document.getElementById('heroVideo');
     if (video) {
       video.addEventListener('ended', () => {
-        video.pause();
-        video.currentTime = 0;
+        video.pause(); // keep final frame visible
       });
 
       // Try to autoplay; if blocked (some mobiles), enable controls as fallback
