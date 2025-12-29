@@ -30,6 +30,7 @@
       font-size: 1.4rem; text-align: center; margin-bottom: 60px;
     }
 
+    /* --- ENERGY SYMBOL ANIMATION --- */
     .energy-symbol {
       width: 140px; height: 140px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.18);
@@ -68,7 +69,7 @@
       padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
       display: flex; align-items: center; justify-content: center; z-index: 100;
     }
-    .brand-name { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
+    .brand-name { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
 
     .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; background: #000; }
     
@@ -89,7 +90,7 @@
     /* --- AUDIO TOGGLE --- */
     .audio-toggle {
       position: absolute; top: 110px; right: 30px; width: 44px; height: 44px;
-      background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease;
     }
@@ -97,47 +98,53 @@
     .audio-toggle svg { width: 20px; height: 20px; fill: white; }
     .hidden-icon { display: none; }
 
-    /* --- HARMONIZED CTA BUTTON --- */
+    /* --- MOBILE ALIGNED CTA BUTTON --- */
     .cta-button-wrapper {
       position: absolute; 
-      top: 65%; /* Adjusted to sit below the 'Main Character Energy' visual center */
       left: 50%; 
-      transform: translate(-50%, -50%);
+      bottom: 12%; /* Default desktop position */
+      transform: translateX(-50%);
       z-index: 10; 
       text-align: center; 
       opacity: 0; 
       visibility: hidden; 
-      transition: opacity 1.2s ease, transform 1.2s ease;
+      transition: opacity 1s ease, transform 1s ease, bottom 0.5s ease;
+      width: 100%;
+      padding: 0 20px;
     }
     .cta-button-wrapper.show { opacity: 1; visibility: visible; }
-
+    
     .cta-button {
       text-decoration: none; 
       background: transparent; 
       color: #fff; 
-      padding: 14px 40px;
-      border: 1px solid rgba(255, 255, 255, 0.6); 
-      font-weight: 500; 
-      font-size: 0.9rem; 
+      padding: 16px 42px;
+      border: 1px solid rgba(255, 255, 255, 0.8); 
+      font-weight: 600; 
+      font-size: 1rem; 
       text-transform: uppercase;
-      letter-spacing: 0.25em; 
+      letter-spacing: 0.15em; 
       cursor: pointer; 
       transition: all 0.4s ease;
-      backdrop-filter: blur(8px); /* Glassmorphism effect for harmony */
+      backdrop-filter: blur(8px); /* Glass effect for harmony */
+      display: inline-block;
+      white-space: nowrap;
     }
 
     .cta-button:hover { 
       background: #fff; 
       color: #000; 
-      border-color: #fff;
-      box-shadow: 0 0 30px rgba(255,255,255,0.2);
+      box-shadow: 0 0 20px rgba(255,255,255,0.4); 
     }
 
+    /* --- SPECIFIC MOBILE ALIGNMENT --- */
     @media (max-width: 768px) {
-      .audio-toggle { top: 90px; right: 20px; }
-      .brand-name { font-size: 1rem; }
-      .cta-button { padding: 12px 32px; font-size: 0.8rem; }
-      .cta-button-wrapper { top: 70%; } /* Higher placement on mobile to avoid UI overlap */
+      .audio-toggle { top: 90px; right: 20px; width: 40px; height: 40px; }
+      .brand-name { font-size: 1.1rem; }
+      .cta-button-wrapper { 
+        bottom: 18%; /* Moves the button UP for mobile to avoid clashing with browser bars */
+      }
+      .cta-button { padding: 14px 32px; font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -183,18 +190,8 @@
     let progress = 0;
     let isFinished = false;
 
-    // Smooth loading simulation
-    let sim = setInterval(() => {
-      if (progress < 90) { 
-        progress += Math.random() * 1.5; 
-        updateUI(progress); 
-      }
-    }, 120);
-
-    function updateUI(val) { 
-      fill.style.width = val + '%'; 
-      label.textContent = Math.round(val) + '%'; 
-    }
+    let sim = setInterval(() => { if (progress < 90) { progress += Math.random() * 2.5; updateUI(progress); } }, 80);
+    function updateUI(val) { fill.style.width = val + '%'; label.textContent = Math.round(val) + '%'; }
 
     function revealSite() {
       if(isFinished) return;
@@ -203,33 +200,27 @@
       updateUI(100);
       
       setTimeout(() => {
-        // Force play specifically for mobile browsers
+        // MOBILE AUTOPLAY FIX: Force video.play() specifically after user-facing loader is done
+        video.muted = true; // Essential for autoplay
         video.play().then(() => {
-            loader.classList.add('hidden');
+          loader.classList.add('hidden');
         }).catch(e => {
-            console.log("Autoplay check:", e);
-            loader.classList.add('hidden');
+          console.warn("Autoplay blocked, showing anyway", e);
+          loader.classList.add('hidden');
         });
       }, 600);
     }
 
-    // Listener for video ready
     video.addEventListener('canplaythrough', revealSite);
-    
-    // Safety Fallback (6 seconds)
-    setTimeout(revealSite, 6000);
+    setTimeout(revealSite, 5000); 
 
-    // Audio Toggle Logic
     audioBtn.addEventListener('click', () => {
       video.muted = !video.muted;
       iconMuted.classList.toggle('hidden-icon');
       iconPlaying.classList.toggle('hidden-icon');
     });
 
-    // Show CTA when video finishes
-    video.addEventListener('ended', () => {
-      cta.classList.add('show');
-    });
+    video.addEventListener('ended', () => { cta.classList.add('show'); });
   </script>
 </body>
 </html>
