@@ -1,3 +1,4 @@
+<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,27 +26,82 @@
       color: #fff;
       display: flex;
       flex-direction: column;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
 
     /* Hero: full-viewport background video + CTA */
     .hero {
       position: relative;
       width: 100%;
-      height: auto;              /* height controlled by aspect-ratio */
-      aspect-ratio: 21 / 9;      /* 21:9 hero area */
+      height: auto;
+      aspect-ratio: 21 / 9;
       overflow: hidden;
       flex-shrink: 0;
       background-color: #000;
+      background-image: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      background-size: cover;
+      background-position: center;
     }
 
     .hero video {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 100%;               /* fill hero width */
-      height: 100%;              /* fill hero height */
+      width: 100%;
+      height: 100%;
       transform: translate(-50%, -50%);
-      object-fit: cover;         /* clean, even crop */
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .hero video.loaded {
+      opacity: 1;
+    }
+
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+      z-index: 1;
+    }
+
+    /* Fallback content */
+    .fallback-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      width: 90%;
+      max-width: 600px;
+      padding: 40px 20px;
+    }
+
+    .fallback-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #fff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.1em;
+    }
+
+    .fallback-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      margin-bottom: 40px;
+      line-height: 1.6;
     }
 
     /* On tall screens, let it behave like full viewport height */
@@ -63,15 +119,16 @@
       bottom: 12%;
       transform: translateX(-50%);
       text-align: center;
-      z-index: 2;
+      z-index: 3;
       padding: 0 20px;
+      width: 100%;
     }
 
     .cta-button {
       text-decoration: none;
       background-color: #000;
       color: #fff;
-      padding: 16px 40px;
+      padding: 18px 46px;
       font-size: 1.3rem;
       border-radius: 4px;
       transition: all 0.3s ease;
@@ -81,11 +138,31 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.7s ease;
     }
 
     .cta-button:hover {
       background-color: #fff;
       color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
     }
 
     /* Footer wrapper so it sits below hero */
@@ -176,11 +253,11 @@
     @media (min-width: 768px) {
       .cta-button {
         font-size: 1.4rem;
-        padding: 18px 46px;
+        padding: 20px 50px;
       }
 
       .cta-button-wrapper {
-        bottom: 15%; /* slightly higher for nicer balance on large screens */
+        bottom: 15%;
       }
 
       .footer-content {
@@ -188,6 +265,14 @@
         justify-content: space-between;
         align-items: center;
         text-align: left;
+      }
+
+      .fallback-title {
+        font-size: 3.5rem;
+      }
+      
+      .fallback-subtitle {
+        font-size: 1.4rem;
       }
 
       .footer-left {
@@ -207,8 +292,16 @@
 
       .cta-button {
         font-size: 1.1rem;
-        padding: 14px 28px;
-        white-space: normal; /* allow wrapping if needed */
+        padding: 16px 32px;
+        white-space: normal;
+      }
+
+      .fallback-title {
+        font-size: 2rem;
+      }
+      
+      .fallback-subtitle {
+        font-size: 1rem;
       }
 
       .footer-text,
@@ -243,19 +336,31 @@
 <body>
   <!-- Hero with background video and CTA -->
   <section class="hero">
+    <div class="video-overlay"></div>
+    
     <video
       id="heroVideo"
       autoplay
       muted
       playsinline
       preload="auto"
+      loop
       title="Bodymatch fragrance film">
+      <!-- Try different video formats and paths -->
       <source src="Bodymatch.mp4" type="video/mp4" />
+      <source src="videos/Bodymatch.mp4" type="video/mp4" />
+      <source src="assets/videos/Bodymatch.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
 
+    <!-- Fallback content that shows if video fails -->
+    <div class="fallback-content">
+      <h1 class="fallback-title">BODYMATCH</h1>
+      <p class="fallback-subtitle">Discover your signature glow through personalized fragrance matching</p>
+    </div>
+
     <div class="cta-button-wrapper">
-      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E?mode=ac_t" class="cta-button">
+      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E?mode=ac_t" class="cta-button" target="_blank">
         Discover Your Glow
       </a>
     </div>
@@ -271,13 +376,13 @@
         </div>
         <div class="social-links">
           <a href="https://www.instagram.com/fashiondesignerdee/" target="_blank" aria-label="Instagram" title="Instagram">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" class="icon instagram" />
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/instagram.svg" alt="Instagram" class="icon instagram" />
           </a>
           <a href="https://www.linkedin.com/in/deekshana-reddy-%F0%9F%94%B1-966b461a4/" target="_blank" aria-label="LinkedIn" title="LinkedIn">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" class="icon linkedin" />
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/linkedin.svg" alt="LinkedIn" class="icon linkedin" />
           </a>
           <a href="https://www.youtube.com/@Deekshanareddy" target="_blank" aria-label="YouTube" title="YouTube">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" class="icon youtube" />
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg" alt="YouTube" class="icon youtube" />
           </a>
         </div>
       </div>
@@ -285,28 +390,94 @@
   </div>
 
   <script>
-    // Play once only: when video ends, stop and stay on the last frame
+    // Enhanced video handling with multiple fallback options
     const video = document.getElementById('heroVideo');
-    if (video) {
-      video.addEventListener('ended', () => {
-        video.pause(); // keep final frame visible
-      });
-
-      // Try to autoplay; if blocked (some mobiles), enable controls as fallback
-      const attemptPlay = () => {
-        const p = video.play();
-        if (p !== undefined) {
-          p.catch(() => {
+    const fallbackContent = document.querySelector('.fallback-content');
+    
+    // Try multiple video sources
+    const videoSources = [
+      'Bodymatch.mp4',
+      'videos/Bodymatch.mp4',
+      'assets/videos/Bodymatch.mp4',
+      'https://assets.mixkit.co/videos/preview/mixkit-a-woman-spraying-perfume-on-her-neck-3986-large.mp4' // Example fallback video
+    ];
+    
+    let currentSourceIndex = 0;
+    
+    function tryNextVideoSource() {
+      if (currentSourceIndex < videoSources.length) {
+        const source = videoSources[currentSourceIndex];
+        console.log('Trying video source:', source);
+        
+        video.querySelectorAll('source').forEach(el => el.remove());
+        
+        const newSource = document.createElement('source');
+        newSource.src = source;
+        newSource.type = 'video/mp4';
+        video.appendChild(newSource);
+        
+        video.load();
+        currentSourceIndex++;
+        
+        // Try to play
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Try next source after a delay
+            setTimeout(tryNextVideoSource, 500);
+          });
+        }
+      } else {
+        // All sources failed, show fallback content prominently
+        console.log('All video sources failed, using fallback design');
+        video.style.display = 'none';
+        fallbackContent.style.zIndex = '3';
+      }
+    }
+    
+    // Video event handlers
+    video.addEventListener('loadeddata', () => {
+      console.log('Video loaded successfully');
+      video.classList.add('loaded');
+      fallbackContent.style.opacity = '0';
+      fallbackContent.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        fallbackContent.style.display = 'none';
+      }, 500);
+    });
+    
+    video.addEventListener('error', () => {
+      console.log('Video error, trying next source');
+      setTimeout(tryNextVideoSource, 500);
+    });
+    
+    video.addEventListener('canplay', () => {
+      console.log('Video can play');
+      video.classList.add('loaded');
+    });
+    
+    // Start trying to load video
+    setTimeout(() => {
+      tryNextVideoSource();
+    }, 100);
+    
+    // Autoplay handling
+    const attemptPlay = () => {
+      if (video.readyState >= 3) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            console.log("Autoplay prevented");
             video.setAttribute('controls', 'controls');
           });
         }
-      };
-
-      attemptPlay();
-      window.addEventListener('touchstart', attemptPlay, { once: true });
-      window.addEventListener('click', attemptPlay, { once: true });
-    }
-
+      }
+    };
+    
+    // Try playing on user interaction
+    document.addEventListener('click', attemptPlay, { once: true });
+    document.addEventListener('touchstart', attemptPlay, { once: true });
+    
     // Footer animation when it scrolls into view
     window.addEventListener('DOMContentLoaded', () => {
       const footer = document.querySelector('.footer');
