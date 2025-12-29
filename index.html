@@ -1,170 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bodymatch</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    /* --- GLOBAL RESET --- */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { 
-      height: 100%; 
-      background: #000; 
-      color: #fff; 
-      font-family: 'Space Grotesk', sans-serif; 
-      overflow: hidden; 
-    }
-
-    /* --- LOADER STYLES --- */
-    .loader-wrapper {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: #000; z-index: 9999;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
-    }
-    .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .brand-title-loader { font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; font-size: 1.4rem; text-align: center; margin-bottom: 60px; }
-    .energy-symbol { width: 140px; height: 140px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 60px; position: relative; }
-    .energy-core { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%); animation: pulse 2s ease-in-out infinite; box-shadow: 0 0 35px rgba(255,255,255,0.5); }
-    .energy-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); animation: rotate 4s linear infinite; }
-    .loading-bar-wrapper { width: min(420px, 80vw); height: 4px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
-    .loading-bar-fill { width: 0; height: 100%; background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff); box-shadow: 0 0 18px rgba(255,255,255,0.7); }
-    #loadingPercent { letter-spacing: 0.1em; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
-
-    @keyframes pulse { 0%, 100% { transform: scale(0.95); opacity: 0.9; } 50% { transform: scale(1.08); opacity: 1; } }
-    @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    /* --- HERO & VIDEO STYLES --- */
-    .brand-header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); display: flex; align-items: center; justify-content: center; z-index: 100; }
-    .brand-name { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
-    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; background: #000; }
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>Bodymatch | For Those Who Become More</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
-    /* Ensure no play button shows by hiding default controls */
-    .hero video { 
-      position: absolute; top: 50%; left: 50%; 
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%); 
-      object-fit: cover; 
-      z-index: 1; 
-      pointer-events: none; /* Prevents user from accidentally triggering controls */
-    }
-    
-    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); z-index: 2; }
+    <style>
+        /* --- CORE HARMONY --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
 
-    /* --- AUDIO TOGGLE --- */
-    .audio-toggle { position: absolute; top: 110px; right: 30px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease; }
-    .audio-toggle svg { width: 20px; height: 20px; fill: white; }
-    .hidden-icon { display: none; }
+        /* --- THE LOADER (Next.js Style Performance) --- */
+        .loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #000; z-index: 9999;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+        }
+        .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-    /* --- HARMONIZED CTA BUTTON --- */
-    .cta-button-wrapper {
-      position: absolute; 
-      top: 70%; /* Positioned lower for harmony */
-      left: 50%; 
-      transform: translate(-50%, -50%);
-      z-index: 10; 
-      text-align: center; 
-      opacity: 0; 
-      visibility: hidden; 
-      transition: opacity 1.2s ease;
-      width: 100%;
-    }
-    .cta-button-wrapper.show { opacity: 1; visibility: visible; }
-    .cta-button {
-      text-decoration: none; background: transparent; color: #fff; padding: 14px 40px;
-      border: 1px solid rgba(255, 255, 255, 0.6); font-weight: 500; font-size: 0.9rem; 
-      text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; transition: all 0.4s ease;
-      backdrop-filter: blur(12px); display: inline-block;
-    }
-    .cta-button:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+        .brand-title-loader {
+            font-weight: 700; letter-spacing: 0.4em; text-transform: uppercase;
+            font-size: clamp(1rem, 5vw, 1.4rem); text-align: center; margin-bottom: 50px;
+        }
 
-    @media (max-width: 768px) {
-      .audio-toggle { top: 90px; right: 20px; }
-      .brand-name { font-size: 1rem; }
-      .cta-button { padding: 12px 32px; font-size: 0.8rem; }
-      .cta-button-wrapper { top: 75%; }
-    }
-  </style>
+        .energy-symbol {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 50px; position: relative;
+        }
+        .energy-core {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 0%, #666 100%);
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .energy-ring {
+            position: absolute; width: 100%; height: 100%;
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+            animation: rotate 4s linear infinite;
+        }
+        .loading-bar-wrapper { width: 200px; height: 2px; background: rgba(255,255,255,0.1); margin-bottom: 12px; overflow: hidden; }
+        .loading-bar-fill { width: 0; height: 100%; background: #fff; transition: width 0.4s ease; }
+        #loadingPercent { font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.6; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* --- THE EXPERIENCE (Hero) --- */
+        .brand-header {
+            position: fixed; top: 0; width: 100%; padding: 30px;
+            display: flex; justify-content: center; z-index: 1000;
+        }
+        .brand-name { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+
+        .hero { position: relative; width: 100%; height: 100vh; background: #000; }
+        
+        /* 21:9 Logic for Mobile & Web */
+        .hero video { 
+            position: absolute; top: 50%; left: 50%; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%); 
+            object-fit: cover; 
+            z-index: 1; 
+        }
+        
+        .video-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.15); z-index: 2; 
+        }
+
+        /* Audio Toggle */
+        .audio-toggle {
+            position: absolute; top: 100px; right: 30px; width: 40px; height: 40px;
+            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); transition: 0.3s;
+        }
+        .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
+        .hidden-icon { display: none; }
+
+        /* --- THE HARMONIOUS BUTTON --- */
+        .cta-button-wrapper {
+            position: absolute; 
+            left: 50%; 
+            bottom: 15%; /* Higher up than standard to avoid phone browser bars */
+            transform: translateX(-50%);
+            z-index: 1001; text-align: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 1.5s ease;
+        }
+        .cta-button-wrapper.show { opacity: 1; visibility: visible; }
+        
+        .cta-button {
+            text-decoration: none; 
+            background: transparent; 
+            color: #fff; 
+            padding: 14px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+            font-weight: 500; font-size: 0.9rem; 
+            text-transform: uppercase; letter-spacing: 0.2em; 
+            cursor: pointer; transition: 0.4s;
+            backdrop-filter: blur(15px); /* Premium harmony effect */
+            white-space: nowrap;
+        }
+        .cta-button:hover { background: #fff; color: #000; }
+
+        @media (max-width: 768px) {
+            .brand-header { padding: 20px; }
+            .cta-button-wrapper { bottom: 20%; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="loader-wrapper" id="loader">
-    <div class="brand-title-loader">BODYMATCH</div>
-    <div class="energy-symbol"><div class="energy-ring"></div><div class="energy-core"></div></div>
-    <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingFill"></div></div>
-    <div id="loadingPercent">0%</div>
-  </div>
-
-  <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
-
-  <section class="hero">
-    <div class="video-overlay"></div>
-    <button id="audioToggle" class="audio-toggle">
-      <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-      <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-    </button>
-
-    <video id="heroVideo" loop muted autoplay playsinline preload="auto">
-      <source src="Bodymatch.mp4" type="video/mp4">
-    </video>
-
-    <div class="cta-button-wrapper" id="ctaButtonWrapper">
-      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="cta-button" target="_blank">Discover Your Glow</a>
+    <div class="loader-wrapper" id="loader">
+        <div class="brand-title-loader">BODYMATCH</div>
+        <div class="energy-symbol">
+            <div class="energy-ring"></div>
+            <div class="energy-core"></div>
+        </div>
+        <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingFill"></div></div>
+        <div id="loadingPercent">0%</div>
     </div>
-  </section>
 
-  <script>
-    const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill');
-    const label = document.getElementById('loadingPercent'), video = document.getElementById('heroVideo');
-    const audioBtn = document.getElementById('audioToggle'), iconMuted = document.getElementById('iconMuted');
-    const iconPlaying = document.getElementById('iconPlaying'), cta = document.getElementById('ctaButtonWrapper');
+    <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
 
-    let progress = 0;
-    let isFinished = false;
-
-    let sim = setInterval(() => { if (progress < 90) { progress += Math.random() * 2; updateUI(progress); } }, 100);
-    function updateUI(val) { fill.style.width = val + '%'; label.textContent = Math.round(val) + '%'; }
-
-    function revealSite() {
-      if(isFinished) return;
-      isFinished = true;
-      clearInterval(sim);
-      updateUI(100);
-      
-      setTimeout(() => {
-        // FORCE PLAY SCRIPT: This kills the mobile "frozen" state
-        video.muted = true; 
-        const playPromise = video.play();
+    <section class="hero">
+        <div class="video-overlay"></div>
         
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            loader.classList.add('hidden');
-          }).catch(error => {
-            // If still blocked, we show the page anyway
-            loader.classList.add('hidden');
-            console.log("Autoplay check:", error);
-          });
+        <button id="audioToggle" class="audio-toggle">
+            <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+            <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </button>
+
+        <video id="heroVideo" autoplay muted playsinline loop preload="auto">
+            <source src="Bodymatch.mp4" type="video/mp4">
+        </video>
+
+        <div class="cta-button-wrapper" id="ctaButtonWrapper">
+            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="cta-button" target="_blank">Discover Your Glow</a>
+        </div>
+    </section>
+
+    <script>
+        const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill');
+        const label = document.getElementById('loadingPercent'), video = document.getElementById('heroVideo');
+        const audioBtn = document.getElementById('audioToggle'), iconMuted = document.getElementById('iconMuted');
+        const iconPlaying = document.getElementById('iconPlaying'), cta = document.getElementById('ctaButtonWrapper');
+
+        let progress = 0;
+        let isLoaded = false;
+
+        // Smart Loader
+        let sim = setInterval(() => { 
+            if (progress < 90) { 
+                progress += Math.random() * 2.5; 
+                fill.style.width = progress + '%';
+                label.textContent = Math.round(progress) + '%';
+            } 
+        }, 100);
+
+        function reveal() {
+            if(isLoaded) return;
+            isLoaded = true;
+            clearInterval(sim);
+            fill.style.width = '100%';
+            label.textContent = '100%';
+            
+            setTimeout(() => {
+                // Force video play for mobile before fading loader
+                video.play().then(() => {
+                    loader.classList.add('hidden');
+                    // Show button after 2 seconds of video play
+                    setTimeout(() => cta.classList.add('show'), 2000);
+                }).catch(e => {
+                    loader.classList.add('hidden');
+                    cta.classList.add('show');
+                });
+            }, 500);
         }
-      }, 600);
-    }
 
-    // Attempt reveal as soon as video can play
-    video.addEventListener('canplaythrough', revealSite);
-    // Fallback: Force reveal after 5 seconds even if video is slow
-    setTimeout(revealSite, 5000); 
+        // Listen for video buffer
+        video.addEventListener('canplaythrough', reveal);
+        setTimeout(reveal, 6000); // Fallback
 
-    audioBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
-      iconMuted.classList.toggle('hidden-icon');
-      iconPlaying.classList.toggle('hidden-icon');
-    });
-
-    // Make CTA appear when video finishes (if not looping) or based on time
-    video.addEventListener('ended', () => { cta.classList.add('show'); });
-    // In case video loops, show CTA after 8 seconds
-    setTimeout(() => { cta.classList.add('show'); }, 8000);
-  </script>
+        // Audio logic
+        audioBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            iconMuted.classList.toggle('hidden-icon');
+            iconPlaying.classList.toggle('hidden-icon');
+            video.play(); // Ensure it keeps playing
+        });
+    </script>
 </body>
 </html>
