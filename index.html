@@ -24,55 +24,23 @@
       transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     }
     .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .brand-title-loader {
-      font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
-      font-size: 1.4rem; text-align: center; margin-bottom: 60px;
-    }
-
-    /* --- ENERGY SYMBOL ANIMATION --- */
-    .energy-symbol {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 60px; position: relative;
-    }
-    .energy-core {
-      width: 60px; height: 60px; border-radius: 50%;
-      background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%);
-      animation: pulse 2s ease-in-out infinite;
-      box-shadow: 0 0 35px rgba(255,255,255,0.5);
-    }
-    .energy-ring {
-      position: absolute; width: 100%; height: 100%;
-      border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
-      animation: rotate 4s linear infinite;
-    }
-    .loading-bar-wrapper {
-      width: min(420px, 80vw); height: 4px;
-      background: rgba(255,255,255,0.1); border-radius: 999px;
-      overflow: hidden; margin-bottom: 16px;
-    }
-    .loading-bar-fill {
-      width: 0; height: 100%;
-      background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff);
-      box-shadow: 0 0 18px rgba(255,255,255,0.7);
-    }
+    .brand-title-loader { font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; font-size: 1.4rem; text-align: center; margin-bottom: 60px; }
+    .energy-symbol { width: 140px; height: 140px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 60px; position: relative; }
+    .energy-core { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%); animation: pulse 2s ease-in-out infinite; box-shadow: 0 0 35px rgba(255,255,255,0.5); }
+    .energy-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); animation: rotate 4s linear infinite; }
+    .loading-bar-wrapper { width: min(420px, 80vw); height: 4px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+    .loading-bar-fill { width: 0; height: 100%; background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff); box-shadow: 0 0 18px rgba(255,255,255,0.7); }
     #loadingPercent { letter-spacing: 0.1em; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
 
     @keyframes pulse { 0%, 100% { transform: scale(0.95); opacity: 0.9; } 50% { transform: scale(1.08); opacity: 1; } }
     @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     /* --- HERO & VIDEO STYLES --- */
-    .brand-header {
-      position: fixed; top: 0; left: 0; width: 100%;
-      padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
-    }
-    .brand-name { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
-
+    .brand-header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .brand-name { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
     .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; background: #000; }
     
+    /* Ensure no play button shows by hiding default controls */
     .hero video { 
       position: absolute; top: 50%; left: 50%; 
       min-width: 100%; min-height: 100%;
@@ -80,71 +48,43 @@
       transform: translate(-50%, -50%); 
       object-fit: cover; 
       z-index: 1; 
+      pointer-events: none; /* Prevents user from accidentally triggering controls */
     }
     
-    .video-overlay { 
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0, 0, 0, 0.2); z-index: 2; 
-    }
+    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); z-index: 2; }
 
     /* --- AUDIO TOGGLE --- */
-    .audio-toggle {
-      position: absolute; top: 110px; right: 30px; width: 44px; height: 44px;
-      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease;
-    }
-    .audio-toggle:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
+    .audio-toggle { position: absolute; top: 110px; right: 30px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease; }
     .audio-toggle svg { width: 20px; height: 20px; fill: white; }
     .hidden-icon { display: none; }
 
-    /* --- MOBILE ALIGNED CTA BUTTON --- */
+    /* --- HARMONIZED CTA BUTTON --- */
     .cta-button-wrapper {
       position: absolute; 
+      top: 70%; /* Positioned lower for harmony */
       left: 50%; 
-      bottom: 12%; /* Default desktop position */
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       z-index: 10; 
       text-align: center; 
       opacity: 0; 
       visibility: hidden; 
-      transition: opacity 1s ease, transform 1s ease, bottom 0.5s ease;
+      transition: opacity 1.2s ease;
       width: 100%;
-      padding: 0 20px;
     }
     .cta-button-wrapper.show { opacity: 1; visibility: visible; }
-    
     .cta-button {
-      text-decoration: none; 
-      background: transparent; 
-      color: #fff; 
-      padding: 16px 42px;
-      border: 1px solid rgba(255, 255, 255, 0.8); 
-      font-weight: 600; 
-      font-size: 1rem; 
-      text-transform: uppercase;
-      letter-spacing: 0.15em; 
-      cursor: pointer; 
-      transition: all 0.4s ease;
-      backdrop-filter: blur(8px); /* Glass effect for harmony */
-      display: inline-block;
-      white-space: nowrap;
+      text-decoration: none; background: transparent; color: #fff; padding: 14px 40px;
+      border: 1px solid rgba(255, 255, 255, 0.6); font-weight: 500; font-size: 0.9rem; 
+      text-transform: uppercase; letter-spacing: 0.25em; cursor: pointer; transition: all 0.4s ease;
+      backdrop-filter: blur(12px); display: inline-block;
     }
+    .cta-button:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
 
-    .cta-button:hover { 
-      background: #fff; 
-      color: #000; 
-      box-shadow: 0 0 20px rgba(255,255,255,0.4); 
-    }
-
-    /* --- SPECIFIC MOBILE ALIGNMENT --- */
     @media (max-width: 768px) {
-      .audio-toggle { top: 90px; right: 20px; width: 40px; height: 40px; }
-      .brand-name { font-size: 1.1rem; }
-      .cta-button-wrapper { 
-        bottom: 18%; /* Moves the button UP for mobile to avoid clashing with browser bars */
-      }
-      .cta-button { padding: 14px 32px; font-size: 0.85rem; }
+      .audio-toggle { top: 90px; right: 20px; }
+      .brand-name { font-size: 1rem; }
+      .cta-button { padding: 12px 32px; font-size: 0.8rem; }
+      .cta-button-wrapper { top: 75%; }
     }
   </style>
 </head>
@@ -152,13 +92,8 @@
 
   <div class="loader-wrapper" id="loader">
     <div class="brand-title-loader">BODYMATCH</div>
-    <div class="energy-symbol">
-      <div class="energy-ring"></div>
-      <div class="energy-core"></div>
-    </div>
-    <div class="loading-bar-wrapper">
-      <div class="loading-bar-fill" id="loadingFill"></div>
-    </div>
+    <div class="energy-symbol"><div class="energy-ring"></div><div class="energy-core"></div></div>
+    <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingFill"></div></div>
     <div id="loadingPercent">0%</div>
   </div>
 
@@ -166,13 +101,12 @@
 
   <section class="hero">
     <div class="video-overlay"></div>
-    
-    <button id="audioToggle" class="audio-toggle" title="Toggle Sound">
+    <button id="audioToggle" class="audio-toggle">
       <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
       <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
     </button>
 
-    <video id="heroVideo" autoplay muted playsinline preload="auto">
+    <video id="heroVideo" loop muted autoplay playsinline preload="auto">
       <source src="Bodymatch.mp4" type="video/mp4">
     </video>
 
@@ -190,7 +124,7 @@
     let progress = 0;
     let isFinished = false;
 
-    let sim = setInterval(() => { if (progress < 90) { progress += Math.random() * 2.5; updateUI(progress); } }, 80);
+    let sim = setInterval(() => { if (progress < 90) { progress += Math.random() * 2; updateUI(progress); } }, 100);
     function updateUI(val) { fill.style.width = val + '%'; label.textContent = Math.round(val) + '%'; }
 
     function revealSite() {
@@ -200,18 +134,25 @@
       updateUI(100);
       
       setTimeout(() => {
-        // MOBILE AUTOPLAY FIX: Force video.play() specifically after user-facing loader is done
-        video.muted = true; // Essential for autoplay
-        video.play().then(() => {
-          loader.classList.add('hidden');
-        }).catch(e => {
-          console.warn("Autoplay blocked, showing anyway", e);
-          loader.classList.add('hidden');
-        });
+        // FORCE PLAY SCRIPT: This kills the mobile "frozen" state
+        video.muted = true; 
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            loader.classList.add('hidden');
+          }).catch(error => {
+            // If still blocked, we show the page anyway
+            loader.classList.add('hidden');
+            console.log("Autoplay check:", error);
+          });
+        }
       }, 600);
     }
 
+    // Attempt reveal as soon as video can play
     video.addEventListener('canplaythrough', revealSite);
+    // Fallback: Force reveal after 5 seconds even if video is slow
     setTimeout(revealSite, 5000); 
 
     audioBtn.addEventListener('click', () => {
@@ -220,7 +161,10 @@
       iconPlaying.classList.toggle('hidden-icon');
     });
 
+    // Make CTA appear when video finishes (if not looping) or based on time
     video.addEventListener('ended', () => { cta.classList.add('show'); });
+    // In case video loops, show CTA after 8 seconds
+    setTimeout(() => { cta.classList.add('show'); }, 8000);
   </script>
 </body>
 </html>
