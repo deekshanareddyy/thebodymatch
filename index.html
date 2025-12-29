@@ -32,21 +32,19 @@
       to { opacity: 1; }
     }
 
-    /* Top Brand Bar - Always visible */
-    .brand-bar {
+    /* Top Brand Header - Always visible */
+    .brand-header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       padding: 20px 30px;
       z-index: 100;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.9);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
     }
 
     .brand-name {
@@ -56,23 +54,6 @@
       text-transform: uppercase;
       color: #fff;
       text-decoration: none;
-      position: relative;
-      padding: 5px 0;
-    }
-
-    .brand-name::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, #fff, #aaa);
-      transition: width 0.3s ease;
-    }
-
-    .brand-name:hover::after {
-      width: 100%;
     }
 
     /* Hero: full-viewport background video + CTA */
@@ -108,7 +89,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.2);
       z-index: 2;
       pointer-events: none;
     }
@@ -198,9 +179,26 @@
       opacity: 1;
     }
 
+    /* Loading indicator for mobile */
+    .loading-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      color: white;
+      font-size: 1rem;
+      opacity: 0.8;
+      display: none;
+    }
+
+    .loading-indicator.show {
+      display: block;
+    }
+
     /* Tablet and up */
     @media (min-width: 768px) {
-      .brand-bar {
+      .brand-header {
         padding: 22px 40px;
       }
 
@@ -221,7 +219,7 @@
 
     /* Small screens */
     @media (max-width: 600px) {
-      .brand-bar {
+      .brand-header {
         padding: 16px 20px;
       }
 
@@ -233,17 +231,21 @@
       .cta-button {
         font-size: 1.1rem;
         padding: 16px 32px;
-        white-space: normal;
       }
 
       .cta-button-wrapper {
         bottom: 12%;
       }
+
+      .hero {
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+      }
     }
 
     /* Very small devices */
     @media (max-width: 380px) {
-      .brand-bar {
+      .brand-header {
         padding: 14px 15px;
       }
 
@@ -259,15 +261,22 @@
       .cta-button {
         width: 100%;
         max-width: 260px;
+        padding: 14px 24px;
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Top Brand Bar - Always visible -->
-  <header class="brand-bar">
-    <a href="#" class="brand-name">BODYMATCH</a>
+  <!-- Top Brand Header - Always visible -->
+  <header class="brand-header">
+    <div class="brand-name">BODYMATCH</div>
   </header>
+
+  <!-- Loading indicator for mobile -->
+  <div class="loading-indicator" id="loadingIndicator">
+    Loading experience...
+  </div>
 
   <!-- Hero with background video and CTA -->
   <section class="hero">
@@ -283,10 +292,9 @@
       playsinline
       preload="auto"
       title="Bodymatch fragrance film">
-      <!-- Try different video formats and paths -->
-      <source src="Bodymatch.mp4" type="video/mp4" />
-      <source src="videos/Bodymatch.mp4" type="video/mp4" />
-      <source src="assets/videos/Bodymatch.mp4" type="video/mp4" />
+      <!-- Multiple source formats for better compatibility -->
+      <source src="Bodymatch.mp4" type="video/mp4">
+      <source src="Bodymatch.webm" type="video/webm">
       Your browser does not support the video tag.
     </video>
 
@@ -303,16 +311,8 @@
     const video = document.getElementById('heroVideo');
     const ctaButtonWrapper = document.getElementById('ctaButtonWrapper');
     const videoEndedOverlay = document.getElementById('videoEndedOverlay');
-    const brandName = document.querySelector('.brand-name');
+    const loadingIndicator = document.getElementById('loadingIndicator');
     
-    // Video sources to try
-    const videoSources = [
-      'Bodymatch.mp4',
-      'videos/Bodymatch.mp4',
-      'assets/videos/Bodymatch.mp4'
-    ];
-    
-    let currentSourceIndex = 0;
     let videoHasEnded = false;
     let videoLoadedSuccessfully = false;
 
@@ -322,71 +322,142 @@
       videoEndedOverlay.classList.add('show');
     }
 
-    // Function to try next video source
-    function tryNextVideoSource() {
-      if (currentSourceIndex < videoSources.length) {
-        const source = videoSources[currentSourceIndex];
-        
-        // Clear existing sources
-        video.querySelectorAll('source').forEach(el => el.remove());
-        
-        // Add new source
-        const newSource = document.createElement('source');
-        newSource.src = source;
-        newSource.type = 'video/mp4';
-        video.appendChild(newSource);
-        
-        // Load the new source
-        video.load();
-        currentSourceIndex++;
-        
-        // Try to play
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              videoLoadedSuccessfully = true;
-            })
-            .catch(() => {
-              setTimeout(tryNextVideoSource, 500);
-            });
-        }
+    // Function to handle mobile video loading
+    function loadVideoForMobile() {
+      // Show loading indicator for mobile
+      if (window.innerWidth <= 768) {
+        loadingIndicator.classList.add('show');
       }
+      
+      // Set video source
+      video.src = 'Bodymatch.mp4';
+      video.load();
+      
+      // Try to play the video
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Video started playing
+            videoLoadedSuccessfully = true;
+            loadingIndicator.classList.remove('show');
+          })
+          .catch((error) => {
+            // Autoplay was prevented - common on mobile
+            console.log('Autoplay prevented:', error);
+            
+            // For mobile, we'll show the video with a play button overlay
+            if (window.innerWidth <= 768) {
+              // Create a play overlay for mobile
+              createMobilePlayOverlay();
+            }
+          });
+      }
+    }
+
+    // Create mobile play overlay for when autoplay is blocked
+    function createMobilePlayOverlay() {
+      const playOverlay = document.createElement('div');
+      playOverlay.style.position = 'absolute';
+      playOverlay.style.top = '50%';
+      playOverlay.style.left = '50%';
+      playOverlay.style.transform = 'translate(-50%, -50%)';
+      playOverlay.style.zIndex = '10';
+      playOverlay.style.background = 'rgba(0,0,0,0.7)';
+      playOverlay.style.padding = '20px 30px';
+      playOverlay.style.borderRadius = '8px';
+      playOverlay.style.color = 'white';
+      playOverlay.style.textAlign = 'center';
+      playOverlay.style.cursor = 'pointer';
+      playOverlay.innerHTML = `
+        <div style="font-size: 1.2rem; margin-bottom: 10px;">▶ Play Video</div>
+        <div style="font-size: 0.9rem; opacity: 0.8;">Tap to start the experience</div>
+      `;
+      
+      playOverlay.addEventListener('click', () => {
+        video.play()
+          .then(() => {
+            playOverlay.style.display = 'none';
+            videoLoadedSuccessfully = true;
+          })
+          .catch(err => {
+            console.log('Still cannot play:', err);
+          });
+      });
+      
+      document.querySelector('.hero').appendChild(playOverlay);
     }
 
     // Video event handlers
     video.addEventListener('loadeddata', () => {
+      console.log('Video loaded successfully');
       video.classList.add('loaded');
+      loadingIndicator.classList.remove('show');
     });
 
     video.addEventListener('canplay', () => {
+      console.log('Video can play');
       video.classList.add('loaded');
       videoLoadedSuccessfully = true;
     });
 
-    video.addEventListener('error', () => {
-      setTimeout(tryNextVideoSource, 500);
+    video.addEventListener('error', (e) => {
+      console.log('Video error:', e);
+      loadingIndicator.classList.remove('show');
+      
+      // Try alternative video sources
+      const videoSources = [
+        'videos/Bodymatch.mp4',
+        'assets/Bodymatch.mp4',
+        'assets/videos/Bodymatch.mp4',
+        'https://assets.mixkit.co/videos/preview/mixkit-a-woman-spraying-perfume-on-her-neck-3986-large.mp4' // Fallback video
+      ];
+      
+      // Try to load fallback video
+      if (video.error && video.error.code === 4) {
+        // Try to load a fallback video
+        video.src = videoSources[3]; // Use external fallback
+        video.load();
+        video.play().catch(() => {
+          // If all fails, show CTA immediately
+          showCTAButton();
+        });
+      }
     });
 
     // CRITICAL: When video ends, show CTA button and stay on last frame
     video.addEventListener('ended', () => {
+      console.log('Video ended');
       videoHasEnded = true;
+      video.currentTime = video.duration; // Ensure it stays on last frame
+      video.pause(); // Pause on last frame
       showCTAButton();
     });
 
-    // Brand name click handler - scroll to top
-    brandName.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Start loading the video
+    window.addEventListener('DOMContentLoaded', () => {
+      // Small delay to ensure everything is ready
+      setTimeout(() => {
+        loadVideoForMobile();
+      }, 300);
     });
 
-    // Start loading and playing the video
-    setTimeout(() => {
-      tryNextVideoSource();
-    }, 100);
+    // For iOS/Safari mobile - special handling
+    document.addEventListener('touchstart', () => {
+      if (!videoLoadedSuccessfully && !videoHasEnded) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay prevented on iOS
+            createMobilePlayOverlay();
+          });
+        }
+      }
+    }, { once: true });
 
-    // Try autoplay on user interaction if blocked
-    const attemptPlay = () => {
+    // Also try on regular click for other devices
+    document.addEventListener('click', () => {
       if (!videoLoadedSuccessfully && !videoHasEnded) {
         const playPromise = video.play();
         if (playPromise !== undefined) {
@@ -395,11 +466,16 @@
           });
         }
       }
-    };
+    }, { once: true });
 
-    // Try playing on user interaction
-    document.addEventListener('click', attemptPlay, { once: true });
-    document.addEventListener('touchstart', attemptPlay, { once: true });
+    // Fallback: If video doesn't load after 3 seconds on mobile, show CTA
+    setTimeout(() => {
+      if (!videoLoadedSuccessfully && !videoHasEnded && window.innerWidth <= 768) {
+        console.log('Mobile video loading timeout - showing CTA');
+        loadingIndicator.classList.remove('show');
+        showCTAButton();
+      }
+    }, 3000);
   </script>
 </body>
 </html>
