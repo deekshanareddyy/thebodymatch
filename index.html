@@ -3,112 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bodymatch Loading</title>
+  <title>Bodymatch</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* --- GLOBAL STYLES --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
 
-    html, body {
-      height: 100%;
-      background: #000;
-      color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    /* Loader Styling */
+    /* --- LOADER STYLES (Z-Index 9999 to stay on top) --- */
     .loader-wrapper {
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       background: #000;
-      overflow: hidden;
-      position: relative;
+      z-index: 9999; /* Stays above everything */
+      transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
-    .brand-title {
-      font-weight: 700;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      font-size: 1.4rem;
-      text-align: center;
-      margin-bottom: 60px;
+    /* Loader Fade Out Class */
+    .loader-wrapper.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .brand-title-loader {
+      font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
+      font-size: 1.4rem; text-align: center; margin-bottom: 60px;
     }
 
     .energy-symbol {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
+      width: 140px; height: 140px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.18);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 60px;
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 60px; position: relative; overflow: hidden;
     }
 
     .energy-core {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+      width: 60px; height: 60px; border-radius: 50%;
       background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%);
       animation: pulse 2s ease-in-out infinite;
       box-shadow: 0 0 35px rgba(255,255,255,0.5);
     }
 
     .energy-ring {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.12);
+      position: absolute; width: 100%; height: 100%;
+      border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
       animation: rotate 4s linear infinite;
     }
 
     .loading-bar-wrapper {
-      width: min(420px, 80vw);
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 16px;
+      width: min(420px, 80vw); height: 4px;
+      background: rgba(255,255,255,0.1); border-radius: 999px;
+      overflow: hidden; margin-bottom: 16px;
     }
 
     .loading-bar-fill {
-      width: 0;
-      height: 100%;
+      width: 0; height: 100%;
       background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff);
       box-shadow: 0 0 18px rgba(255,255,255,0.7);
-      border-radius: inherit;
-      transition: width 0.12s ease-out;
+      transition: width 0.2s ease-out;
     }
 
     .loading-percent {
-      text-align: center;
-      font-size: 0.95rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.72);
+      text-align: center; font-size: 0.95rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.72);
     }
 
     .loading-subtext {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      white-space: nowrap;
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%); font-size: 0.75rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); text-align: center; white-space: nowrap;
     }
 
     @keyframes pulse {
@@ -116,103 +84,222 @@
       50% { transform: scale(1.08); opacity: 1; }
       100% { transform: scale(0.95); opacity: 0.9; }
     }
-
     @keyframes rotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
-    .fade-out { animation: fadeOut 0.6s ease forwards; }
-
-    @keyframes fadeOut {
-      to { opacity: 0; transform: scale(1.02); }
+    /* --- MAIN CONTENT STYLES --- */
+    .brand-header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      padding: 20px 30px; background: rgba(0, 0, 0, 0.9);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
     }
 
+    .brand-name {
+      font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em;
+      text-transform: uppercase; color: #fff; text-decoration: none;
+    }
+
+    .hero {
+      position: relative; width: 100%; height: 100vh;
+      overflow: hidden; background-color: #000;
+    }
+
+    .hero video {
+      position: absolute; top: 50%; left: 50%;
+      width: 100%; height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      opacity: 1; /* Always 1, hidden by Loader initially */
+      z-index: 1;
+    }
+
+    .video-overlay {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.3); z-index: 2;
+    }
+
+    /* CTA Button */
+    .cta-button-wrapper {
+      position: absolute; left: 50%; bottom: 10%;
+      transform: translateX(-50%); text-align: center;
+      z-index: 3; padding: 0 20px; width: 100%;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .cta-button-wrapper.show { opacity: 1; visibility: visible; }
+
+    .cta-button {
+      text-decoration: none; background-color: #000; color: #fff;
+      padding: 18px 46px; font-size: 1.3rem; border-radius: 4px;
+      border: 1px solid #fff; transition: all 0.3s ease;
+      cursor: pointer; font-weight: 600; letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      display: inline-block; white-space: nowrap;
+      transform: translateY(20px);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cta-button-wrapper.show .cta-button { transform: translateY(0); }
+
+    .cta-button:hover {
+      background-color: #fff; color: #000;
+      transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Video Ended Overlay */
+    .video-ended-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+      z-index: 2; pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
+    }
+    .video-ended-overlay.show { opacity: 1; }
+
+    /* Media Queries */
     @media (max-width: 600px) {
-      .brand-title {
-        font-size: 1.1rem;
-        letter-spacing: 0.25em;
-        margin-bottom: 40px;
-      }
+      .brand-title-loader { font-size: 1.1rem; letter-spacing: 0.25em; margin-bottom: 40px; }
       .energy-symbol { width: 110px; height: 110px; margin-bottom: 40px; }
       .loading-subtext { font-size: 0.7rem; bottom: 28px; }
+      .brand-name { font-size: 1.2rem; }
+      .cta-button { padding: 15px 35px; font-size: 1.1rem; }
+      .cta-button-wrapper { bottom: 8%; }
     }
   </style>
 </head>
 <body>
-  <div class="loader-wrapper" id="loader">
-    <div class="brand-title">BODYMATCH</div>
 
+  <div class="loader-wrapper" id="loader">
+    <div class="brand-title-loader">BODYMATCH</div>
     <div class="energy-symbol">
       <div class="energy-ring"></div>
       <div class="energy-core"></div>
     </div>
-
     <div class="loading-bar-wrapper">
       <div class="loading-bar-fill" id="loadingFill"></div>
     </div>
     <div class="loading-percent" id="loadingPercent">0%</div>
-
     <div class="loading-subtext">ENERGY LOADING</div>
   </div>
 
+  <header class="brand-header">
+    <div class="brand-name">BODYMATCH</div>
+  </header>
+
+  <section class="hero">
+    <div class="video-overlay"></div>
+    <video id="heroVideo" muted playsinline preload="auto">
+      <source src="Bodymatch.mp4" type="video/mp4">
+      <source src="Bodymatch.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="video-ended-overlay" id="videoEndedOverlay"></div>
+    <div class="cta-button-wrapper" id="ctaButtonWrapper">
+      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E?mode=ac_t" class="cta-button" target="_blank">
+        Discover Your Glow
+      </a>
+    </div>
+  </section>
+
   <script>
-    let progress = 0;
+    // --- ELEMENTS ---
+    const loader = document.getElementById('loader');
     const fill = document.getElementById('loadingFill');
     const label = document.getElementById('loadingPercent');
-    const loader = document.getElementById('loader');
+    const video = document.getElementById('heroVideo');
+    const ctaButtonWrapper = document.getElementById('ctaButtonWrapper');
+    const videoEndedOverlay = document.getElementById('videoEndedOverlay');
 
-    // Preload the video (or any other resources you want to check)
-    const video = document.createElement('video');
-    video.preload = 'auto';
-    video.src = 'Bodymatch.mp4';  // Ensure the correct video file is used
-    video.style.display = 'none';  // Hide the video element
-    document.body.appendChild(video); // Append to body to preload
+    // --- LOGIC ---
+    let progress = 0;
+    let isLoaded = false;
+    let simulationInterval;
 
-    // Event listener to check video load progress
+    // 1. Simulate progress initially to give user feedback immediately
+    // This runs regardless of internet speed so the bar doesn't stay at 0
+    function startSimulation() {
+      simulationInterval = setInterval(() => {
+        // If real loading is slow, we fake it up to 85%, then wait
+        if (progress < 85) {
+            // Randomize speed slightly for realism
+            let increment = Math.random() * 3; 
+            progress = Math.min(85, progress + increment);
+            updateLoaderUI(progress);
+        }
+      }, 100);
+    }
+
+    function updateLoaderUI(val) {
+      fill.style.width = val + '%';
+      label.textContent = Math.round(val) + '%';
+    }
+
+    function finishLoading() {
+      // Don't run this twice
+      if(isLoaded) return;
+      isLoaded = true;
+
+      // Clear the fake simulation
+      clearInterval(simulationInterval);
+
+      // Quickly animate to 100%
+      progress = 100;
+      updateLoaderUI(100);
+
+      // Short delay to let user see "100%", then Play Video & Fade Out
+      setTimeout(() => {
+        // Try to play the video BEFORE removing the loader to ensure buffer is ready
+        video.play().then(() => {
+            console.log("Playback started");
+            loader.classList.add('hidden'); // Fade out loader
+        }).catch(err => {
+            console.log("Autoplay blocked, showing anyway:", err);
+            loader.classList.add('hidden'); 
+        });
+      }, 500);
+    }
+
+    // 2. Monitor Real Video Loading
+    // "canplaythrough" means browser thinks it can play the whole file without buffering
+    video.addEventListener('canplaythrough', () => {
+       console.log("Video fully buffered");
+       finishLoading();
+    });
+    
+    // Fallback: If 'canplaythrough' doesn't fire (some mobile browsers), use progress
     video.addEventListener('progress', () => {
-      if (video.buffered.length > 0) {
-        const buffered = video.buffered.end(0);
-        progress = Math.min(100, Math.round((buffered / video.duration) * 100));
-        fill.style.width = progress + '%';
-        label.textContent = progress + '%';
-      }
+        if(video.buffered.length > 0 && video.duration) {
+            const percentBuffered = (video.buffered.end(0) / video.duration) * 100;
+            // If we have buffered more than 50% or the file is small, we can probably start
+            if(percentBuffered > 90) {
+                finishLoading();
+            }
+        }
     });
 
-    // Simulated loading bar behavior (based on video loading)
-    const interval = setInterval(() => {
-      if (progress >= 100) {
-        clearInterval(interval);
-        loader.classList.add('fade-out');
-
-        // Once video is ready, transition to home.html
-        setTimeout(() => {
-          window.location.href = 'home.html';
-        }, 650);
-      } else {
-        let increment = 2;
-        if (progress < 30) increment = 4;
-        else if (progress < 70) increment = 3;
-        else if (progress < 85) increment = 1;
-        progress = Math.min(100, progress + increment);
-        fill.style.width = progress + '%';
-        label.textContent = Math.round(progress) + '%';
-      }
-    }, 80);
-
-    // If the page takes too long, force transition after 5 seconds
+    // 3. Fallback Safety Timer (Max 6 seconds)
+    // If video is huge and internet is slow, force entry so user isn't stuck forever
     setTimeout(() => {
-      if (progress < 100) {
-        clearInterval(interval);
-        progress = 100;
-        fill.style.width = '100%';
-        label.textContent = '100%';
-        loader.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'home.html';
-        }, 650);
-      }
-    }, 5000);
+        finishLoading();
+    }, 6000);
+
+    // 4. Video Ending Logic (From your original Home code)
+    video.addEventListener('ended', () => {
+      video.pause();
+      ctaButtonWrapper.classList.add('show');
+      videoEndedOverlay.classList.add('show');
+    });
+
+    // Start the process
+    startSimulation();
+    
+    // Mobile optimization: Trigger load explicitly
+    video.load();
+
   </script>
 </body>
 </html>
