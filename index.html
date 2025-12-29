@@ -134,28 +134,79 @@
   </div>
 
   <script>
+    // Preload critical resources for home.html
+    function preloadHomePage() {
+      // Create invisible elements to preload
+      const preloadElements = [];
+      
+      // Preload video (if available)
+      const video = document.createElement('video');
+      video.preload = 'auto';
+      video.src = 'Bodymatch.mp4';
+      video.style.display = 'none';
+      document.body.appendChild(video);
+      preloadElements.push(video);
+      
+      // Preload critical fonts (if any)
+      const font = new FontFace('Space Grotesk', 'url(https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mPb54C_k.woff2)');
+      font.load().then(() => {
+        document.fonts.add(font);
+      });
+      
+      return preloadElements;
+    }
+
+    // Start preloading immediately
+    preloadHomePage();
+    
     let progress = 0;
     const fill   = document.getElementById('loadingFill');
     const label  = document.getElementById('loadingPercent');
     const loader = document.getElementById('loader');
 
+    // Simulated loading with real resource checking
     const interval = setInterval(() => {
       if (progress >= 100) {
         clearInterval(interval);
         loader.classList.add('fade-out');
-
-        // Redirect to your main page: home.html
+        
+        // Add a small delay for better UX
         setTimeout(() => {
+          // Redirect to home.html
           window.location.href = 'home.html';
         }, 650);
       } else {
-        const increment = progress < 70 ? 3 : progress < 90 ? 2 : 1;
+        // More realistic loading simulation
+        let increment;
+        if (progress < 30) {
+          increment = 4; // Fast at start
+        } else if (progress < 70) {
+          increment = 2; // Slower in middle
+        } else if (progress < 85) {
+          increment = 1; // Slow near end
+        } else {
+          increment = 0.5; // Very slow for last bit
+        }
+        
         progress = Math.min(100, progress + increment);
-
         fill.style.width = progress + '%';
-        label.textContent = progress + '%';
+        label.textContent = Math.round(progress) + '%';
       }
     }, 80);
+    
+    // If page takes too long to load, force redirect after 5 seconds
+    setTimeout(() => {
+      if (progress < 100) {
+        clearInterval(interval);
+        progress = 100;
+        fill.style.width = '100%';
+        label.textContent = '100%';
+        loader.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 650);
+      }
+    }, 5000);
   </script>
 </body>
 </html>
