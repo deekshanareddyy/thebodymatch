@@ -6,28 +6,24 @@
   <title>Bodymatch</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    /* --- GLOBAL STYLES --- */
+    /* --- GLOBAL RESET --- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+    html, body { 
+      height: 100%; 
+      background: #000; 
+      color: #fff; 
+      font-family: 'Space Grotesk', sans-serif; 
+      overflow: hidden; 
+    }
 
-    /* --- LOADER STYLES (Z-Index 9999 to stay on top) --- */
+    /* --- LOADER STYLES --- */
     .loader-wrapper {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: #000;
-      z-index: 9999; /* Stays above everything */
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: #000; z-index: 9999;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     }
-
-    /* Loader Fade Out Class */
-    .loader-wrapper.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .brand-title-loader {
       font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
@@ -38,135 +34,86 @@
       width: 140px; height: 140px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.18);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 60px; position: relative; overflow: hidden;
+      margin-bottom: 60px; position: relative;
     }
-
     .energy-core {
       width: 60px; height: 60px; border-radius: 50%;
       background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%);
       animation: pulse 2s ease-in-out infinite;
       box-shadow: 0 0 35px rgba(255,255,255,0.5);
     }
-
     .energy-ring {
       position: absolute; width: 100%; height: 100%;
       border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
       animation: rotate 4s linear infinite;
     }
-
     .loading-bar-wrapper {
       width: min(420px, 80vw); height: 4px;
       background: rgba(255,255,255,0.1); border-radius: 999px;
       overflow: hidden; margin-bottom: 16px;
     }
-
     .loading-bar-fill {
       width: 0; height: 100%;
       background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff);
       box-shadow: 0 0 18px rgba(255,255,255,0.7);
-      transition: width 0.2s ease-out;
     }
+    #loadingPercent { letter-spacing: 0.1em; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
 
-    .loading-percent {
-      text-align: center; font-size: 0.95rem; letter-spacing: 0.18em;
-      text-transform: uppercase; color: rgba(255,255,255,0.72);
-    }
+    @keyframes pulse { 0%, 100% { transform: scale(0.95); opacity: 0.9; } 50% { transform: scale(1.08); opacity: 1; } }
+    @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .loading-subtext {
-      position: absolute; bottom: 36px; left: 50%;
-      transform: translateX(-50%); font-size: 0.75rem;
-      letter-spacing: 0.25em; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); text-align: center; white-space: nowrap;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); opacity: 0.9; }
-      50% { transform: scale(1.08); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.9; }
-    }
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* --- MAIN CONTENT STYLES --- */
+    /* --- HERO & VIDEO STYLES --- */
     .brand-header {
       position: fixed; top: 0; left: 0; width: 100%;
-      padding: 20px 30px; background: rgba(0, 0, 0, 0.9);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 100;
+      padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      display: flex; align-items: center; justify-content: center; z-index: 100;
+    }
+    .brand-name { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
+
+    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    
+    /* 21:9 Optimization: object-fit: cover ensures no black bars */
+    .hero video { 
+      position: absolute; top: 50%; left: 50%; 
+      min-width: 100%; min-height: 100%;
+      width: auto; height: auto;
+      transform: translate(-50%, -50%); 
+      object-fit: cover; 
+      z-index: 1; 
+    }
+    
+    .video-overlay { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(0, 0, 0, 0.2); z-index: 2; 
     }
 
-    .brand-name {
-      font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em;
-      text-transform: uppercase; color: #fff; text-decoration: none;
+    /* --- AUDIO TOGGLE --- */
+    .audio-toggle {
+      position: absolute; top: 110px; right: 40px; width: 44px; height: 44px;
+      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease;
     }
+    .audio-toggle:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
+    .audio-toggle svg { width: 20px; height: 20px; fill: white; }
+    .hidden-icon { display: none; }
 
-    .hero {
-      position: relative; width: 100%; height: 100vh;
-      overflow: hidden; background-color: #000;
-    }
-
-    .hero video {
-      position: absolute; top: 50%; left: 50%;
-      width: 100%; height: 100%;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      opacity: 1; /* Always 1, hidden by Loader initially */
-      z-index: 1;
-    }
-
-    .video-overlay {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.3); z-index: 2;
-    }
-
-    /* CTA Button */
+    /* --- CTA BUTTON --- */
     .cta-button-wrapper {
-      position: absolute; left: 50%; bottom: 10%;
-      transform: translateX(-50%); text-align: center;
-      z-index: 3; padding: 0 20px; width: 100%;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%);
+      z-index: 10; text-align: center; opacity: 0; visibility: hidden; transition: 1s ease;
     }
-
     .cta-button-wrapper.show { opacity: 1; visibility: visible; }
-
     .cta-button {
-      text-decoration: none; background-color: #000; color: #fff;
-      padding: 18px 46px; font-size: 1.3rem; border-radius: 4px;
-      border: 1px solid #fff; transition: all 0.3s ease;
-      cursor: pointer; font-weight: 600; letter-spacing: 0.5px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      display: inline-block; white-space: nowrap;
-      transform: translateY(20px);
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none; background: #000; color: #fff; padding: 18px 42px;
+      border: 1px solid #fff; font-weight: 600; font-size: 1.1rem; text-transform: uppercase;
+      letter-spacing: 0.1em; cursor: pointer; transition: 0.4s;
     }
+    .cta-button:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
 
-    .cta-button-wrapper.show .cta-button { transform: translateY(0); }
-
-    .cta-button:hover {
-      background-color: #fff; color: #000;
-      transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Video Ended Overlay */
-    .video-ended-overlay {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-      z-index: 2; pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
-    }
-    .video-ended-overlay.show { opacity: 1; }
-
-    /* Media Queries */
-    @media (max-width: 600px) {
-      .brand-title-loader { font-size: 1.1rem; letter-spacing: 0.25em; margin-bottom: 40px; }
-      .energy-symbol { width: 110px; height: 110px; margin-bottom: 40px; }
-      .loading-subtext { font-size: 0.7rem; bottom: 28px; }
-      .brand-name { font-size: 1.2rem; }
-      .cta-button { padding: 15px 35px; font-size: 1.1rem; }
-      .cta-button-wrapper { bottom: 8%; }
+    @media (max-width: 768px) {
+      .audio-toggle { top: 90px; right: 20px; }
+      .brand-name { font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -181,125 +128,80 @@
     <div class="loading-bar-wrapper">
       <div class="loading-bar-fill" id="loadingFill"></div>
     </div>
-    <div class="loading-percent" id="loadingPercent">0%</div>
-    <div class="loading-subtext">ENERGY LOADING</div>
+    <div id="loadingPercent">0%</div>
   </div>
 
-  <header class="brand-header">
-    <div class="brand-name">BODYMATCH</div>
-  </header>
+  <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
 
   <section class="hero">
     <div class="video-overlay"></div>
+    
+    <button id="audioToggle" class="audio-toggle" title="Toggle Sound">
+      <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    </button>
+
     <video id="heroVideo" muted playsinline preload="auto">
       <source src="Bodymatch.mp4" type="video/mp4">
-      <source src="Bodymatch.webm" type="video/webm">
-      Your browser does not support the video tag.
     </video>
 
-    <div class="video-ended-overlay" id="videoEndedOverlay"></div>
     <div class="cta-button-wrapper" id="ctaButtonWrapper">
-      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E?mode=ac_t" class="cta-button" target="_blank">
-        Discover Your Glow
-      </a>
+      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="cta-button" target="_blank">Discover Your Glow</a>
     </div>
   </section>
 
   <script>
-    // --- ELEMENTS ---
-    const loader = document.getElementById('loader');
-    const fill = document.getElementById('loadingFill');
-    const label = document.getElementById('loadingPercent');
-    const video = document.getElementById('heroVideo');
-    const ctaButtonWrapper = document.getElementById('ctaButtonWrapper');
-    const videoEndedOverlay = document.getElementById('videoEndedOverlay');
+    const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill');
+    const label = document.getElementById('loadingPercent'), video = document.getElementById('heroVideo');
+    const audioBtn = document.getElementById('audioToggle'), iconMuted = document.getElementById('iconMuted');
+    const iconPlaying = document.getElementById('iconPlaying'), cta = document.getElementById('ctaButtonWrapper');
 
-    // --- LOGIC ---
     let progress = 0;
-    let isLoaded = false;
-    let simulationInterval;
+    let isFinished = false;
 
-    // 1. Simulate progress initially to give user feedback immediately
-    // This runs regardless of internet speed so the bar doesn't stay at 0
-    function startSimulation() {
-      simulationInterval = setInterval(() => {
-        // If real loading is slow, we fake it up to 85%, then wait
-        if (progress < 85) {
-            // Randomize speed slightly for realism
-            let increment = Math.random() * 3; 
-            progress = Math.min(85, progress + increment);
-            updateLoaderUI(progress);
-        }
-      }, 100);
+    // Smooth loading simulation
+    let sim = setInterval(() => {
+      if (progress < 90) { 
+        progress += Math.random() * 1.5; 
+        updateUI(progress); 
+      }
+    }, 120);
+
+    function updateUI(val) { 
+      fill.style.width = val + '%'; 
+      label.textContent = Math.round(val) + '%'; 
     }
 
-    function updateLoaderUI(val) {
-      fill.style.width = val + '%';
-      label.textContent = Math.round(val) + '%';
-    }
-
-    function finishLoading() {
-      // Don't run this twice
-      if(isLoaded) return;
-      isLoaded = true;
-
-      // Clear the fake simulation
-      clearInterval(simulationInterval);
-
-      // Quickly animate to 100%
-      progress = 100;
-      updateLoaderUI(100);
-
-      // Short delay to let user see "100%", then Play Video & Fade Out
+    function revealSite() {
+      if(isFinished) return;
+      isFinished = true;
+      clearInterval(sim);
+      updateUI(100);
+      
       setTimeout(() => {
-        // Try to play the video BEFORE removing the loader to ensure buffer is ready
-        video.play().then(() => {
-            console.log("Playback started");
-            loader.classList.add('hidden'); // Fade out loader
-        }).catch(err => {
-            console.log("Autoplay blocked, showing anyway:", err);
-            loader.classList.add('hidden'); 
-        });
-      }, 500);
+        // Start video and hide loader simultaneously
+        video.play().catch(e => console.log("Playback interaction required"));
+        loader.classList.add('hidden');
+      }, 600);
     }
 
-    // 2. Monitor Real Video Loading
-    // "canplaythrough" means browser thinks it can play the whole file without buffering
-    video.addEventListener('canplaythrough', () => {
-       console.log("Video fully buffered");
-       finishLoading();
-    });
+    // Listener for video ready
+    video.addEventListener('canplaythrough', revealSite);
     
-    // Fallback: If 'canplaythrough' doesn't fire (some mobile browsers), use progress
-    video.addEventListener('progress', () => {
-        if(video.buffered.length > 0 && video.duration) {
-            const percentBuffered = (video.buffered.end(0) / video.duration) * 100;
-            // If we have buffered more than 50% or the file is small, we can probably start
-            if(percentBuffered > 90) {
-                finishLoading();
-            }
-        }
+    // Safety Fallback (6 seconds)
+    setTimeout(revealSite, 6000);
+
+    // Audio Toggle Logic
+    audioBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      iconMuted.classList.toggle('hidden-icon');
+      iconPlaying.classList.toggle('hidden-icon');
     });
 
-    // 3. Fallback Safety Timer (Max 6 seconds)
-    // If video is huge and internet is slow, force entry so user isn't stuck forever
-    setTimeout(() => {
-        finishLoading();
-    }, 6000);
-
-    // 4. Video Ending Logic (From your original Home code)
+    // Show CTA when video finishes
     video.addEventListener('ended', () => {
-      video.pause();
-      ctaButtonWrapper.classList.add('show');
-      videoEndedOverlay.classList.add('show');
+      cta.classList.add('show');
     });
-
-    // Start the process
-    startSimulation();
-    
-    // Mobile optimization: Trigger load explicitly
-    video.load();
-
   </script>
 </body>
 </html>
