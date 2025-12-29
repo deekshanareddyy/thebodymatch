@@ -129,10 +129,6 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
     }
 
-    .cta-button:hover::before {
-      left: 100%;
-    }
-
     /* Video Ended Overlay */
     .video-ended-overlay {
       position: absolute;
@@ -179,6 +175,7 @@
     }
   </style>
 </head>
+
 <body>
   <!-- Top Fixed Header -->
   <header class="brand-header">
@@ -190,7 +187,7 @@
     <!-- Video overlay for contrast -->
     <div class="video-overlay"></div>
 
-    <!-- Video Element -->
+    <!-- Video Element with Muted Attribute -->
     <video id="heroVideo" autoplay muted playsinline preload="auto">
       <source src="Bodymatch.mp4" type="video/mp4">
       <source src="Bodymatch.webm" type="video/webm">
@@ -233,7 +230,7 @@
 
     video.addEventListener('ended', () => {
       console.log('Video ended');
-      video.currentTime = video.duration; // Ensure it stays on the last frame
+      video.currentTime = video.duration; // Ensure it stays on last frame
       video.pause(); // Pause video at the last frame
       showCTAButton(); // Show the CTA button after the video ends
     });
