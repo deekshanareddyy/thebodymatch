@@ -3,205 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bodymatch</title>
+  <title>Bodymatch - Discover Your Glow</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    /* --- GLOBAL RESET --- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { 
-      height: 100%; 
-      background: #000; 
-      color: #fff; 
-      font-family: 'Space Grotesk', sans-serif; 
-      overflow: hidden; 
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
     }
 
-    /* --- LOADER STYLES --- */
-    .loader-wrapper {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: #000; z-index: 9999;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
-    }
-    .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .brand-title-loader {
-      font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
-      font-size: 1.4rem; text-align: center; margin-bottom: 60px;
+    /* Hero Section with Video */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* Full screen height for impact */
+      background-color: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .energy-symbol {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 60px; position: relative;
+    .hero-section video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 1;
     }
-    .energy-core {
-      width: 60px; height: 60px; border-radius: 50%;
-      background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%);
-      animation: pulse 2s ease-in-out infinite;
-      box-shadow: 0 0 35px rgba(255,255,255,0.5);
-    }
-    .energy-ring {
-      position: absolute; width: 100%; height: 100%;
-      border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
-      animation: rotate 4s linear infinite;
-    }
-    .loading-bar-wrapper {
-      width: min(420px, 80vw); height: 4px;
-      background: rgba(255,255,255,0.1); border-radius: 999px;
-      overflow: hidden; margin-bottom: 16px;
-    }
-    .loading-bar-fill {
-      width: 0; height: 100%;
-      background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff);
-      box-shadow: 0 0 18px rgba(255,255,255,0.7);
-    }
-    #loadingPercent { letter-spacing: 0.1em; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
 
-    @keyframes pulse { 0%, 100% { transform: scale(0.95); opacity: 0.9; } 50% { transform: scale(1.08); opacity: 1; } }
-    @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    /* --- HERO & VIDEO STYLES --- */
-    .brand-header {
-      position: fixed; top: 0; left: 0; width: 100%;
-      padding: 25px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
+    /* Video Overlay for Harmony */
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.2); /* Subtle dark wash */
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end; /* Push content towards bottom */
+      padding-bottom: 15vh; /* Raise button above the bottom edge */
     }
-    .brand-name { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #fff; text-decoration: none; }
 
-    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    /* Transparent "Discover Your Glow" Button */
+    .glow-button {
+      position: relative;
+      z-index: 10;
+      text-decoration: none;
+      background-color: transparent;
+      color: white;
+      padding: 14px 40px;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      backdrop-filter: blur(5px); /* Adds that premium glass feel */
+    }
+
+    .glow-button:hover {
+      background-color: white;
+      color: black;
+      border-color: white;
+    }
+
+    /* Organized Sections Below Video */
+    .news-section {
+      background-color: white;
+      color: black;
+      padding: 80px 20px;
+    }
+
+    .news-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .news-section h2 {
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      margin-bottom: 50px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .news-item {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+      transition: opacity 0.3s;
+    }
+
+    .news-item:hover { opacity: 0.7; }
+
+    .news-item h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; }
     
-    /* 21:9 Optimization: object-fit: cover ensures no black bars */
-    .hero video { 
-      position: absolute; top: 50%; left: 50%; 
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%); 
-      object-fit: cover; 
-      z-index: 1; 
-    }
-    
-    .video-overlay { 
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0, 0, 0, 0.2); z-index: 2; 
+    .news-source {
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    /* --- AUDIO TOGGLE --- */
-    .audio-toggle {
-      position: absolute; top: 110px; right: 40px; width: 44px; height: 44px;
-      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 101; backdrop-filter: blur(10px); transition: 0.3s ease;
-    }
-    .audio-toggle:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
-    .audio-toggle svg { width: 20px; height: 20px; fill: white; }
-    .hidden-icon { display: none; }
-
-    /* --- CTA BUTTON --- */
-    .cta-button-wrapper {
-      position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%);
-      z-index: 10; text-align: center; opacity: 0; visibility: hidden; transition: 1s ease;
-    }
-    .cta-button-wrapper.show { opacity: 1; visibility: visible; }
-    .cta-button {
-      text-decoration: none; background: #000; color: #fff; padding: 18px 42px;
-      border: 1px solid #fff; font-weight: 600; font-size: 1.1rem; text-transform: uppercase;
-      letter-spacing: 0.1em; cursor: pointer; transition: 0.4s;
-    }
-    .cta-button:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
-
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .audio-toggle { top: 90px; right: 20px; }
-      .brand-name { font-size: 1.1rem; }
+      .hero-section { height: 80vh; } /* Slightly shorter on mobile */
+      .glow-button { padding: 12px 30px; font-size: 0.9rem; }
+      .video-overlay { padding-bottom: 10vh; }
     }
   </style>
 </head>
 <body>
 
-  <div class="loader-wrapper" id="loader">
-    <div class="brand-title-loader">BODYMATCH</div>
-    <div class="energy-symbol">
-      <div class="energy-ring"></div>
-      <div class="energy-core"></div>
-    </div>
-    <div class="loading-bar-wrapper">
-      <div class="loading-bar-fill" id="loadingFill"></div>
-    </div>
-    <div id="loadingPercent">0%</div>
+<div class="hero-section">
+  <video id="heroVideo" autoplay muted loop playsinline poster="fallback-image.jpg">
+    <source src="video.mp4" type="video/mp4" id="videoSource">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="video-overlay">
+    <a href="welcome.html" class="glow-button">Discover Your Glow</a>
   </div>
+</div>
 
-  <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
-
-  <section class="hero">
-    <div class="video-overlay"></div>
+<section class="news-section">
+  <div class="news-container">
+    <h2>TheBodymatch in News</h2>
     
-    <button id="audioToggle" class="audio-toggle" title="Toggle Sound">
-      <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-      <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-    </button>
-
-    <video id="heroVideo" muted playsinline preload="auto">
-      <source src="Bodymatch.mp4" type="video/mp4">
-    </video>
-
-    <div class="cta-button-wrapper" id="ctaButtonWrapper">
-      <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="cta-button" target="_blank">Discover Your Glow</a>
+    <div class="news-item">
+      <h3>Chennai Startup Reducing Apparel Return Rate With AI</h3>
+      <div class="news-source"><span>YourStory</span><span>Apr, 2025</span></div>
     </div>
-  </section>
-
-  <script>
-    const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill');
-    const label = document.getElementById('loadingPercent'), video = document.getElementById('heroVideo');
-    const audioBtn = document.getElementById('audioToggle'), iconMuted = document.getElementById('iconMuted');
-    const iconPlaying = document.getElementById('iconPlaying'), cta = document.getElementById('ctaButtonWrapper');
-
-    let progress = 0;
-    let isFinished = false;
-
-    // Smooth loading simulation
-    let sim = setInterval(() => {
-      if (progress < 90) { 
-        progress += Math.random() * 1.5; 
-        updateUI(progress); 
-      }
-    }, 120);
-
-    function updateUI(val) { 
-      fill.style.width = val + '%'; 
-      label.textContent = Math.round(val) + '%'; 
-    }
-
-    function revealSite() {
-      if(isFinished) return;
-      isFinished = true;
-      clearInterval(sim);
-      updateUI(100);
-      
-      setTimeout(() => {
-        // Start video and hide loader simultaneously
-        video.play().catch(e => console.log("Playback interaction required"));
-        loader.classList.add('hidden');
-      }, 600);
-    }
-
-    // Listener for video ready
-    video.addEventListener('canplaythrough', revealSite);
     
-    // Safety Fallback (6 seconds)
-    setTimeout(revealSite, 6000);
+    <div class="news-item">
+      <h3>Try This 5-Second Hack to Find Your Signature Scent</h3>
+      <div class="news-source"><span>News18</span><span>May, 2025</span></div>
+    </div>
+    
+    <div class="news-item">
+      <h3>Quick Perfume Hack: Help Find Signature Scent</h3>
+      <div class="news-source"><span>The Indian Express</span><span>May, 2025</span></div>
+    </div>
+  </div>
+</section>
 
-    // Audio Toggle Logic
-    audioBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
-      iconMuted.classList.toggle('hidden-icon');
-      iconPlaying.classList.toggle('hidden-icon');
-    });
+<script>
+  const video = document.getElementById('heroVideo');
+  const source = document.getElementById('videoSource');
 
-    // Show CTA when video finishes
-    video.addEventListener('ended', () => {
-      cta.classList.add('show');
-    });
-  </script>
+  function setVideoSource() {
+    const isMobile = window.innerWidth <= 1024;
+    // Ensure 'videoo.mp4' (mobile version) exists and is small for fast loading
+    const newSrc = isMobile ? 'videoo.mp4' : 'video.mp4';
+    
+    if (source.getAttribute('src') !== newSrc) {
+      source.setAttribute('src', newSrc);
+      video.load();
+      // Force play for mobile browsers
+      video.play().catch(error => {
+        console.log("Autoplay prevented by browser: ", error);
+      });
+    }
+  }
+
+  window.addEventListener('load', setVideoSource);
+  window.addEventListener('resize', setVideoSource);
+</script>
+
 </body>
 </html>
