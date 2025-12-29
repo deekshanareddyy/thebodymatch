@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,32 +135,20 @@
   <script>
     // Preload critical resources for home.html
     function preloadHomePage() {
-      // Create invisible elements to preload
-      const preloadElements = [];
-      
       // Preload video (if available)
       const video = document.createElement('video');
       video.preload = 'auto';
-      video.src = 'Bodymatch.mp4';
-      video.style.display = 'none';
-      document.body.appendChild(video);
-      preloadElements.push(video);
-      
-      // Preload critical fonts (if any)
-      const font = new FontFace('Space Grotesk', 'url(https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mPb54C_k.woff2)');
-      font.load().then(() => {
-        document.fonts.add(font);
-      });
-      
-      return preloadElements;
+      video.src = 'Bodymatch.mp4';  // Ensure the correct video file is used
+      video.style.display = 'none';  // Hide the video element
+      document.body.appendChild(video); // Append to body to preload
     }
 
     // Start preloading immediately
     preloadHomePage();
-    
+
     let progress = 0;
-    const fill   = document.getElementById('loadingFill');
-    const label  = document.getElementById('loadingPercent');
+    const fill = document.getElementById('loadingFill');
+    const label = document.getElementById('loadingPercent');
     const loader = document.getElementById('loader');
 
     // Simulated loading with real resource checking
@@ -169,14 +156,13 @@
       if (progress >= 100) {
         clearInterval(interval);
         loader.classList.add('fade-out');
-        
+
         // Add a small delay for better UX
         setTimeout(() => {
-          // Redirect to home.html
+          // Transition to the home page smoothly
           window.location.href = 'home.html';
         }, 650);
       } else {
-        // More realistic loading simulation
         let increment;
         if (progress < 30) {
           increment = 4; // Fast at start
@@ -187,13 +173,13 @@
         } else {
           increment = 0.5; // Very slow for last bit
         }
-        
+
         progress = Math.min(100, progress + increment);
         fill.style.width = progress + '%';
         label.textContent = Math.round(progress) + '%';
       }
     }, 80);
-    
+
     // If page takes too long to load, force redirect after 5 seconds
     setTimeout(() => {
       if (progress < 100) {
