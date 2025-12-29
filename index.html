@@ -72,7 +72,6 @@
 
     .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
     
-    /* 21:9 Optimization: object-fit: cover ensures no black bars */
     .hero video { 
       position: absolute; top: 50%; left: 50%; 
       min-width: 100%; min-height: 100%;
@@ -98,22 +97,44 @@
     .audio-toggle svg { width: 20px; height: 20px; fill: white; }
     .hidden-icon { display: none; }
 
-    /* --- CTA BUTTON --- */
+    /* --- CTA BUTTON (Organized & Transparent) --- */
     .cta-button-wrapper {
-      position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%);
-      z-index: 10; text-align: center; opacity: 0; visibility: hidden; transition: 1s ease;
+      position: absolute; 
+      left: 50%; 
+      top: 55%; /* Centered higher for better harmony with video characters */
+      transform: translate(-50%, -50%);
+      z-index: 10; 
+      text-align: center; 
+      opacity: 0; 
+      visibility: hidden; 
+      transition: opacity 1s ease;
     }
     .cta-button-wrapper.show { opacity: 1; visibility: visible; }
+    
     .cta-button {
-      text-decoration: none; background: #000; color: #fff; padding: 18px 42px;
-      border: 1px solid #fff; font-weight: 600; font-size: 1.1rem; text-transform: uppercase;
-      letter-spacing: 0.1em; cursor: pointer; transition: 0.4s;
+      text-decoration: none; 
+      background: transparent; 
+      color: #fff; 
+      padding: 16px 42px;
+      border: 1px solid rgba(255, 255, 255, 0.8); 
+      font-weight: 600; 
+      font-size: 1rem; 
+      text-transform: uppercase;
+      letter-spacing: 0.15em; 
+      cursor: pointer; 
+      transition: all 0.4s ease;
+      backdrop-filter: blur(5px); /* Premium glass effect */
     }
-    .cta-button:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+    .cta-button:hover { 
+      background: #fff; 
+      color: #000; 
+      box-shadow: 0 0 20px rgba(255,255,255,0.4); 
+    }
 
     @media (max-width: 768px) {
       .audio-toggle { top: 90px; right: 20px; }
       .brand-name { font-size: 1.1rem; }
+      .cta-button { padding: 14px 32px; font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -141,7 +162,7 @@
       <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
     </button>
 
-    <video id="heroVideo" muted playsinline preload="auto">
+    <video id="heroVideo" autoplay muted playsinline preload="auto">
       <source src="Bodymatch.mp4" type="video/mp4">
     </video>
 
@@ -159,7 +180,6 @@
     let progress = 0;
     let isFinished = false;
 
-    // Smooth loading simulation
     let sim = setInterval(() => {
       if (progress < 90) { 
         progress += Math.random() * 1.5; 
@@ -179,26 +199,25 @@
       updateUI(100);
       
       setTimeout(() => {
-        // Start video and hide loader simultaneously
-        video.play().catch(e => console.log("Playback interaction required"));
-        loader.classList.add('hidden');
+        // Force play specifically for mobile
+        video.play().then(() => {
+          loader.classList.add('hidden');
+        }).catch(e => {
+          // Fallback if autoplay is still blocked
+          loader.classList.add('hidden');
+        });
       }, 600);
     }
 
-    // Listener for video ready
     video.addEventListener('canplaythrough', revealSite);
-    
-    // Safety Fallback (6 seconds)
     setTimeout(revealSite, 6000);
 
-    // Audio Toggle Logic
     audioBtn.addEventListener('click', () => {
       video.muted = !video.muted;
       iconMuted.classList.toggle('hidden-icon');
       iconPlaying.classList.toggle('hidden-icon');
     });
 
-    // Show CTA when video finishes
     video.addEventListener('ended', () => {
       cta.classList.add('show');
     });
