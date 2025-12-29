@@ -31,7 +31,8 @@
     .hero {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: auto;              /* height controlled by aspect-ratio */
+      aspect-ratio: 21 / 9;      /* 21:9 hero area */
       overflow: hidden;
       flex-shrink: 0;
       background-color: #000;
@@ -41,12 +42,18 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
+      width: 100%;               /* fill hero width */
+      height: 100%;              /* fill hero height */
       transform: translate(-50%, -50%);
-      object-fit: cover; /* ensures video covers the entire area gracefully */
+      object-fit: cover;         /* clean, even crop */
+    }
+
+    /* On tall screens, let it behave like full viewport height */
+    @media (max-aspect-ratio: 21/9) {
+      .hero {
+        height: 100vh;
+        aspect-ratio: auto;
+      }
     }
 
     /* CTA button at lower center */
