@@ -6,14 +6,30 @@
   <title>Bodymatch Loading</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    html, body {
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Loader Styling */
     .loader-wrapper {
-      height: 100vh; width: 100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: #000; overflow: hidden; position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+      position: relative;
     }
 
     .brand-title {
@@ -26,15 +42,21 @@
     }
 
     .energy-symbol {
-      width: 140px; height: 140px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 60px; position: relative; overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
     }
 
     .energy-core {
-      width: 60px; height: 60px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background: radial-gradient(circle, #ffffff 0%, #aaaaaa 40%, #000000 100%);
       animation: pulse 2s ease-in-out infinite;
@@ -43,7 +65,8 @@
 
     .energy-ring {
       position: absolute;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.12);
       animation: rotate 4s linear infinite;
@@ -59,7 +82,8 @@
     }
 
     .loading-bar-fill {
-      width: 0; height: 100%;
+      width: 0;
+      height: 100%;
       background: linear-gradient(90deg, #ffffff, #8a8a8a, #ffffff);
       box-shadow: 0 0 18px rgba(255,255,255,0.7);
       border-radius: inherit;
@@ -133,54 +157,50 @@
   </div>
 
   <script>
-    // Preload critical resources for home.html
-    function preloadHomePage() {
-      // Preload video (if available)
-      const video = document.createElement('video');
-      video.preload = 'auto';
-      video.src = 'Bodymatch.mp4';  // Ensure the correct video file is used
-      video.style.display = 'none';  // Hide the video element
-      document.body.appendChild(video); // Append to body to preload
-    }
-
-    // Start preloading immediately
-    preloadHomePage();
-
     let progress = 0;
     const fill = document.getElementById('loadingFill');
     const label = document.getElementById('loadingPercent');
     const loader = document.getElementById('loader');
 
-    // Simulated loading with real resource checking
+    // Preload the video (or any other resources you want to check)
+    const video = document.createElement('video');
+    video.preload = 'auto';
+    video.src = 'Bodymatch.mp4';  // Ensure the correct video file is used
+    video.style.display = 'none';  // Hide the video element
+    document.body.appendChild(video); // Append to body to preload
+
+    // Event listener to check video load progress
+    video.addEventListener('progress', () => {
+      if (video.buffered.length > 0) {
+        const buffered = video.buffered.end(0);
+        progress = Math.min(100, Math.round((buffered / video.duration) * 100));
+        fill.style.width = progress + '%';
+        label.textContent = progress + '%';
+      }
+    });
+
+    // Simulated loading bar behavior (based on video loading)
     const interval = setInterval(() => {
       if (progress >= 100) {
         clearInterval(interval);
         loader.classList.add('fade-out');
 
-        // Add a small delay for better UX
+        // Once video is ready, transition to home.html
         setTimeout(() => {
-          // Transition to the home page smoothly
           window.location.href = 'home.html';
         }, 650);
       } else {
-        let increment;
-        if (progress < 30) {
-          increment = 4; // Fast at start
-        } else if (progress < 70) {
-          increment = 2; // Slower in middle
-        } else if (progress < 85) {
-          increment = 1; // Slow near end
-        } else {
-          increment = 0.5; // Very slow for last bit
-        }
-
+        let increment = 2;
+        if (progress < 30) increment = 4;
+        else if (progress < 70) increment = 3;
+        else if (progress < 85) increment = 1;
         progress = Math.min(100, progress + increment);
         fill.style.width = progress + '%';
         label.textContent = Math.round(progress) + '%';
       }
     }, 80);
 
-    // If page takes too long to load, force redirect after 5 seconds
+    // If the page takes too long, force transition after 5 seconds
     setTimeout(() => {
       if (progress < 100) {
         clearInterval(interval);
