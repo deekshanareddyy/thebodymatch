@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>Bodymatch | Continuous Experience</title>
+    <title>Bodymatch | The Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
+        /* --- CORE HARMONY --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; touch-action: none; }
 
@@ -21,45 +22,52 @@
         .loading-bar-wrapper { width: 180px; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 12px; }
         .loading-bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.3s ease; }
 
-        /* --- VIDEO STACK (The "No-Lag" Logic) --- */
+        /* --- VIDEO STACK --- */
         .hero { position: relative; width: 100%; height: 100vh; background: #000; }
         video { 
             position: absolute; top: 50%; left: 50%; 
             min-width: 100%; min-height: 100%; width: auto; height: auto; 
             transform: translate(-50%, -50%); 
             object-fit: cover; z-index: 1; 
-            opacity: 0; 
-            visibility: hidden;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); /* Cinematic Crossfade */
+            opacity: 0; visibility: hidden;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         video.active { opacity: 1; visibility: visible; z-index: 2; }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); z-index: 10; pointer-events: none; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 10; pointer-events: none; }
+
+        /* --- SIDE NAVIGATION DOTS --- */
+        .side-nav {
+            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 1000;
+        }
+        .dot {
+            width: 8px; height: 8px; background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%; transition: all 0.4s ease; cursor: pointer;
+        }
+        .dot.active {
+            background: #fff; transform: scale(1.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
 
         /* --- UI ELEMENTS --- */
-        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 100; pointer-events: none;}
+        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; }
         .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
-        
-        .audio-toggle { 
-            position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; 
-            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; z-index: 101; backdrop-filter: blur(10px); 
-        }
+        .audio-toggle { position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); }
         .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
         .hidden-icon { display: none; }
 
-        /* --- CTA CONTAINER --- */
+        /* --- CTA CONTAINER (Optimized Alignment) --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%);
-            z-index: 102; text-align: center; width: 100%;
-            opacity: 0; visibility: hidden; transition: all 0.8s ease;
+            position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%);
+            z-index: 1001; text-align: center; width: 100%;
+            opacity: 0; visibility: hidden; transition: all 1s ease;
             display: flex; flex-direction: column; align-items: center;
         }
         .cta-container.show { opacity: 1; visibility: visible; }
 
         .btn {
             display: inline-block; text-decoration: none; background: rgba(255,255,255,0.05); color: #fff;
-            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.5); 
+            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.4); 
             font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; 
             backdrop-filter: blur(15px); margin-bottom: 25px; transition: 0.4s; cursor: pointer;
         }
@@ -67,15 +75,16 @@
 
         .scroll-hint { font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase; opacity: 0.8; color: #fff; }
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
         @media (max-width: 768px) {
-            .cta-container { bottom: 28%; }
-            .btn { width: 85%; font-size: 0.8rem; padding: 14px 20px; }
+            .cta-container { bottom: 25%; }
+            .side-nav { right: 15px; }
+            .btn { width: 85%; font-size: 0.8rem; }
         }
     </style>
 </head>
-<body onclick="masterPlay()">
+<body onclick="unlockAllVideos()">
 
     <div class="loader-wrapper" id="loader">
         <div class="brand-title-loader">BODYMATCH</div>
@@ -85,6 +94,15 @@
 
     <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
 
+    <div class="side-nav" id="sideNav">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
+        <div class="dot" data-index="4"></div>
+        <div class="dot" data-index="5"></div>
+    </div>
+
     <section class="hero">
         <div class="video-overlay"></div>
         <button id="audioToggle" class="audio-toggle">
@@ -92,12 +110,12 @@
             <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         </button>
 
-        <video id="vid0" class="active" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
-        <video id="vid1" muted playsinline preload="auto"><source src="Bodymatchf.mp4" type="video/mp4"></video>
-        <video id="vid2" muted playsinline preload="auto"><source src="Bodymatchb.mp4" type="video/mp4"></video>
-        <video id="vid3" muted playsinline preload="auto"><source src="Bodymatchh.mp4" type="video/mp4"></video>
-        <video id="vid4" muted playsinline preload="auto"><source src="Bodymatchs.mp4" type="video/mp4"></video>
-        <video id="vid5" muted playsinline preload="auto"><source src="Bodymatchx.mp4" type="video/mp4"></video>
+        <video id="v0" class="active" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
+        <video id="v1" muted playsinline preload="auto"><source src="Bodymatchf.mp4" type="video/mp4"></video>
+        <video id="v2" muted playsinline preload="auto"><source src="Bodymatchb.mp4" type="video/mp4"></video>
+        <video id="v3" muted playsinline preload="auto"><source src="Bodymatchh.mp4" type="video/mp4"></video>
+        <video id="v4" muted playsinline preload="auto"><source src="Bodymatchs.mp4" type="video/mp4"></video>
+        <video id="v5" muted playsinline preload="auto"><source src="Bodymatchx.mp4" type="video/mp4"></video>
 
         <div class="cta-container" id="ctaContainer">
             <a id="actionBtn" href="#" class="btn">Discover Your Glow</a>
@@ -111,11 +129,14 @@
     <script>
         const WA_LINK = "https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E";
         const vids = [
-            document.getElementById('vid0'), document.getElementById('vid1'),
-            document.getElementById('vid2'), document.getElementById('vid3'),
-            document.getElementById('vid4'), document.getElementById('vid5')
+            document.getElementById('v0'), document.getElementById('vid1'), // Fix: matches ID in HTML
+            document.getElementById('v2'), document.getElementById('v3'),
+            document.getElementById('v4'), document.getElementById('v5')
         ];
+        // Re-mapping vids array properly to match IDs
+        const videoArray = Array.from({length: 6}, (_, i) => document.getElementById(`v${i}`));
         
+        const dots = document.querySelectorAll('.dot');
         const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill'), label = document.getElementById('loadingPercent');
         const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), scrollHint = document.getElementById('scrollHint');
         const audioBtn = document.getElementById('audioToggle');
@@ -124,53 +145,54 @@
         let isTransitioning = false;
         let videoEnded = false;
 
-        // --- LOADER SIMULATION ---
+        // --- LOADER ---
         let prog = 0;
-        let sim = setInterval(() => { if (prog < 98) { prog += 1.5; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
+        let sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
 
         window.addEventListener('load', () => {
             clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%';
             setTimeout(() => { loader.classList.add('hidden'); }, 600);
         });
 
-        // --- MASTER PLAY (Fix for Edge/Mobile) ---
-        function masterPlay() {
-            // Silently play/pause all videos to "unlock" them for the cross-fade
-            vids.forEach((v, i) => { if(i !== currentIdx && v.paused) v.play().then(()=>v.pause()).catch(()=>{}); });
+        // --- NAVIGATION ---
+        function updateDots(index) {
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
         }
 
-        // --- TRANSITION LOGIC ---
         function crossfadeTo(nextIdx) {
-            if (isTransitioning || nextIdx < 0 || nextIdx >= vids.length) return;
+            if (isTransitioning || nextIdx < 0 || nextIdx >= videoArray.length) return;
             
             isTransitioning = true;
             videoEnded = false;
             ctaContainer.classList.remove('show');
             
-            const currentVid = vids[currentIdx];
-            const nextVid = vids[nextIdx];
+            const currentVid = videoArray[currentIdx];
+            const nextVid = videoArray[nextIdx];
 
-            // Setup Next Video
             nextVid.currentTime = 0;
             nextVid.classList.add('active');
+            updateDots(nextIdx);
             
             nextVid.play().then(() => {
-                // Wait for fade to complete, then hide old one
                 setTimeout(() => {
                     currentVid.classList.remove('active');
                     currentVid.pause();
                     currentIdx = nextIdx;
                     isTransitioning = false;
                 }, 1000); 
+            }).catch(e => {
+                console.log("Play failed, forcing reveal", e);
+                currentVid.classList.remove('active');
+                nextVid.classList.add('active');
+                isTransitioning = false;
             });
         }
 
-        // UI Setup after each video ends
-        vids.forEach((v, idx) => {
+        videoArray.forEach((v, idx) => {
             v.onended = () => {
                 videoEnded = true;
                 ctaContainer.classList.add('show');
-                
                 if (idx === 0) {
                     actionBtn.textContent = "Discover Your Glow";
                     actionBtn.href = "javascript:void(0)";
@@ -179,20 +201,20 @@
                     actionBtn.textContent = "Join the Waitlist";
                     actionBtn.href = WA_LINK;
                     actionBtn.target = "_blank";
-                    scrollHint.style.display = (idx < vids.length - 1) ? "block" : "none";
+                    scrollHint.style.display = (idx < videoArray.length - 1) ? "block" : "none";
                 }
             };
         });
 
-        // Action Button click
         actionBtn.onclick = (e) => {
             if (currentIdx === 0) {
                 e.preventDefault();
+                unlockAllVideos(); // Crucial gesture for mobile
                 crossfadeTo(1);
             }
         };
 
-        // --- SCROLL / SWIPE ---
+        // --- INPUTS ---
         window.addEventListener('wheel', (e) => {
             if (currentIdx > 0 && videoEnded) {
                 if (e.deltaY > 50) crossfadeTo(currentIdx + 1);
@@ -203,21 +225,26 @@
         let ts = 0;
         window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
         window.addEventListener('touchend', (e) => {
-            const te = e.changedTouches[0].clientY;
             if (currentIdx > 0 && videoEnded) {
-                if (ts - te > 70) crossfadeTo(currentIdx + 1);
-                else if (te - ts > 70) crossfadeTo(currentIdx - 1);
+                if (ts - e.changedTouches[0].clientY > 70) crossfadeTo(currentIdx + 1);
+                else if (e.changedTouches[0].clientY - ts > 70) crossfadeTo(currentIdx - 1);
             }
         });
 
-        // --- AUDIO ---
+        // Unlock logic for browsers
+        function unlockAllVideos() {
+            videoArray.forEach((v) => {
+                v.play().then(() => v.pause()).catch(() => {});
+            });
+        }
+
         audioBtn.onclick = (e) => {
             e.stopPropagation();
-            const targetMuted = !vids[currentIdx].muted;
-            vids.forEach(v => v.muted = targetMuted);
+            const targetMuted = !videoArray[currentIdx].muted;
+            videoArray.forEach(v => v.muted = targetMuted);
             document.getElementById('iconMuted').classList.toggle('hidden-icon', !targetMuted);
             document.getElementById('iconPlaying').classList.toggle('hidden-icon', targetMuted);
-            vids[currentIdx].play();
+            videoArray[currentIdx].play();
         };
     </script>
 </body>
