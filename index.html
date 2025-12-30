@@ -15,11 +15,13 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: #000; z-index: 9999; transition: opacity 0.8s ease;
+            cursor: pointer; /* Hint to user to click */
         }
         .loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .brand-title-loader { font-weight: 700; letter-spacing: 0.4em; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 50px; }
         .loading-bar-wrapper { width: 180px; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 12px; }
         .loading-bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.3s ease; }
+        .click-hint { font-size: 0.6rem; letter-spacing: 0.2em; margin-top: 20px; opacity: 0.5; text-transform: uppercase; }
 
         /* --- VIDEO ENGINE --- */
         .hero { position: relative; width: 100%; height: 100vh; background: #000; }
@@ -30,7 +32,7 @@
             object-fit: cover; z-index: 1; 
             transition: opacity 0.6s ease;
         }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 2; pointer-events: none; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); z-index: 2; pointer-events: none; }
 
         /* --- UI ELEMENTS --- */
         .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; pointer-events: none;}
@@ -45,43 +47,46 @@
         .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
         .hidden-icon { display: none; }
 
-        /* --- NAVIGATION UI (Higher for mobile) --- */
+        /* --- NAVIGATION UI (Redesigned for Mobile Visibility) --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 15%; transform: translateX(-50%);
+            position: absolute; 
+            left: 50%; 
+            bottom: 18%; /* Moved up significantly for mobile */
+            transform: translateX(-50%);
             z-index: 1001; text-align: center; width: 100%;
             opacity: 0; visibility: hidden; transition: all 0.8s ease;
+            display: flex; flex-direction: column; align-items: center;
         }
         .cta-container.show { opacity: 1; visibility: visible; }
 
         .discover-btn {
             display: inline-block; text-decoration: none; background: rgba(255,255,255,0.05); color: #fff;
-            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.4); 
+            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.5); 
             font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; 
-            backdrop-filter: blur(15px); margin-bottom: 25px; transition: 0.4s;
+            backdrop-filter: blur(15px); margin-bottom: 30px; transition: 0.4s;
         }
         .discover-btn:hover { background: #fff; color: #000; }
 
         .scroll-hint { 
-            font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; 
-            opacity: 0.7; cursor: pointer; color: #fff;
-            display: block; width: 100%;
+            font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase; 
+            opacity: 0.8; cursor: pointer; color: #fff;
+            padding: 10px; background: rgba(0,0,0,0.2); border-radius: 50px;
         }
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
         @media (max-width: 768px) {
-            .cta-container { bottom: 22%; } /* Take button up higher on mobile */
-            .discover-btn { width: 85%; font-size: 0.8rem; padding: 14px 30px; }
-            .scroll-hint { font-size: 0.65rem; }
+            .cta-container { bottom: 25%; } /* Higher placement on phones */
+            .discover-btn { width: 80%; font-size: 0.8rem; padding: 14px 20px; }
+            .scroll-hint { font-size: 0.6rem; opacity: 1; }
         }
     </style>
 </head>
-<body>
-
-    <div class="loader-wrapper" id="loader">
+<body onclick="forcePlay()"> <div class="loader-wrapper" id="loader">
         <div class="brand-title-loader">BODYMATCH</div>
         <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingFill"></div></div>
         <div id="loadingPercent">0%</div>
+        <div class="click-hint">Click anywhere to begin</div>
     </div>
 
     <header class="brand-header"><div class="brand-name">BODYMATCH</div></header>
@@ -117,17 +122,22 @@
         let isTransitioning = false;
         let canNavigate = false;
 
+        // --- AUTOPLAY UNLOCKER ---
+        // Browsers require a user gesture. Clicking the loader unlocks all following videos.
+        function forcePlay() {
+            video.play().catch(e => console.log("Unlock triggered"));
+        }
+
         // --- LOADER ---
         let prog = 0;
-        let sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
+        let sim = setInterval(() => { if (prog < 98) { prog += 1.5; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 120);
 
         function hideLoader() {
             clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%';
             setTimeout(() => { 
                 loader.classList.add('hidden'); 
-                // Explicit play call to satisfy Edge/Safari
-                video.play().catch(e => console.log("Autoplay check:", e));
-            }, 500);
+                forcePlay();
+            }, 600);
         }
         window.addEventListener('load', hideLoader);
 
@@ -135,7 +145,6 @@
         video.onended = () => {
             canNavigate = true;
             ctaContainer.classList.add('show');
-            // Only show scroll hint after the first video is done
             if (currentIdx < videoList.length - 1) {
                 scrollHint.style.visibility = 'visible';
             } else {
@@ -151,8 +160,6 @@
             isTransitioning = true;
             canNavigate = false;
             ctaContainer.classList.remove('show');
-            
-            // Fade out
             video.style.opacity = '0';
             
             setTimeout(() => {
@@ -165,34 +172,37 @@
                     isTransitioning = false;
                 }).catch(e => {
                     isTransitioning = false;
-                    console.log("Navigation play block:", e);
+                    // If blocked, wait for next user click
                 });
             }, 600);
         }
 
         // --- INPUT HANDLING ---
         window.addEventListener('wheel', (e) => {
-            if (e.deltaY > 50) changeVideo('next');
-            else if (e.deltaY < -50) changeVideo('prev');
+            if (e.deltaY > 30) changeVideo('next');
+            else if (e.deltaY < -30) changeVideo('prev');
         });
 
         let ts = 0;
         window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
         window.addEventListener('touchend', (e) => {
             const te = e.changedTouches[0].clientY;
-            if (ts - te > 70) changeVideo('next');
-            else if (te - ts > 70) changeVideo('prev');
+            if (ts - te > 50) changeVideo('next'); // Swipe up
+            else if (te - ts > 50) changeVideo('prev'); // Swipe down
         });
 
-        scrollHint.onclick = () => changeVideo('next');
+        scrollHint.onclick = (e) => {
+            e.stopPropagation();
+            changeVideo('next');
+        };
 
         // --- AUDIO ---
-        audioBtn.onclick = () => {
+        audioBtn.onclick = (e) => {
+            e.stopPropagation();
             video.muted = !video.muted;
             document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted);
             document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted);
-            // This click gesture acts as a "master key" for the browser to allow video
-            video.play(); 
+            forcePlay();
         };
     </script>
 </body>
