@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>Bodymatch | The Experience</title>
+    <title>Bodymatch | Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
@@ -23,29 +23,33 @@
 
         /* --- VIDEO ENGINE --- */
         .hero { position: relative; width: 100%; height: 100vh; background: #000; }
-        video { 
+        #mainVideo { 
             position: absolute; top: 50%; left: 50%; 
             min-width: 100%; min-height: 100%; width: auto; height: auto; 
             transform: translate(-50%, -50%); 
             object-fit: cover; z-index: 1; 
-            opacity: 0; visibility: hidden;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.6s ease;
         }
-        video.active { opacity: 1; visibility: visible; }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 2; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 2; pointer-events: none; }
 
         /* --- UI ELEMENTS --- */
-        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; }
+        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; pointer-events: none;}
         .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
-        .audio-toggle { position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); }
+        
+        .audio-toggle { 
+            position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; 
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); 
+        }
         .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
         .hidden-icon { display: none; }
 
-        /* --- NAVIGATION UI --- */
+        /* --- NAVIGATION UI (Higher for mobile) --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%);
+            position: absolute; left: 50%; bottom: 15%; transform: translateX(-50%);
             z-index: 1001; text-align: center; width: 100%;
-            opacity: 0; visibility: hidden; transition: all 1s ease;
+            opacity: 0; visibility: hidden; transition: all 0.8s ease;
         }
         .cta-container.show { opacity: 1; visibility: visible; }
 
@@ -53,17 +57,22 @@
             display: inline-block; text-decoration: none; background: rgba(255,255,255,0.05); color: #fff;
             padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.4); 
             font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; 
-            backdrop-filter: blur(15px); margin-bottom: 30px; transition: 0.4s;
+            backdrop-filter: blur(15px); margin-bottom: 25px; transition: 0.4s;
         }
         .discover-btn:hover { background: #fff; color: #000; }
 
-        .scroll-hint { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.5; cursor: pointer; }
-        .hint-bounce { animation: bounce 2s infinite; }
+        .scroll-hint { 
+            font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; 
+            opacity: 0.7; cursor: pointer; color: #fff;
+            display: block; width: 100%;
+        }
+        .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} }
 
         @media (max-width: 768px) {
-            .cta-container { bottom: 8%; }
-            .discover-btn { width: 85%; font-size: 0.8rem; }
+            .cta-container { bottom: 22%; } /* Take button up higher on mobile */
+            .discover-btn { width: 85%; font-size: 0.8rem; padding: 14px 30px; }
+            .scroll-hint { font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -84,119 +93,106 @@
             <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         </button>
 
-        <video id="v0" class="active" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
-        <video id="v1" muted playsinline preload="auto"><source src="Bodymatchf.mp4" type="video/mp4"></video>
-        <video id="v2" muted playsinline preload="auto"><source src="Bodymatchb.mp4" type="video/mp4"></video>
-        <video id="v3" muted playsinline preload="auto"><source src="Bodymatchh.mp4" type="video/mp4"></video>
-        <video id="v4" muted playsinline preload="auto"><source src="Bodymatchs.mp4" type="video/mp4"></video>
-        <video id="v5" muted playsinline preload="auto"><source src="Bodymatchx.mp4" type="video/mp4"></video>
+        <video id="mainVideo" autoplay muted playsinline preload="auto">
+            <source src="Bodymatch.mp4" type="video/mp4">
+        </video>
 
         <div class="cta-container" id="ctaContainer">
             <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="discover-btn" target="_blank">Discover Your Glow</a>
-            <div class="scroll-hint" id="scrollHint">
-                <span id="hintText">Scroll for more</span><br>
+            <div class="scroll-hint" id="scrollHint" style="visibility: hidden;">
+                Scroll for more <br>
                 <span class="hint-bounce">▽</span>
             </div>
         </div>
     </section>
 
     <script>
-        const vids = [
-            document.getElementById('v0'), document.getElementById('v1'),
-            document.getElementById('v2'), document.getElementById('v3'),
-            document.getElementById('v4'), document.getElementById('v5')
-        ];
+        const videoList = ["Bodymatch.mp4", "Bodymatchf.mp4", "Bodymatchb.mp4", "Bodymatchh.mp4", "Bodymatchs.mp4", "Bodymatchx.mp4"];
+        const video = document.getElementById('mainVideo');
         const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill'), label = document.getElementById('loadingPercent');
-        const ctaContainer = document.getElementById('ctaContainer'), scrollHint = document.getElementById('scrollHint'), hintText = document.getElementById('hintText');
+        const ctaContainer = document.getElementById('ctaContainer'), scrollHint = document.getElementById('scrollHint');
         const audioBtn = document.getElementById('audioToggle');
 
-        let current = 0;
-        let isMoving = false;
-        let videoFinished = false;
+        let currentIdx = 0;
+        let isTransitioning = false;
+        let canNavigate = false;
 
-        // LOADER
+        // --- LOADER ---
         let prog = 0;
-        let sim = setInterval(() => { if (prog < 98) { prog += 1.5; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
+        let sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
 
-        function init() {
+        function hideLoader() {
             clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%';
             setTimeout(() => { 
                 loader.classList.add('hidden'); 
-                vids[0].play();
-                // "Warming up" all videos for Edge/Safari
-                vids.forEach(v => { v.play().then(() => v.pause()).catch(() => {}); });
+                // Explicit play call to satisfy Edge/Safari
+                video.play().catch(e => console.log("Autoplay check:", e));
             }, 500);
         }
-        vids[0].oncanplaythrough = init;
-        setTimeout(init, 4000);
+        window.addEventListener('load', hideLoader);
 
-        // TRANSITION ENGINE
-        function changeVideo(direction) {
-            if (isMoving || !videoFinished) return;
-            if (direction === 'next' && current === vids.length - 1) return;
-            if (direction === 'prev' && current === 0) return;
-
-            isMoving = true;
-            videoFinished = false;
-            ctaContainer.classList.remove('show');
-
-            const prevVid = vids[current];
-            current = (direction === 'next') ? current + 1 : current - 1;
-            const nextVid = vids[current];
-
-            nextVid.currentTime = 0;
-            nextVid.classList.add('active');
-            nextVid.play().then(() => {
-                setTimeout(() => {
-                    prevVid.classList.remove('active');
-                    prevVid.pause();
-                    isMoving = false;
-                }, 1100);
-            });
-
-            // UI Logic for scroll availability
-            if (current === 0) {
-                scrollHint.style.visibility = 'hidden';
-            } else {
+        // --- VIDEO LOGIC ---
+        video.onended = () => {
+            canNavigate = true;
+            ctaContainer.classList.add('show');
+            // Only show scroll hint after the first video is done
+            if (currentIdx < videoList.length - 1) {
                 scrollHint.style.visibility = 'visible';
-                hintText.textContent = (current === vids.length - 1) ? "Back to top" : "Scroll for more";
+            } else {
+                scrollHint.style.visibility = 'hidden';
             }
+        };
+
+        function changeVideo(dir) {
+            if (isTransitioning || !canNavigate) return;
+            if (dir === 'next' && currentIdx === videoList.length - 1) return;
+            if (dir === 'prev' && currentIdx === 0) return;
+
+            isTransitioning = true;
+            canNavigate = false;
+            ctaContainer.classList.remove('show');
+            
+            // Fade out
+            video.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentIdx = (dir === 'next') ? currentIdx + 1 : currentIdx - 1;
+                video.src = videoList[currentIdx];
+                video.load();
+                video.style.opacity = '1';
+                
+                video.play().then(() => {
+                    isTransitioning = false;
+                }).catch(e => {
+                    isTransitioning = false;
+                    console.log("Navigation play block:", e);
+                });
+            }, 600);
         }
 
-        vids.forEach((vid) => {
-            vid.onended = () => { 
-                videoFinished = true;
-                ctaContainer.classList.add('show'); 
-            };
-        });
-
-        // SCROLL & SWIPE HANDLING
-        let lastScroll = 0;
+        // --- INPUT HANDLING ---
         window.addEventListener('wheel', (e) => {
-            const now = Date.now();
-            if (now - lastScroll < 1500) return; // Prevent rapid scrolling
-            if (e.deltaY > 40) changeVideo('next');
-            else if (e.deltaY < -40) changeVideo('prev');
-            lastScroll = now;
+            if (e.deltaY > 50) changeVideo('next');
+            else if (e.deltaY < -50) changeVideo('prev');
         });
 
         let ts = 0;
         window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
         window.addEventListener('touchend', (e) => {
             const te = e.changedTouches[0].clientY;
-            if (ts - te > 60) changeVideo('next');
-            else if (te - ts > 60) changeVideo('prev');
+            if (ts - te > 70) changeVideo('next');
+            else if (te - ts > 70) changeVideo('prev');
         });
 
-        scrollHint.onclick = () => changeVideo(current === vids.length - 1 ? 'prev' : 'next');
+        scrollHint.onclick = () => changeVideo('next');
 
-        // AUDIO FIX
+        // --- AUDIO ---
         audioBtn.onclick = () => {
-            const m = vids[current].muted;
-            vids.forEach(v => v.muted = !m);
-            document.getElementById('iconMuted').classList.toggle('hidden-icon', m);
-            document.getElementById('iconPlaying').classList.toggle('hidden-icon', !m);
-            vids[current].play(); // Triggers playback in Edge/Safari
+            video.muted = !video.muted;
+            document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted);
+            document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted);
+            // This click gesture acts as a "master key" for the browser to allow video
+            video.play(); 
         };
     </script>
 </body>
