@@ -3,11 +3,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>Bodymatch | The Experience</title>
+    <title>Bodymatch | Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
-        /* --- CORE HARMONY --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; touch-action: none; }
 
@@ -22,20 +21,31 @@
         .loading-bar-wrapper { width: 180px; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 12px; }
         .loading-bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.3s ease; }
 
-        /* --- VIDEO STACK --- */
+        /* --- VIDEO ENGINE --- */
         .hero { position: relative; width: 100%; height: 100vh; background: #000; }
-        video { 
+        #mainVideo { 
             position: absolute; top: 50%; left: 50%; 
             min-width: 100%; min-height: 100%; width: auto; height: auto; 
             transform: translate(-50%, -50%); 
             object-fit: cover; z-index: 1; 
-            opacity: 0; visibility: hidden;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.8s ease;
         }
-        video.active { opacity: 1; visibility: visible; z-index: 2; }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.15); z-index: 10; pointer-events: none; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); z-index: 2; pointer-events: none; }
 
-        /* --- SIDE NAVIGATION DOTS --- */
+        /* --- UI ELEMENTS --- */
+        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; pointer-events: none;}
+        .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+        
+        .audio-toggle { 
+            position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; 
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); 
+        }
+        .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
+        .hidden-icon { display: none; }
+
+        /* --- NAVIGATION DOTS --- */
         .side-nav {
             position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 15px; z-index: 1000;
@@ -44,30 +54,20 @@
             width: 8px; height: 8px; background: rgba(255, 255, 255, 0.3);
             border-radius: 50%; transition: all 0.4s ease; cursor: pointer;
         }
-        .dot.active {
-            background: #fff; transform: scale(1.5);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
+        .dot.active { background: #fff; transform: scale(1.5); box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
 
-        /* --- UI ELEMENTS --- */
-        .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; }
-        .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
-        .audio-toggle { position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); }
-        .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
-        .hidden-icon { display: none; }
-
-        /* --- CTA CONTAINER (Optimized Alignment) --- */
+        /* --- CTA CONTAINER --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%);
+            position: absolute; left: 50%; bottom: 25%; transform: translateX(-50%);
             z-index: 1001; text-align: center; width: 100%;
-            opacity: 0; visibility: hidden; transition: all 1s ease;
+            opacity: 0; visibility: hidden; transition: all 0.8s ease;
             display: flex; flex-direction: column; align-items: center;
         }
         .cta-container.show { opacity: 1; visibility: visible; }
 
         .btn {
             display: inline-block; text-decoration: none; background: rgba(255,255,255,0.05); color: #fff;
-            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.4); 
+            padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.5); 
             font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; 
             backdrop-filter: blur(15px); margin-bottom: 25px; transition: 0.4s; cursor: pointer;
         }
@@ -75,16 +75,16 @@
 
         .scroll-hint { font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase; opacity: 0.8; color: #fff; }
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} }
 
         @media (max-width: 768px) {
-            .cta-container { bottom: 25%; }
+            .cta-container { bottom: 28%; }
+            .btn { width: 85%; font-size: 0.8rem; padding: 14px 20px; }
             .side-nav { right: 15px; }
-            .btn { width: 85%; font-size: 0.8rem; }
         }
     </style>
 </head>
-<body onclick="unlockAllVideos()">
+<body onclick="unlockBrowser()">
 
     <div class="loader-wrapper" id="loader">
         <div class="brand-title-loader">BODYMATCH</div>
@@ -110,12 +110,9 @@
             <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         </button>
 
-        <video id="v0" class="active" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
-        <video id="v1" muted playsinline preload="auto"><source src="Bodymatchf.mp4" type="video/mp4"></video>
-        <video id="v2" muted playsinline preload="auto"><source src="Bodymatchb.mp4" type="video/mp4"></video>
-        <video id="v3" muted playsinline preload="auto"><source src="Bodymatchh.mp4" type="video/mp4"></video>
-        <video id="v4" muted playsinline preload="auto"><source src="Bodymatchs.mp4" type="video/mp4"></video>
-        <video id="v5" muted playsinline preload="auto"><source src="Bodymatchx.mp4" type="video/mp4"></video>
+        <video id="mainVideo" autoplay muted playsinline preload="auto">
+            <source src="Bodymatch.mp4" type="video/mp4">
+        </video>
 
         <div class="cta-container" id="ctaContainer">
             <a id="actionBtn" href="#" class="btn">Discover Your Glow</a>
@@ -127,18 +124,13 @@
     </section>
 
     <script>
+        const videoFiles = ["Bodymatch.mp4", "Bodymatchf.mp4", "Bodymatchb.mp4", "Bodymatchh.mp4", "Bodymatchs.mp4", "Bodymatchx.mp4"];
         const WA_LINK = "https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E";
-        const vids = [
-            document.getElementById('v0'), document.getElementById('vid1'), // Fix: matches ID in HTML
-            document.getElementById('v2'), document.getElementById('v3'),
-            document.getElementById('v4'), document.getElementById('v5')
-        ];
-        // Re-mapping vids array properly to match IDs
-        const videoArray = Array.from({length: 6}, (_, i) => document.getElementById(`v${i}`));
         
-        const dots = document.querySelectorAll('.dot');
+        const video = document.getElementById('mainVideo');
         const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill'), label = document.getElementById('loadingPercent');
         const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), scrollHint = document.getElementById('scrollHint');
+        const dots = document.querySelectorAll('.dot');
         const audioBtn = document.getElementById('audioToggle');
 
         let currentIdx = 0;
@@ -149,102 +141,109 @@
         let prog = 0;
         let sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
 
-        window.addEventListener('load', () => {
+        function hideLoader() {
             clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%';
-            setTimeout(() => { loader.classList.add('hidden'); }, 600);
-        });
+            setTimeout(() => { 
+                loader.classList.add('hidden'); 
+                video.play().catch(() => {});
+            }, 600);
+        }
+        window.addEventListener('load', hideLoader);
 
-        // --- NAVIGATION ---
-        function updateDots(index) {
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
+        // --- BROWSER UNLOCKER ---
+        function unlockBrowser() {
+            if(video.paused) video.play().catch(() => {});
         }
 
-        function crossfadeTo(nextIdx) {
-            if (isTransitioning || nextIdx < 0 || nextIdx >= videoArray.length) return;
+        // --- VIDEO STATE MANAGER ---
+        video.onended = () => {
+            videoEnded = true;
+            ctaContainer.classList.add('show');
             
-            isTransitioning = true;
-            videoEnded = false;
-            ctaContainer.classList.remove('show');
-            
-            const currentVid = videoArray[currentIdx];
-            const nextVid = videoArray[nextIdx];
-
-            nextVid.currentTime = 0;
-            nextVid.classList.add('active');
-            updateDots(nextIdx);
-            
-            nextVid.play().then(() => {
-                setTimeout(() => {
-                    currentVid.classList.remove('active');
-                    currentVid.pause();
-                    currentIdx = nextIdx;
-                    isTransitioning = false;
-                }, 1000); 
-            }).catch(e => {
-                console.log("Play failed, forcing reveal", e);
-                currentVid.classList.remove('active');
-                nextVid.classList.add('active');
-                isTransitioning = false;
-            });
-        }
-
-        videoArray.forEach((v, idx) => {
-            v.onended = () => {
-                videoEnded = true;
-                ctaContainer.classList.add('show');
-                if (idx === 0) {
-                    actionBtn.textContent = "Discover Your Glow";
-                    actionBtn.href = "javascript:void(0)";
-                    scrollHint.style.display = "none";
-                } else {
-                    actionBtn.textContent = "Join the Waitlist";
-                    actionBtn.href = WA_LINK;
-                    actionBtn.target = "_blank";
-                    scrollHint.style.display = (idx < videoArray.length - 1) ? "block" : "none";
-                }
-            };
-        });
-
-        actionBtn.onclick = (e) => {
             if (currentIdx === 0) {
-                e.preventDefault();
-                unlockAllVideos(); // Crucial gesture for mobile
-                crossfadeTo(1);
+                actionBtn.textContent = "Discover Your Glow";
+                actionBtn.href = "javascript:void(0)";
+                scrollHint.style.display = "none";
+            } else {
+                actionBtn.textContent = "Join the Waitlist";
+                actionBtn.href = WA_LINK;
+                actionBtn.target = "_blank";
+                scrollHint.style.display = (currentIdx < videoFiles.length - 1) ? "block" : "none";
             }
         };
 
-        // --- INPUTS ---
+        function changeVideo(dir) {
+            if (isTransitioning || !videoEnded) return;
+            if (dir === 'next' && currentIdx === videoFiles.length - 1) return;
+            if (dir === 'prev' && currentIdx === 0) return;
+
+            isTransitioning = true;
+            videoEnded = false;
+            ctaContainer.classList.remove('show');
+            video.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentIdx = (dir === 'next') ? currentIdx + 1 : currentIdx - 1;
+                video.src = videoFiles[currentIdx];
+                video.load();
+                video.style.opacity = '1';
+                
+                video.play().then(() => {
+                    updateDots(currentIdx);
+                    isTransitioning = false;
+                }).catch(() => {
+                    isTransitioning = false;
+                });
+            }, 600);
+        }
+
+        function updateDots(index) {
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        // --- NAVIGATION INPUTS ---
+        actionBtn.onclick = (e) => {
+            if (currentIdx === 0) {
+                e.preventDefault();
+                changeVideo('next');
+            }
+        };
+
         window.addEventListener('wheel', (e) => {
-            if (currentIdx > 0 && videoEnded) {
-                if (e.deltaY > 50) crossfadeTo(currentIdx + 1);
-                else if (e.deltaY < -50) crossfadeTo(currentIdx - 1);
+            if (currentIdx > 0) {
+                if (e.deltaY > 50) changeVideo('next');
+                else if (e.deltaY < -50) changeVideo('prev');
             }
         });
 
         let ts = 0;
         window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
         window.addEventListener('touchend', (e) => {
-            if (currentIdx > 0 && videoEnded) {
-                if (ts - e.changedTouches[0].clientY > 70) crossfadeTo(currentIdx + 1);
-                else if (e.changedTouches[0].clientY - ts > 70) crossfadeTo(currentIdx - 1);
+            if (currentIdx > 0) {
+                if (ts - e.changedTouches[0].clientY > 70) changeVideo('next');
+                else if (e.changedTouches[0].clientY - ts > 70) changeVideo('prev');
             }
         });
 
-        // Unlock logic for browsers
-        function unlockAllVideos() {
-            videoArray.forEach((v) => {
-                v.play().then(() => v.pause()).catch(() => {});
-            });
-        }
+        dots.forEach(dot => {
+            dot.onclick = () => {
+                const target = parseInt(dot.dataset.index);
+                if (target !== currentIdx && (currentIdx > 0 || target === 0)) {
+                    videoEnded = true; // force enable nav
+                    changeVideo(target > currentIdx ? 'next' : 'prev');
+                    currentIdx = target > currentIdx ? target - 1 : target + 1; // offset for the increment in changeVideo
+                }
+            };
+        });
 
+        // --- AUDIO ---
         audioBtn.onclick = (e) => {
             e.stopPropagation();
-            const targetMuted = !videoArray[currentIdx].muted;
-            videoArray.forEach(v => v.muted = targetMuted);
-            document.getElementById('iconMuted').classList.toggle('hidden-icon', !targetMuted);
-            document.getElementById('iconPlaying').classList.toggle('hidden-icon', targetMuted);
-            videoArray[currentIdx].play();
+            video.muted = !video.muted;
+            document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted);
+            document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted);
+            video.play();
         };
     </script>
 </body>
