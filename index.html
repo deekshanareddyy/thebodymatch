@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>Bodymatch | Elevate Your Presence</title>
+    <title>Bodymatch | Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
@@ -49,7 +49,7 @@
 
         /* --- CTA CONTAINER --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 18%; transform: translateX(-50%);
+            position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%);
             z-index: 1001; text-align: center; width: 100%;
             opacity: 0; visibility: hidden; transition: 0.8s ease;
             display: flex; flex-direction: column; align-items: center;
@@ -68,35 +68,25 @@
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
-        /* --- REASONS MODAL (Premium Glass) --- */
+        /* --- REASONS MODAL --- */
         #reasonsModal {
-            position: fixed; inset: 0; 
-            background: rgba(0, 0, 0, 0.85); 
-            backdrop-filter: blur(25px);
-            z-index: 9999;
-            padding: 80px 20px 40px; overflow-y: auto;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px);
+            z-index: 9999; padding: 80px 25px 40px; overflow-y: auto;
             display: none; opacity: 0; transition: opacity 0.5s ease;
         }
         #reasonsModal.active { display: block; opacity: 1; }
-        .modal-close { position: fixed; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; z-index: 10001; color: #fff; }
-        .modal-title { font-weight: 700; font-size: 1.4rem; margin-bottom: 30px; text-align: center; letter-spacing: 0.1em; }
-        
+        .modal-close { position: fixed; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; z-index: 10001; }
+        .modal-title { font-weight: 700; font-size: 1.4rem; margin-bottom: 30px; text-align: center; }
         .reason-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 18px 0; max-width: 600px; margin: 0 auto; }
         .reason-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .reason-header h3 { font-size: 0.95rem; font-weight: 500; text-align: left; }
-        .plus-icon { font-size: 1.1rem; transition: transform 0.3s; opacity: 0.5; }
-        .reason-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.6; }
-        .reason-item.open .plus-icon { transform: rotate(45deg); opacity: 1; }
-        .reason-item.open .reason-content { max-height: 250px; margin-top: 15px; padding-bottom: 10px; }
-
-        .modal-footer { margin-top: 50px; text-align: center; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .modal-footer p { opacity: 0.7; font-size: 0.85rem; line-height: 1.6; margin-bottom: 25px; }
+        .reason-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.6; }
+        .reason-item.open .reason-content { max-height: 150px; margin-top: 15px; }
+        .reason-item.open .plus-icon { transform: rotate(45deg); }
+        .modal-footer { margin-top: 40px; text-align: center; padding-bottom: 40px; }
 
         @media (max-width: 768px) {
             .cta-container { bottom: 25%; }
-            .btn { width: 85%; font-size: 0.8rem; padding: 14px 20px; }
-            .modal-title { font-size: 1.1rem; }
-            .reason-header h3 { font-size: 0.85rem; }
+            .btn { width: 85%; }
         }
     </style>
 </head>
@@ -111,14 +101,9 @@
     <div id="reasonsModal">
         <div class="modal-close" onclick="closeModal()">×</div>
         <h2 class="modal-title">Why invest in your presence?</h2>
-        
-        
-        
         <div id="accordionContainer"></div>
-
         <div class="modal-footer">
-            <p>Looks aren’t everything—but improving your face can quietly support how you move through life.</p>
-            <p><strong>Join the waitlist and grow with us.</strong></p>
+            <p style="opacity:0.6; margin-bottom:20px;">Join the waitlist and grow with us.</p>
             <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
         </div>
     </div>
@@ -177,6 +162,11 @@
         const modal = document.getElementById('reasonsModal');
         const accordion = document.getElementById('accordionContainer');
 
+        let currentIdx = 0;
+        let isTransitioning = false;
+        let videoEnded = false;
+
+        // Init Reasons
         reasons.forEach(r => {
             const div = document.createElement('div');
             div.className = 'reason-item';
@@ -185,9 +175,13 @@
             accordion.appendChild(div);
         });
 
+        // Loader
         let prog = 0;
         let sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
-        window.addEventListener('load', () => { clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%'; setTimeout(() => { loader.classList.add('hidden'); video.play().catch(() => {}); }, 600); });
+        window.addEventListener('load', () => { 
+            clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%'; 
+            setTimeout(() => { loader.classList.add('hidden'); video.play(); }, 600); 
+        });
 
         function unlockBrowser() { if(video.paused) video.play().catch(() => {}); }
         function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'hidden'; }
@@ -207,7 +201,9 @@
             }
         };
 
+        // THE FIX: Explicitly loading and playing in the click event
         actionBtn.onclick = (e) => {
+            e.preventDefault();
             if (currentIdx === 0) {
                 changeVideo('next');
             } else if (currentIdx === 1) {
@@ -222,22 +218,65 @@
             if (isTransitioning) return;
             if (dir === 'next' && currentIdx === videoFiles.length - 1) return;
             if (dir === 'prev' && currentIdx === 0) return;
-            isTransitioning = true; ctaContainer.classList.remove('show'); video.style.opacity = '0';
+
+            isTransitioning = true;
+            videoEnded = false;
+            ctaContainer.classList.remove('show');
+            video.style.opacity = '0';
+            
             setTimeout(() => {
                 currentIdx = (dir === 'next') ? currentIdx + 1 : currentIdx - 1;
-                video.src = videoFiles[currentIdx]; video.load(); video.style.opacity = '1';
-                video.play().then(() => { updateDots(currentIdx); isTransitioning = false; }).catch(() => { isTransitioning = false; });
+                
+                // CRITICAL: Resetting video state
+                video.pause();
+                video.src = videoFiles[currentIdx];
+                video.load();
+                
+                // Force play after load
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        video.style.opacity = '1';
+                        updateDots(currentIdx);
+                        isTransitioning = false;
+                    }).catch(error => {
+                        console.log("Auto-play failed, user interaction needed");
+                        video.style.opacity = '1';
+                        isTransitioning = false;
+                    });
+                }
             }, 600);
         }
 
         function updateDots(index) { dots.forEach(d => d.classList.remove('active')); dots[index].classList.add('active'); }
-        window.addEventListener('wheel', (e) => { if (currentIdx > 0 && !modal.classList.contains('active')) { if (e.deltaY > 50) changeVideo('next'); else if (e.deltaY < -50) changeVideo('prev'); } });
+        
+        window.addEventListener('wheel', (e) => { 
+            if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { 
+                if (e.deltaY > 50) changeVideo('next'); 
+                else if (e.deltaY < -50) changeVideo('prev'); 
+            } 
+        });
+
         let ts = 0;
         window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
-        window.addEventListener('touchend', (e) => { if (currentIdx > 0 && !modal.classList.contains('active')) { const te = e.changedTouches[0].clientY; if (ts - te > 70) changeVideo('next'); else if (te - ts > 70) changeVideo('prev'); } });
+        window.addEventListener('touchend', (e) => { 
+            if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { 
+                const te = e.changedTouches[0].clientY; 
+                if (ts - te > 70) changeVideo('next'); 
+                else if (te - ts > 70) changeVideo('prev'); 
+            } 
+        });
+
         scrollHint.onclick = () => changeVideo('next');
+
         const audioBtn = document.getElementById('audioToggle');
-        audioBtn.onclick = (e) => { e.stopPropagation(); video.muted = !video.muted; document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted); document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted); video.play(); };
+        audioBtn.onclick = (e) => { 
+            e.stopPropagation(); 
+            video.muted = !video.muted; 
+            document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted); 
+            document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted); 
+            video.play(); 
+        };
     </script>
 </body>
 </html>
