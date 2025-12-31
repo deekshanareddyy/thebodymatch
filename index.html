@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>Bodymatch | Beyond Level 1</title>
+    <title>Bodymatch | The Architecture of Presence</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
@@ -22,7 +22,7 @@
         .loading-bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.3s ease; }
 
         /* --- VIDEO ENGINE --- */
-        .hero { position: relative; width: 100%; height: 100vh; background: #000; }
+        .hero { position: relative; width: 100%; height: 100vh; background: #000; overflow: hidden; }
         #mainVideo { 
             position: absolute; top: 50%; left: 50%; 
             min-width: 100%; min-height: 100%; width: auto; height: auto; 
@@ -32,7 +32,7 @@
         }
         .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.35); z-index: 2; pointer-events: none; }
 
-        /* --- SIDE NAVIGATION --- */
+        /* --- NAVIGATION --- */
         .side-nav {
             position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 15px; z-index: 1000;
@@ -40,17 +40,17 @@
         .dot { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: 0.4s; cursor: pointer; }
         .dot.active { background: #fff; transform: scale(1.5); box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
 
-        /* --- UI ELEMENTS --- */
+        /* --- UI OVERLAYS --- */
         .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; pointer-events: none;}
         .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
         .audio-toggle { position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); }
         .audio-toggle svg { width: 18px; height: 18px; fill: #fff; }
         .hidden-icon { display: none; }
 
-        /* --- CTA CONTAINER --- */
+        /* --- CTA SYSTEM --- */
         .cta-container {
-            position: absolute; left: 50%; bottom: 20%; transform: translateX(-50%);
-            z-index: 1001; text-align: center; width: 100%;
+            position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%);
+            z-index: 1001; text-align: center; width: 90%;
             opacity: 0; visibility: hidden; transition: 0.8s ease;
             display: flex; flex-direction: column; align-items: center;
         }
@@ -68,7 +68,7 @@
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
-        /* --- PREMIUM MODAL --- */
+        /* --- MODAL (Responsive Alignment) --- */
         #reasonsModal {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(45px);
             z-index: 9999; padding: 100px 25px 60px; overflow-y: auto;
@@ -76,25 +76,26 @@
         }
         #reasonsModal.active { display: block; opacity: 1; }
         .modal-close { position: fixed; top: 30px; right: 30px; font-size: 2.5rem; cursor: pointer; z-index: 10001; color: rgba(255,255,255,0.4); }
-        .modal-title { font-weight: 700; font-size: 1.6rem; margin-bottom: 10px; text-align: center; letter-spacing: 0.05em; max-width: 600px; margin: 0 auto; line-height: 1.4; }
-        .modal-subtitle { font-size: 0.85rem; opacity: 0.5; text-align: center; margin-bottom: 40px; letter-spacing: 0.05em;}
+        .modal-title { font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; text-align: center; letter-spacing: 0.05em; max-width: 600px; margin: 0 auto; line-height: 1.4; }
+        .modal-intro { font-size: 0.9rem; opacity: 0.6; text-align: center; margin-bottom: 40px; max-width: 500px; margin: 0 auto; line-height: 1.6;}
 
-        .section-label { font-size: 0.6rem; color: #fff; opacity: 0.4; letter-spacing: 0.4em; text-transform: uppercase; margin: 60px auto 15px; max-width: 600px; text-align: left; border-left: 2px solid #fff; padding-left: 10px; }
-        .reason-item { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 26px 0; max-width: 600px; margin: 0 auto; }
+        .section-label { font-size: 0.65rem; color: #fff; opacity: 0.3; letter-spacing: 0.4em; text-transform: uppercase; margin: 50px auto 15px; max-width: 600px; text-align: left; }
+        .reason-item { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 24px 0; max-width: 600px; margin: 0 auto; }
         .reason-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .reason-header h3 { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.12em; text-align: left; opacity: 0.95; text-transform: uppercase;}
+        .reason-header h3 { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em; text-align: left; opacity: 0.9; }
         .plus-icon { font-size: 1rem; transition: transform 0.4s; opacity: 0.4; }
-        .reason-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; color: rgba(255,255,255,0.6); font-size: 0.88rem; line-height: 1.9; }
+        .reason-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; color: rgba(255,255,255,0.6); font-size: 0.88rem; line-height: 1.8; }
         
         .reason-item.open .plus-icon { transform: rotate(45deg); opacity: 1; }
-        .reason-item.open .reason-content { max-height: 500px; margin-top: 18px; }
+        .reason-item.open .reason-content { max-height: 300px; margin-top: 15px; }
 
-        .modal-footer { margin-top: 80px; text-align: center; max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
-        .modal-footer p { opacity: 0.5; font-size: 0.85rem; line-height: 2; margin-bottom: 40px; }
+        .modal-footer { margin-top: 80px; text-align: center; max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
+        .modal-footer p { opacity: 0.7; font-size: 0.9rem; line-height: 1.8; margin-bottom: 30px; }
 
         @media (max-width: 768px) {
-            .cta-container { bottom: 25%; }
-            .modal-title { font-size: 1.35rem; text-align: left; }
+            .side-nav { right: 15px; }
+            .modal-title { font-size: 1.25rem; }
+            .btn { padding: 14px 30px; width: 100%; }
         }
     </style>
 </head>
@@ -108,15 +109,14 @@
 
     <div id="reasonsModal">
         <div class="modal-close" onclick="closeModal()">×</div>
-        <h2 class="modal-title">Why You Need a Face Card That Never Declines</h2>
-        <p class="modal-subtitle">Stop settling for Level 1 surface maintenance.</p>
+        <h2 class="modal-title">Why Focusing on Your Face Can Elevate Your Life (Without Changing Who You Are)</h2>
+        <p class="modal-intro">Your face is a reflection of more than just appearance, It tells a story about how you feel inside. Here’s why taking care of your face goes beyond looks:</p>
         
         <div id="accordionContainer"></div>
 
         <div class="modal-footer">
-            <p>Becoming the hero of your own story starts with the quiet confidence of knowing you look like the best version of yourself.</p>
-            <p style="color: #fff; font-weight: 500; margin-bottom: 25px; font-size: 0.9rem; letter-spacing: 0.1em;">READY TO REACH LEVEL 10?</p>
-            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Access the Circle</a>
+            <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist. You'll be the first to know when we share insights, tips, and programs that can help you on your journey to lasting confidence without the pressure.</p>
+            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
         </div>
     </div>
 
@@ -147,20 +147,20 @@
         const videoFiles = ["Bodymatch.mp4", "Bodymatchf.mp4", "Bodymatchb.mp4", "Bodymatchh.mp4", "Bodymatchs.mp4", "Bodymatchx.mp4"];
         const WA_LINK = "https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E";
         
-        // --- CONTENT ---
-        const psychologicalReasons = [
-            { t: "Powerful First Impressions", c: "Human beings decide how they feel about you in less than 3 seconds. An attractive face isn't just vanity—it's a shortcut to trust. People subconsciously attribute competence, intelligence, and kindness to those who look their best. This is the 'Halo Effect' in its purest form." },
-            { t: "The Main Character Effect", c: "Liking your reflection stops the mirror from being a source of stress. When you look like the 'Hero' of your story, you move through the world differently. You enjoy being seen, you command conversations, and you stop dodging the camera. You finally feel at peace with being visible." },
-            { t: "The Perception of Trust", c: "Symmetry and health are evolutionary signals of vitality. In professional and social settings, a well-presented face supports your skills and hard work. It ensures you are taken seriously before you even say a word." }
+        const reasons = [
+            { t: "Powerful First Impressions", c: "People form judgments in seconds. A well-maintained face can help set the tone for positive, meaningful connections from the start." },
+            { t: "Confidence in Social Settings", c: "When you feel comfortable in your own skin, conversations flow more naturally. Your confidence speaks for you without having to say a word." },
+            { t: "Stronger, Healthier Relationships", c: "People are drawn to those who look like they take care of themselves. A thoughtful approach to self-care builds stronger bonds with others." },
+            { t: "Comfort in Public & Online", c: "Whether it's face-to-face or on a screen, confidence in your appearance removes the stress of being seen. No need to hide or shy away." },
+            { t: "Capturing Life’s Moments", c: "When you feel good about how you look, you’ll naturally want to be part of photos and videos. You’re free to enjoy the moment, not dodge the camera." },
+            { t: "Peace with Your Reflection", c: "Your face should be something you’re proud of, not something that causes stress. When you treat it with care, it becomes a source of comfort." },
+            { t: "Seen as Capable & Trustworthy", c: "How you present yourself affects how others perceive your competence and reliability. A thoughtful approach to self-care can support your skills." },
+            { t: "Consistency in Self-Confidence", c: "True confidence is quiet—it’s not about the loudest statement, but how you move through the world with assurance and self-respect." }
         ];
 
-        const theTruth = [
-            { t: "The Level 1 Skincare Trap", c: "Most people stay at Level 1, using standard serums and cleansers while wondering why they never look truly 'striking.' Skincare is just the paint on a building. If the architecture—the biology, the clinical precision, the bone-deep structure—is missing, the paint doesn't matter. We take you to what your face can truly achieve." }
-        ];
-
-        const bodymatchProtocol = [
-            { t: "Total Aesthetic Architecture", c: "We manage the entire ecosystem. From world-class Dermatologists and clinical-grade actives to precision procedures like Botox/Fillers and targeted Supplements. We provide the roadmap to a 10/10 face card from 1 day to 1 year." },
-            { t: "Permanence over Trends", c: "Vanity fades; architecture remains. By uniting your internal biological health with external medical excellence, we create a shift that doesn't just look good today, but truly never declines." }
+        const philosophy = [
+            { t: "A Holistic Approach", c: "Improving your face isn’t about quick fixes—it’s about treating it as part of your overall well-being. When skin, structure, and health work in harmony, you naturally feel at your best." },
+            { t: "No Pressure, Just Knowledge", c: "This isn’t about changing who you are; it’s about helping you feel more aligned with your best self. The goal isn’t perfection - it’s a deeper, lasting confidence." }
         ];
 
         const accordion = document.getElementById('accordionContainer');
@@ -178,12 +178,9 @@
                 accordion.appendChild(div);
             });
         }
+        addSection("Insights on Presence", reasons);
+        addSection("Our Alignment Philosophy", philosophy);
 
-        addSection("The Human Reality", psychologicalReasons);
-        addSection("The Gap", theTruth);
-        addSection("The 10/10 Standard", bodymatchProtocol);
-
-        // --- ENGINE ---
         const video = document.getElementById('mainVideo');
         const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill'), label = document.getElementById('loadingPercent');
         const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), scrollHint = document.getElementById('scrollHint');
@@ -191,8 +188,8 @@
         const modal = document.getElementById('reasonsModal');
 
         let currentIdx = 0, isTransitioning = false, videoEnded = false;
-
         let prog = 0, sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
+        
         window.addEventListener('load', () => { clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%'; setTimeout(() => { loader.classList.add('hidden'); video.play().catch(() => {}); }, 600); });
 
         function unlockBrowser() { if(video.paused) video.play().catch(() => {}); }
@@ -218,16 +215,16 @@
             isTransitioning = true; videoEnded = false; ctaContainer.classList.remove('show'); video.style.opacity = '0';
             setTimeout(() => {
                 currentIdx = (dir === 'next') ? currentIdx + 1 : currentIdx - 1;
-                video.src = videoFiles[currentIdx]; video.load(); video.style.opacity = '1';
+                video.pause(); video.src = videoFiles[currentIdx]; video.load(); video.style.opacity = '1';
                 video.play().then(() => { 
                     dots.forEach(d => d.classList.remove('active')); dots[currentIdx].classList.add('active'); isTransitioning = false; 
                 }).catch(() => { isTransitioning = false; });
             }, 600);
         }
 
-        window.addEventListener('wheel', (e) => { if (currentIdx > 0 && !modal.classList.contains('active')) { if (e.deltaY > 50) changeVideo('next'); else if (e.deltaY < -50) changeVideo('prev'); } });
+        window.addEventListener('wheel', (e) => { if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { if (e.deltaY > 50) changeVideo('next'); else if (e.deltaY < -50) changeVideo('prev'); } });
         let ts = 0; window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
-        window.addEventListener('touchend', (e) => { if (currentIdx > 0 && !modal.classList.contains('active')) { const te = e.changedTouches[0].clientY; if (ts - te > 70) changeVideo('next'); else if (te - ts > 70) changeVideo('prev'); } });
+        window.addEventListener('touchend', (e) => { if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { const te = e.changedTouches[0].clientY; if (ts - te > 70) changeVideo('next'); else if (te - ts > 70) changeVideo('prev'); } });
         scrollHint.onclick = () => changeVideo('next');
         document.getElementById('audioToggle').onclick = (e) => { e.stopPropagation(); video.muted = !video.muted; document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted); document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted); video.play(); };
     </script>
