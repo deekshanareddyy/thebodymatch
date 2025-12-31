@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
     
     <style>
+        /* --- CORE HARMONY --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         html, body { height: 100%; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; touch-action: none; }
 
@@ -30,7 +31,7 @@
             object-fit: cover; z-index: 1; 
             transition: opacity 0.8s ease;
         }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.35); z-index: 2; pointer-events: none; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 2; pointer-events: none; }
 
         /* --- NAVIGATION --- */
         .side-nav {
@@ -40,7 +41,7 @@
         .dot { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: 0.4s; cursor: pointer; }
         .dot.active { background: #fff; transform: scale(1.5); box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
 
-        /* --- UI OVERLAYS --- */
+        /* --- UI ELEMENTS --- */
         .brand-header { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: center; z-index: 1000; pointer-events: none;}
         .brand-name { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
         .audio-toggle { position: absolute; top: 100px; right: 25px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; backdrop-filter: blur(10px); }
@@ -68,18 +69,18 @@
         .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
-        /* --- MODAL (Responsive Alignment) --- */
-        #reasonsModal {
+        /* --- MODAL SYSTEM --- */
+        .modal {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(45px);
             z-index: 9999; padding: 100px 25px 60px; overflow-y: auto;
             display: none; opacity: 0; transition: opacity 0.6s ease;
         }
-        #reasonsModal.active { display: block; opacity: 1; }
+        .modal.active { display: block; opacity: 1; }
         .modal-close { position: fixed; top: 30px; right: 30px; font-size: 2.5rem; cursor: pointer; z-index: 10001; color: rgba(255,255,255,0.4); }
         .modal-title { font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; text-align: center; letter-spacing: 0.05em; max-width: 600px; margin: 0 auto; line-height: 1.4; }
         .modal-intro { font-size: 0.9rem; opacity: 0.6; text-align: center; margin-bottom: 40px; max-width: 500px; margin: 0 auto; line-height: 1.6;}
 
-        .section-label { font-size: 0.65rem; color: #fff; opacity: 0.3; letter-spacing: 0.4em; text-transform: uppercase; margin: 50px auto 15px; max-width: 600px; text-align: left; }
+        .section-label { font-size: 0.65rem; color: #fff; opacity: 0.3; letter-spacing: 0.4em; text-transform: uppercase; margin: 50px auto 15px; max-width: 600px; text-align: left; border-left: 2px solid #fff; padding-left: 10px;}
         .reason-item { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 24px 0; max-width: 600px; margin: 0 auto; }
         .reason-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .reason-header h3 { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em; text-align: left; opacity: 0.9; }
@@ -87,7 +88,7 @@
         .reason-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; color: rgba(255,255,255,0.6); font-size: 0.88rem; line-height: 1.8; }
         
         .reason-item.open .plus-icon { transform: rotate(45deg); opacity: 1; }
-        .reason-item.open .reason-content { max-height: 300px; margin-top: 15px; }
+        .reason-item.open .reason-content { max-height: 400px; margin-top: 15px; }
 
         .modal-footer { margin-top: 80px; text-align: center; max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
         .modal-footer p { opacity: 0.7; font-size: 0.9rem; line-height: 1.8; margin-bottom: 30px; }
@@ -95,7 +96,7 @@
         @media (max-width: 768px) {
             .side-nav { right: 15px; }
             .modal-title { font-size: 1.25rem; }
-            .btn { padding: 14px 30px; width: 100%; }
+            .btn { width: 100%; padding: 14px 20px; }
         }
     </style>
 </head>
@@ -107,13 +108,44 @@
         <div id="loadingPercent">0%</div>
     </div>
 
-    <div id="reasonsModal">
-        <div class="modal-close" onclick="closeModal()">×</div>
+    <div id="faceModal" class="modal">
+        <div class="modal-close" onclick="closeModal('faceModal')">×</div>
         <h2 class="modal-title">Why Focusing on Your Face Can Elevate Your Life (Without Changing Who You Are)</h2>
-        <p class="modal-intro">Your face is a reflection of more than just appearance, It tells a story about how you feel inside. Here’s why taking care of your face goes beyond looks:</p>
-        
-        <div id="accordionContainer"></div>
+        <p class="modal-intro">Your face is a reflection of more than just appearance, It tells a story about how you feel inside.</p>
+        <div id="faceAccordion"></div>
+        <div class="modal-footer">
+            <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist. You'll be the first to know when we share insights, tips, and programs that can help you on your journey to lasting confidence without the pressure.</p>
+            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
+        </div>
+    </div>
 
+    <div id="bodyModal" class="modal">
+        <div class="modal-close" onclick="closeModal('bodyModal')">×</div>
+        <h2 class="modal-title">Why Getting in Shape Can Transform Your Life (Without Losing Who You Are)</h2>
+        <p class="modal-intro">Getting in shape is about more than just how you look, It’s about feeling strong, energized, and confident from the inside out.</p>
+        <div id="bodyAccordion"></div>
+        <div class="modal-footer">
+            <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist. You'll be the first to know when we share insights, tips, and programs that can help you on your journey to lasting confidence without the pressure.</p>
+            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
+        </div>
+    </div>
+
+    <div id="healthModal" class="modal">
+        <div class="modal-close" onclick="closeModal('healthModal')">×</div>
+        <h2 class="modal-title">Why Prioritizing Your Health is the Key to a Better Life (Without Losing Who You Are)</h2>
+        <p class="modal-intro">Your health is the foundation of everything you do. It affects your energy, your mindset, and your future.</p>
+        <div id="healthAccordion"></div>
+        <div class="modal-footer">
+            <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist. You'll be the first to know when we share insights, tips, and programs that can help you on your journey to lasting confidence without the pressure.</p>
+            <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
+        </div>
+    </div>
+
+    <div id="styleModal" class="modal">
+        <div class="modal-close" onclick="closeModal('styleModal')">×</div>
+        <h2 class="modal-title">Why Prioritizing Your Style Can Elevate Your Life (Without Changing Who You Are)</h2>
+        <p class="modal-intro">Style isn’t just about clothing, It’s the story you carry with you every day. Your style should be authentic to who you are.</p>
+        <div id="styleAccordion"></div>
         <div class="modal-footer">
             <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist. You'll be the first to know when we share insights, tips, and programs that can help you on your journey to lasting confidence without the pressure.</p>
             <a href="https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E" class="btn" target="_blank">Join the waitlist</a>
@@ -132,11 +164,7 @@
             <svg id="iconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
             <svg id="iconPlaying" class="hidden-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         </button>
-
-        <video id="mainVideo" autoplay muted playsinline preload="auto">
-            <source src="Bodymatch.mp4" type="video/mp4">
-        </video>
-
+        <video id="mainVideo" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
         <div class="cta-container" id="ctaContainer">
             <a id="actionBtn" href="javascript:void(0)" class="btn">Discover Your Glow</a>
             <div class="scroll-hint" id="scrollHint" style="visibility: hidden;">Scroll for more <br><span class="hint-bounce">▽</span></div>
@@ -147,64 +175,123 @@
         const videoFiles = ["Bodymatch.mp4", "Bodymatchf.mp4", "Bodymatchb.mp4", "Bodymatchh.mp4", "Bodymatchs.mp4", "Bodymatchx.mp4"];
         const WA_LINK = "https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E";
         
-        const reasons = [
+        // --- DATA: FACE ---
+        const faceData = [
             { t: "Powerful First Impressions", c: "People form judgments in seconds. A well-maintained face can help set the tone for positive, meaningful connections from the start." },
-            { t: "Confidence in Social Settings", c: "When you feel comfortable in your own skin, conversations flow more naturally. Your confidence speaks for you without having to say a word." },
-            { t: "Stronger, Healthier Relationships", c: "People are drawn to those who look like they take care of themselves. A thoughtful approach to self-care builds stronger bonds with others." },
-            { t: "Comfort in Public & Online", c: "Whether it's face-to-face or on a screen, confidence in your appearance removes the stress of being seen. No need to hide or shy away." },
-            { t: "Capturing Life’s Moments", c: "When you feel good about how you look, you’ll naturally want to be part of photos and videos. You’re free to enjoy the moment, not dodge the camera." },
+            { t: "Confidence in Social Settings", c: "When you feel comfortable in your own skin, conversations flow more naturally. Your confidence speaks for you." },
+            { t: "Stronger, Healthier Relationships", c: "People are drawn to those who feel well-cared-for. A thoughtful approach to self-care builds stronger bonds with others." },
+            { t: "Comfort in Public & Online", c: "Whether it's face-to-face or on a screen, confidence in your appearance removes the stress of being seen." },
+            { t: "Capturing Life’s Moments", c: "When you feel good about how you look, you’re free to enjoy the moment, not dodge the camera." },
             { t: "Peace with Your Reflection", c: "Your face should be something you’re proud of, not something that causes stress. When you treat it with care, it becomes a source of comfort." },
-            { t: "Seen as Capable & Trustworthy", c: "How you present yourself affects how others perceive your competence and reliability. A thoughtful approach to self-care can support your skills." },
-            { t: "Consistency in Self-Confidence", c: "True confidence is quiet, it’s not about the loudest statement, but how you move through the world with assurance and self-respect." }
+            { t: "Being Seen as Capable & Trustworthy", c: "How you present yourself affects how others perceive your competence. A thoughtful approach supports your skills." },
+            { t: "Consistency in Self-Confidence", c: "True confidence is quiet—it’s not about the loudest statement, but how you move through the world with self-respect." }
         ];
-
-        const philosophy = [
-            { t: "A Holistic Approach", c: "Improving your face isn’t about quick fixes, it’s about treating it as part of your overall well-being. When skin, structure, and health work in harmony, you naturally feel at your best." },
+        const facePhilosophy = [
+            { t: "A Holistic Approach", c: "Improving your face isn’t about quick fixes or trends—it’s about treating it as part of your overall well-being. When skin, structure, and health work in harmony, you naturally feel at your best." },
             { t: "No Pressure, Just Knowledge", c: "This isn’t about changing who you are; it’s about helping you feel more aligned with your best self. The goal isn’t perfection - it’s a deeper, lasting confidence." }
         ];
 
-        const accordion = document.getElementById('accordionContainer');
-        function addSection(title, data) {
-            const label = document.createElement('div'); label.className = 'section-label'; label.textContent = title;
-            accordion.appendChild(label);
-            data.forEach(r => {
+        // --- DATA: BODY ---
+        const bodyData = [
+            { t: "Better Sex", c: "Being in good physical shape boosts your energy and stamina, making your intimate life more fulfilling and enjoyable." },
+            { t: "More Energy", c: "Regular exercise improves your overall energy levels, making everyday tasks feel easier. You'll find yourself feeling more awake and ready." },
+            { t: "Living Longer", c: "Staying fit doesn’t just improve how you feel today. It can also help you live a longer, healthier life with vitality." },
+            { t: "Self-Discipline", c: "Consistently working on your fitness builds discipline and strengthens mental focus that apply to all areas of your life." },
+            { t: "Reduced Stress", c: "Exercise triggers the release of endorphins, which improve your mood and make it easier to handle everyday pressures." },
+            { t: "Self-Confidence", c: "Getting in shape helps you feel more confident in your own body, boosting your self-esteem." },
+            { t: "Better Mental Health", c: "Physical activity promotes mental clarity and resilience, reducing symptoms of anxiety and depression." },
+            { t: "Look Good Naked", c: "It’s about feeling comfortable and proud of your body in your most vulnerable moments." }
+        ];
+        const bodyPhilosophy = [
+            { t: "A Holistic Approach", c: "Getting in shape isn’t about extremes or quick fixes, It’s about integrating healthy habits into your daily routine. When fitness becomes part of your lifestyle, it becomes easier to stay energized and confident." },
+            { t: "No Pressure, Just Empowerment", c: "This isn’t about achieving perfection, it’s about feeling strong, healthy, and aligned with the best version of yourself. The goal is a lasting, positive change that empowers you to be your best." }
+        ];
+
+        // --- DATA: HEALTH ---
+        const healthData = [
+            { t: "Endless Energy", c: "A healthy body powers everything you do, from daily tasks to enjoying time with loved ones." },
+            { t: "Improved Mood", c: "Prioritizing your health balances both your body and mind, leading to better emotional well-being and stability." },
+            { t: "Stronger Immunity", c: "Reduce the risk of getting sick and bounce back faster. A resilient system comes from eating right and restful sleep." },
+            { t: "A Longer, Fuller Life", c: "Healthy habits now lead to a longer, more active future set up for years of vitality and joy." },
+            { t: "Sharper Mental Clarity", c: "Physical activity and a balanced diet contribute to clearer thinking, sharper focus, and improved decision-making." },
+            { t: "Prevention is Power", c: "Focusing on health today lower risk for chronic conditions tomorrow like heart disease and diabetes." },
+            { t: "Inspiring Those Around You", c: "When you prioritize your health, you become a role model. Your healthy choices inspire family and friends." }
+        ];
+        const healthPhilosophy = [
+            { t: "A Lifestyle of Balance", c: "Health isn’t about perfection or following every trend. It’s about creating a routine that works for you. Small, consistent actions lead to lasting change." },
+            { t: "No Pressure, Just Progress", c: "This isn’t about chasing an ideal or reaching some unattainable level of perfection, It’s about making sustainable choices that empower you to live with strength." }
+        ];
+
+        // --- DATA: STYLE ---
+        const styleData = [
+            { t: "Your Personal Brand", c: "How you dress speaks volumes about your identity without needing a word. Owning your individuality." },
+            { t: "Confidence in Every Step", c: "When you dress authentically, you naturally exude more self-assurance in every setting." },
+            { t: "Deeper Connections", c: "Attract people who align with your energy. Authentic style acts as a bridge for meaningful relationships." },
+            { t: "Reflection of Self-Respect", c: "Taking pride in your appearance is a way of valuing yourself. It sends a powerful message that you matter." },
+            { t: "Amplifies Energy and Mood", c: "What you wear has a direct impact on how you feel. Clothes can elevate your mood and shift your energy." },
+            { t: "Reflects Your Growth", c: "Style is a living, evolving story. It gives you the freedom to experiment, learn, and grow." },
+            { t: "Subtle Confidence", c: "Real style doesn't need to be loud. It's about wearing what feels right in an authentic, powerful way." }
+        ];
+        const stylePhilosophy = [
+            { t: "Style Should Be Fun", c: "The goal isn’t to keep up with every new trend or buy endless outfits, It’s about feeling confident, comfortable, and authentic in whatever you choose to wear." },
+            { t: "No Pressure, Just Authentic Expression", c: "Style isn’t about fitting into a mold, It’s about embracing your uniqueness. Your style is the story you tell every day." }
+        ];
+
+        // --- ACCORDION BUILDER ---
+        function addSection(containerId, title, data) {
+            const container = document.getElementById(containerId);
+            if (title) {
+                const label = document.createElement('div'); 
+                label.className = 'section-label'; 
+                label.textContent = title;
+                container.appendChild(label);
+            }
+            data.forEach(item => {
                 const div = document.createElement('div'); div.className = 'reason-item';
-                div.innerHTML = `<div class="reason-header"><h3>${r.t}</h3><span class="plus-icon">+</span></div><div class="reason-content">${r.c}</div>`;
-                div.onclick = () => { 
-                    const isOpen = div.classList.contains('open'); 
-                    document.querySelectorAll('.reason-item').forEach(el => el.classList.remove('open')); 
-                    if(!isOpen) div.classList.add('open'); 
-                };
-                accordion.appendChild(div);
+                div.innerHTML = `<div class="reason-header"><h3>${item.t}</h3><span class="plus-icon">+</span></div><div class="reason-content">${item.c}</div>`;
+                div.onclick = () => { div.classList.toggle('open'); };
+                container.appendChild(div);
             });
         }
-        addSection("Insights on Presence", reasons);
-        addSection("Our Alignment Philosophy", philosophy);
 
+        // Initialize Modals
+        addSection('faceAccordion', '', faceData);
+        addSection('faceAccordion', 'Our Alignment Philosophy', facePhilosophy);
+        
+        addSection('bodyAccordion', '', bodyData);
+        addSection('bodyAccordion', 'Our Alignment Philosophy', bodyPhilosophy);
+
+        addSection('healthAccordion', '', healthData);
+        addSection('healthAccordion', 'Our Alignment Philosophy', healthPhilosophy);
+
+        addSection('styleAccordion', '', styleData);
+        addSection('styleAccordion', 'Our Alignment Philosophy', stylePhilosophy);
+
+        // --- CORE ENGINE ---
         const video = document.getElementById('mainVideo');
         const loader = document.getElementById('loader'), fill = document.getElementById('loadingFill'), label = document.getElementById('loadingPercent');
         const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), scrollHint = document.getElementById('scrollHint');
         const dots = document.querySelectorAll('.dot');
-        const modal = document.getElementById('reasonsModal');
 
         let currentIdx = 0, isTransitioning = false, videoEnded = false;
-        let prog = 0, sim = setInterval(() => { if (prog < 98) { prog += 2; fill.style.width = prog + '%'; label.textContent = Math.round(prog) + '%'; } }, 100);
-        
-        window.addEventListener('load', () => { clearInterval(sim); fill.style.width = '100%'; label.textContent = '100%'; setTimeout(() => { loader.classList.add('hidden'); video.play().catch(() => {}); }, 600); });
+
+        window.addEventListener('load', () => { setTimeout(() => { loader.classList.add('hidden'); video.play().catch(() => {}); }, 800); });
 
         function unlockBrowser() { if(video.paused) video.play().catch(() => {}); }
-        function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'hidden'; }
 
         video.onended = () => {
             videoEnded = true; ctaContainer.classList.add('show');
             if (currentIdx === 0) { actionBtn.textContent = "Discover Your Glow"; scrollHint.style.visibility = "hidden"; }
-            else if (currentIdx === 1) { actionBtn.textContent = "Learn More"; scrollHint.style.visibility = "visible"; }
-            else { actionBtn.textContent = "Join the Waitlist"; scrollHint.style.visibility = "visible"; }
+            else { actionBtn.textContent = "Learn More"; scrollHint.style.visibility = "visible"; }
         };
 
         actionBtn.onclick = (e) => {
             if (currentIdx === 0) changeVideo('next');
-            else if (currentIdx === 1) { modal.classList.add('active'); document.body.style.overflow = 'auto'; }
+            else if (currentIdx === 1) document.getElementById('faceModal').classList.add('active');
+            else if (currentIdx === 2) document.getElementById('bodyModal').classList.add('active');
+            else if (currentIdx === 3) document.getElementById('healthModal').classList.add('active');
+            else if (currentIdx === 4) document.getElementById('styleModal').classList.add('active');
             else window.open(WA_LINK, '_blank');
         };
 
@@ -215,16 +302,16 @@
             isTransitioning = true; videoEnded = false; ctaContainer.classList.remove('show'); video.style.opacity = '0';
             setTimeout(() => {
                 currentIdx = (dir === 'next') ? currentIdx + 1 : currentIdx - 1;
-                video.pause(); video.src = videoFiles[currentIdx]; video.load(); video.style.opacity = '1';
+                video.src = videoFiles[currentIdx]; video.load(); video.style.opacity = '1';
                 video.play().then(() => { 
                     dots.forEach(d => d.classList.remove('active')); dots[currentIdx].classList.add('active'); isTransitioning = false; 
                 }).catch(() => { isTransitioning = false; });
             }, 600);
         }
 
-        window.addEventListener('wheel', (e) => { if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { if (e.deltaY > 50) changeVideo('next'); else if (e.deltaY < -50) changeVideo('prev'); } });
+        window.addEventListener('wheel', (e) => { if (currentIdx > 0 && !document.querySelector('.modal.active')) { if (e.deltaY > 50) changeVideo('next'); else if (e.deltaY < -50) changeVideo('prev'); } });
         let ts = 0; window.addEventListener('touchstart', (e) => ts = e.touches[0].clientY);
-        window.addEventListener('touchend', (e) => { if (currentIdx > 0 && videoEnded && !modal.classList.contains('active')) { const te = e.changedTouches[0].clientY; if (ts - te > 70) changeVideo('next'); else if (te - ts > 70) changeVideo('prev'); } });
+        window.addEventListener('touchend', (e) => { if (currentIdx > 0 && !document.querySelector('.modal.active')) { const te = e.changedTouches[0].clientY; if (ts - te > 70) changeVideo('next'); else if (te - ts > 70) changeVideo('prev'); } });
         scrollHint.onclick = () => changeVideo('next');
         document.getElementById('audioToggle').onclick = (e) => { e.stopPropagation(); video.muted = !video.muted; document.getElementById('iconMuted').classList.toggle('hidden-icon', !video.muted); document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted); video.play(); };
     </script>
