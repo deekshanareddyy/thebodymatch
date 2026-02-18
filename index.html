@@ -6,6 +6,8 @@
     <title>Bodymatch | The Human Evolution Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
+
     <style>
         /* --- CORE HARMONY --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -33,7 +35,7 @@
         }
         .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2; pointer-events: none; }
 
-        /* --- INTERACTIVE SIDEBAR (6 STEPS) --- */
+        /* --- INTERACTIVE SIDEBAR --- */
         .side-nav {
             position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 20px; z-index: 1000;
@@ -45,7 +47,6 @@
             opacity: 0.6; transition: 0.3s;
         }
         .nav-item:hover, .nav-item.active { opacity: 1; }
-        
         .nav-label {
             position: absolute; right: 25px; 
             font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -54,7 +55,6 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
         .nav-item:hover .nav-label { opacity: 1; transform: translateX(0); }
-        
         .dot { 
             width: 8px; height: 8px; background: #fff; border-radius: 50%; 
             transition: all 0.4s ease; box-shadow: 0 0 5px rgba(0,0,0,0.5);
@@ -76,7 +76,6 @@
             display: flex; flex-direction: column; align-items: center;
         }
         .cta-container.show { opacity: 1; visibility: visible; }
-
         .btn {
             display: inline-block; text-decoration: none; background: rgba(255,255,255,0.05); color: #fff;
             padding: 16px 48px; border: 1px solid rgba(255, 255, 255, 0.3); 
@@ -84,10 +83,7 @@
             backdrop-filter: blur(15px); margin-bottom: 25px; transition: 0.4s; cursor: pointer;
         }
         .btn:hover { background: #fff; color: #000; }
-
         .scroll-hint { font-size: 0.7rem; letter-spacing: 0.5em; text-transform: uppercase; opacity: 0.6; color: #fff; }
-        .hint-bounce { display: inline-block; animation: bounce 2s infinite; margin-top: 5px;}
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} }
 
         /* --- MISSION FOOTER --- */
         .mission-footer {
@@ -140,13 +136,11 @@
             display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2);
             margin-bottom: 30px; padding-bottom: 12px;
         }
-        .input-group .icon { margin-right: 15px; opacity: 0.8; font-size: 1.2rem; }
-        .input-group input, .input-group select {
-            background: transparent; border: none; color: #fff; width: 100%;
+        .input-group .icon { margin-right: 15px; opacity: 0.8; font-size: 1.2rem; display: flex; align-items: center; }
+        .input-group input {
+            background: transparent !important; border: none; color: #fff; width: 100%;
             font-family: inherit; font-size: 1.1rem; outline: none;
         }
-        .input-group select { width: auto; margin-right: 10px; cursor: pointer; }
-        .input-group select option { color: #000; }
         .submit-btn {
             width: 100%; background: rgba(255,255,255,0.2); border: none;
             padding: 18px; border-radius: 50px; color: #fff;
@@ -155,12 +149,17 @@
         }
         .submit-btn:hover { background: #fff; color: #000; }
 
+        /* intl-tel-input dark theme overrides */
+        .iti { width: 100%; }
+        .iti__country-list { background-color: #0a4d32; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
+        .iti__country.iti__highlight { background-color: rgba(255,255,255,0.1); }
+        .iti__selected-flag { background: transparent !important; padding: 0 10px 0 0 !important; }
+
         @media (max-width: 768px) {
             .side-nav { right: 20px; gap: 20px; }
             .nav-label { display: none; } 
             .modal-title { font-size: 1.25rem; }
             .btn { width: 100%; padding: 14px 20px; }
-            .mission-text { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -186,16 +185,7 @@
                     <input type="email" name="email" placeholder="Email id*" required>
                 </div>
                 <div class="input-group">
-                    <span class="icon">🌍</span>
-                    <select name="country_code" required>
-                        <option value="+91">+91 (IN)</option>
-                        <option value="+1">+1 (US)</option>
-                        <option value="+44">+44 (UK)</option>
-                        <option value="+971">+971 (UAE)</option>
-                        <option value="+61">+61 (AU)</option>
-                        <option value="+49">+49 (DE)</option>
-                    </select>
-                    <input type="tel" name="phone" placeholder="Phone number" required>
+                    <input type="tel" id="phone" name="phone_full" required>
                 </div>
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
@@ -267,38 +257,38 @@
         
         <div class="cta-container" id="ctaContainer">
             <a id="actionBtn" href="javascript:void(0)" class="btn">Discover Your Glow</a>
-            <div class="scroll-hint" id="scrollHint" style="visibility: hidden;">Scroll for more <br><span class="hint-bounce">▽</span></div>
+            <div class="scroll-hint" id="scrollHint" style="visibility: hidden;">Scroll for more</div>
         </div>
 
         <footer id="missionFooter" class="mission-footer">
             <div class="mission-content">
                 <h4 class="mission-title">BODYMATCH | The Human Evolution Platform</h4>
-                <p class="mission-text">
-                    We close the gap between the person you see in the mirror and the powerful person you know you could be.<br>
-                    Aligning health, face, and style into one system to engineer your full potential.
-                </p>
+                <p class="mission-text">We close the gap between the person you see in the mirror and the powerful person you know you could be.</p>
             </div>
         </footer>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
     <script>
+        // Init Phone Input
+        const phoneInput = document.querySelector("#phone");
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "in",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
+        });
+
+        // Data setup
         const videoFiles = ["Bodymatch.mp4", "Bodymatchf.mp4", "Bodymatchb.mp4", "Bodymatchh.mp4", "Bodymatchs.mp4", "Bodymatchx.mp4"];
-        const WA_LINK = "https://chat.whatsapp.com/EawwEaGrqvx5t3P5GQUb7E";
-        
         const faceData = [{ t: "Powerful First Impressions", c: "People form judgments in seconds..." },{ t: "Confidence in Social Settings", c: "When you feel comfortable in your own skin..." },{ t: "Stronger, Healthier Relationships", c: "People are drawn to those who feel well-cared-for..." },{ t: "Comfort in Public & Online", c: "Confidence in appearance removes stress..." },{ t: "Capturing Life’s Moments", c: "Enjoy the moment, don’t dodge the camera..." },{ t: "Peace with Your Reflection", c: "Your face should be a source of comfort..." },{ t: "Being Seen as Capable & Trustworthy", c: "How you present yourself affects perceived competence..." },{ t: "Consistency in Self-Confidence", c: "True confidence is quiet self-respect." }];
         const facePhilosophy = [{ t: "A Holistic Approach", c: "Treating the face as part of overall well-being." },{ t: "No Pressure, Just Knowledge", c: "Helping you feel aligned with your best self." }];
-
         const bodyData = [{ t: "Better Sex", c: "Boosts energy and stamina..." },{ t: "More Energy", c: "Everyday tasks feel easier..." },{ t: "Living Longer", c: "Improve today and your future..." },{ t: "Self-Discipline", c: "Strengthens focus in all areas..." },{ t: "Reduced Stress", c: "Exercise triggers endorphins..." },{ t: "Self-Confidence", c: "Feel proud of your body..." },{ t: "Better Mental Health", c: "Promotes clarity and resilience..." },{ t: "Look Good Naked", c: "Confidence in vulnerable moments." }];
-        const bodyPhilosophy = [{ t: "A Holistic Approach", c: "Fitness as a sustainable lifestyle." },{ t: "No Pressure, Just Empowerment", c: "Feeling strong and aligned." }];
-
         const healthData = [{ t: "Endless Energy", c: "Power everything you do..." },{ t: "Improved Mood", c: "Balances body and mind..." },{ t: "Stronger Immunity", c: "A resilient system from habits..." },{ t: "A Longer, Fuller Life", c: "Active future and vitality..." },{ t: "Sharper Mental Clarity", c: "Clear thinking and focus..." },{ t: "Prevention is Power", c: "Lower risk for chronic conditions..." },{ t: "Inspiring Those Around You", c: "Become a healthy role model." }];
-        const healthPhilosophy = [{ t: "A Lifestyle of Balance", c: "Consistent actions lead to change." },{ t: "No Pressure, Just Progress", c: "Sustainable choices for strength." }];
-
         const styleData = [{ t: "Your Personal Brand", c: "Speak volumes without a word..." },{ t: "Confidence in Every Step", c: "Dress authentically everywhere..." },{ t: "Deeper Connections", c: "Attract people with your energy..." },{ t: "Reflection of Self-Respect", c: "Valuing yourself through style..." },{ t: "Amplifies Energy and Mood", c: "Clothes can elevate how you feel..." },{ t: "Reflects Your Growth", c: "An evolving story of freedom..." },{ t: "Subtle Confidence", c: "Authentic, powerful expression." }];
-        const stylePhilosophy = [{ t: "Style Should Be Fun", c: "Feeling comfortable in what you wear." },{ t: "No Pressure, Just Authentic Expression", c: "Embracing your uniqueness." }];
 
         function addSection(containerId, title, data) {
             const container = document.getElementById(containerId);
+            if (!container) return;
             if (title) {
                 const label = document.createElement('div'); label.className = 'section-label'; label.textContent = title;
                 container.appendChild(label);
@@ -310,13 +300,13 @@
                 container.appendChild(div);
             });
         }
-        addSection('faceAccordion', '', faceData); addSection('faceAccordion', 'Our Alignment Philosophy', facePhilosophy);
-        addSection('bodyAccordion', '', bodyData); addSection('bodyAccordion', 'Our Alignment Philosophy', bodyPhilosophy);
-        addSection('healthAccordion', '', healthData); addSection('healthAccordion', 'Our Alignment Philosophy', healthPhilosophy);
-        addSection('styleAccordion', '', styleData); addSection('styleAccordion', 'Our Alignment Philosophy', stylePhilosophy);
+        addSection('faceAccordion', '', faceData); addSection('faceAccordion', 'Our Philosophy', facePhilosophy);
+        addSection('bodyAccordion', '', bodyData);
+        addSection('healthAccordion', '', healthData);
+        addSection('styleAccordion', '', styleData);
 
         const video = document.getElementById('mainVideo'), loader = document.getElementById('loader');
-        const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), scrollHint = document.getElementById('scrollHint'), footer = document.getElementById('missionFooter');
+        const ctaContainer = document.getElementById('ctaContainer'), actionBtn = document.getElementById('actionBtn'), footer = document.getElementById('missionFooter');
         const navItems = document.querySelectorAll('.nav-item');
         let currentIdx = 0, isTransitioning = false;
 
@@ -333,7 +323,6 @@
             if (currentIdx === 0) actionBtn.textContent = "Discover Your Glow";
             else if (currentIdx === 5) actionBtn.textContent = "Join the Waitlist";
             else actionBtn.textContent = "Learn More";
-            scrollHint.style.visibility = (currentIdx === 0 || currentIdx === 5) ? "hidden" : "visible";
         }
 
         video.onended = () => { updateUIState(); ctaContainer.classList.add('show'); };
@@ -379,16 +368,22 @@
             document.getElementById('iconPlaying').classList.toggle('hidden-icon', video.muted); 
         };
 
-        // FORM SUBMISSION
+        // FORM SUBMISSION (No WhatsApp Redirect)
         document.getElementById('waitlistForm').onsubmit = async function(e) {
             e.preventDefault();
             const form = e.target, btn = form.querySelector('.submit-btn');
+            
+            // Collect the full phone number + country code
+            const fullNumber = iti.getNumber();
+            const formData = new FormData(form);
+            formData.set('phone_full', fullNumber); 
+
             btn.textContent = "Processing..."; btn.disabled = true;
             try {
-                const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+                const response = await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
                 if (response.ok) {
                     btn.textContent = "Success!";
-                    setTimeout(() => { closeModal('waitlistModal'); window.open(WA_LINK, '_blank'); btn.textContent = "Submit"; btn.disabled = false; form.reset(); }, 1200);
+                    setTimeout(() => { closeModal('waitlistModal'); btn.textContent = "Submit"; btn.disabled = false; form.reset(); }, 2000);
                 } else throw new Error();
             } catch (error) { btn.textContent = "Error! Try again."; btn.disabled = false; }
         };
