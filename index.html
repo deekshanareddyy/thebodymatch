@@ -197,7 +197,7 @@
     <div id="faceModal" class="modal">
         <div class="modal-close" onclick="closeModal('faceModal')">×</div>
         <h2 class="modal-title">Why Focusing on Your Face Can Elevate Your Life (Without Changing Who You Are)</h2>
-        <p class="modal-intro">Your face is a reflection of more than just appearance, It tells a story about how you feel inside.</p>
+        <p class="modal-intro">Most skincare is toxic sabotage. We help you find the glitch—products that respect your chemistry so your face reflects your power.</p>
         <div id="faceAccordion"></div>
         <div class="modal-footer">
             <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist.</p>
@@ -208,7 +208,7 @@
     <div id="bodyModal" class="modal">
         <div class="modal-close" onclick="closeModal('bodyModal')">×</div>
         <h2 class="modal-title">Why Getting in Shape Can Transform Your Life (Without Losing Who You Are)</h2>
-        <p class="modal-intro">Getting in shape is about more than just how you look, It’s about feeling strong, energized, and confident from the inside out.</p>
+        <p class="modal-intro">Stop fighting your biology. Toxic brands drain your energy and stall your progress. We align your system so you can finally dominate.</p>
         <div id="bodyAccordion"></div>
         <div class="modal-footer">
             <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist.</p>
@@ -219,7 +219,7 @@
     <div id="healthModal" class="modal">
         <div class="modal-close" onclick="closeModal('healthModal')">×</div>
         <h2 class="modal-title">Why Prioritizing Your Health is the Key to a Better Life (Without Losing Who You Are)</h2>
-        <p class="modal-intro">Your health is the foundation of everything you do. It affects your energy, your mindset, and your future.</p>
+        <p class="modal-intro">The system is broken. From endocrine disruptors to hidden chemicals, your health is under attack. We find the safe path to your peak state.</p>
         <div id="healthAccordion"></div>
         <div class="modal-footer">
             <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist.</p>
@@ -230,7 +230,7 @@
     <div id="styleModal" class="modal">
         <div class="modal-close" onclick="closeModal('styleModal')">×</div>
         <h2 class="modal-title">Why Prioritizing Your Style Can Elevate Your Life (Without Changing Who You Are)</h2>
-        <p class="modal-intro">Style isn’t just about clothing, It’s the story you carry with you every day. Your style should be authentic to who you are.</p>
+        <p class="modal-intro">Style is your personal brand. Don't let toxic trends or low-quality materials hold you back. Express the powerhouse you actually are.</p>
         <div id="styleAccordion"></div>
         <div class="modal-footer">
             <p>If you're ready to learn more about how to bring all of this together for yourself, you can join our waitlist.</p>
@@ -270,7 +270,7 @@
         <video id="mainVideo" autoplay muted playsinline preload="auto"><source src="Bodymatch.mp4" type="video/mp4"></video>
         
         <div class="cta-container" id="ctaContainer">
-            <a id="actionBtn" href="javascript:void(0)" class="btn">Discover Your Glow</a>
+            <a id="actionBtn" href="javascript:void(0)" class="btn">MOST BRANDS ARE TOXIC</a>
             <div class="scroll-hint" id="scrollHint" style="visibility: hidden;">Scroll for more <br><span class="hint-bounce">▽</span></div>
         </div>
 
@@ -278,8 +278,8 @@
             <div class="mission-content">
                 <h4 class="mission-title">BODYMATCH | The Human Evolution Platform</h4>
                 <p class="mission-text">
-                    We close the gap between the person you see in the mirror and the powerful person you know you could be.<br>
-                    Aligning health, face, and style into one system to engineer your full potential.
+                    Most brands hold you back. We close the gap between who you are and who you can be.<br>
+                    One system for your Face, Body, Health, and Style. Engineering your full potential.
                 </p>
             </div>
         </footer>
@@ -292,6 +292,7 @@
         
         // --- DATA: FACE ---
         const faceData = [
+            { t: "The Glitch in Skincare", c: "Most products are toxic sabotage. We filter for brands that respect your chemistry so your face reflects your power." },
             { t: "Powerful First Impressions", c: "People form judgments in seconds. A well-maintained face can help set the tone for positive, meaningful connections from the start." },
             { t: "Confidence in Social Settings", c: "When you feel comfortable in your own skin, conversations flow more naturally. Your confidence speaks for you." },
             { t: "Stronger, Healthier Relationships", c: "People are drawn to those who feel well-cared-for. A thoughtful approach to self-care builds stronger bonds with others." },
@@ -308,12 +309,12 @@
 
         // --- DATA: BODY ---
         const bodyData = [
+            { t: "Stop Fighting Your Biology", c: "Toxic brands drain your energy and stall your progress. We align your system so you can finally dominate." },
             { t: "Better Sex", c: "Being in good physical shape boosts your energy and stamina, making your intimate life more fulfilling and enjoyable." },
             { t: "More Energy", c: "Regular exercise improves your overall energy levels, making everyday tasks feel easier. You'll find yourself feeling more awake and ready." },
             { t: "Living Longer", c: "Staying fit doesn’t just improve how you feel today. It can also help you live a longer, healthier life with vitality." },
             { t: "Self-Discipline", c: "Consistently working on your fitness builds discipline and strengthens mental focus that apply to all areas of your life." },
             { t: "Reduced Stress", c: "Exercise triggers the release of endorphins, which improve your mood and make it easier to handle everyday pressures." },
-            { t: "Self-Confidence", c: "Getting in shape helps you feel more confident in your own body, boosting your self-esteem." },
             { t: "Better Mental Health", c: "Physical activity promotes mental clarity and resilience, reducing symptoms of anxiety and depression." },
             { t: "Look Good Naked", c: "It’s about feeling comfortable and proud of your body in your most vulnerable moments." }
         ];
@@ -324,6 +325,7 @@
 
         // --- DATA: HEALTH ---
         const healthData = [
+            { t: "The System is Broken", c: "From endocrine disruptors to hidden chemicals, your health is under attack. We find the safe path to your peak state." },
             { t: "Endless Energy", c: "A healthy body powers everything you do, from daily tasks to enjoying time with loved ones." },
             { t: "Improved Mood", c: "Prioritizing your health balances both your body and mind, leading to better emotional well-being and stability." },
             { t: "Stronger Immunity", c: "Reduce the risk of getting sick and bounce back faster. A resilient system comes from eating right and restful sleep." },
@@ -339,7 +341,7 @@
 
         // --- DATA: STYLE ---
         const styleData = [
-            { t: "Your Personal Brand", c: "How you dress speaks volumes about your identity without needing a word. Owning your individuality." },
+            { t: "Your Personal Brand", c: "Style is your story. Don’t let toxic trends or low-quality materials hold you back. Express the powerhouse you are." },
             { t: "Confidence in Every Step", c: "When you dress authentically, you naturally exude more self-assurance in every setting." },
             { t: "Deeper Connections", c: "Attract people who align with your energy. Authentic style acts as a bridge for meaningful relationships." },
             { t: "Reflection of Self-Respect", c: "Taking pride in your appearance is a way of valuing yourself. It sends a powerful message that you matter." },
@@ -388,7 +390,6 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'hidden'; }
         
         function openWaitlist() { 
-            // Close any open content modals first
             const contentModals = ['faceModal', 'bodyModal', 'healthModal', 'styleModal'];
             contentModals.forEach(id => document.getElementById(id).classList.remove('active'));
             document.getElementById('waitlistModal').classList.add('active'); 
@@ -402,9 +403,9 @@
                 footer.classList.remove('visible');
             }
 
-            if (currentIdx === 0) { actionBtn.textContent = "Discover Your Glow"; scrollHint.style.visibility = "hidden"; }
-            else if (currentIdx === 5) { actionBtn.textContent = "Join the Waitlist"; scrollHint.style.visibility = "hidden"; }
-            else { actionBtn.textContent = "Learn More"; scrollHint.style.visibility = "visible"; }
+            if (currentIdx === 0) { actionBtn.textContent = "MOST BRANDS ARE TOXIC"; scrollHint.style.visibility = "hidden"; }
+            else if (currentIdx === 5) { actionBtn.textContent = "JOIN THE EVOLUTION"; scrollHint.style.visibility = "hidden"; }
+            else { actionBtn.textContent = "FIND THE GLITCH"; scrollHint.style.visibility = "visible"; }
         }
 
         video.onended = () => {
@@ -480,7 +481,6 @@
                     setTimeout(() => {
                         closeModal('waitlistModal');
                         window.open(WA_LINK, '_blank');
-                        // Reset
                         btn.textContent = originalText;
                         btn.disabled = false;
                         form.reset();
